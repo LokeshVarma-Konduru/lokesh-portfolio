@@ -25,7 +25,7 @@
  * is the only place a link can be both reachable and not spinning.
  */
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -60,22 +60,25 @@ export function ProjectWheel() {
     offset: ["start start", "end end"],
   });
 
-  // The ring stops with the last card at the top rather than completing the
-  // circle, so no scroll is spent travelling back to the first.
-  const span = (360 * (count - 1)) / count;
-  const rotate = useSpring(useTransform(scrollYProgress, [0, 1], [0, -span]), {
-    stiffness: 120,
-    damping: 24,
-    mass: 0.4,
-  });
-  const counterRotate = useTransform(rotate, (value) => -value);
-
   const [scrolled, setScrolled] = useState(0);
   const [focused, setFocused] = useState<number | null>(null);
 
+  // Scroll picks which card is at the top; it does not drive the angle directly.
+  // Mapping rotation straight off progress meant the ring was only ever aligned
+  // at the exact instants progress hit i/(n-1), so a card sat squarely at the
+  // apex only if you scrolled to the pixel. Each project owns an equal slice of
+  // the track instead, and the spring below walks the ring between the stops.
   useMotionValueEvent(scrollYProgress, "change", (value) => {
-    setScrolled(Math.round(Math.max(0, Math.min(1, value)) * (count - 1)));
+    const slice = Math.floor(Math.max(0, Math.min(0.999, value)) * count);
+    setScrolled(Math.min(count - 1, slice));
   });
+
+  const rotate = useSpring(0, { stiffness: 120, damping: 24, mass: 0.5 });
+  const counterRotate = useTransform(rotate, (value) => -value);
+
+  useEffect(() => {
+    rotate.set(-(scrolled * 360) / count);
+  }, [count, rotate, scrolled]);
 
   // Pointing at a card wins over the scroll position, so someone can look
   // around the ring without having to scroll back and forth.
@@ -85,7 +88,10 @@ export function ProjectWheel() {
   return (
     <div
       ref={trackRef}
-      style={{ height: `calc(100vh + ${(count - 1) * SCROLL_PER_PROJECT}px)` }}
+      // One slice per project, not per gap: the last card used to reach the top
+      // at the exact scroll position where the sticky panel unsticks, so it was
+      // gone before it could be read. Its slice now holds it there.
+      style={{ height: `calc(100vh + ${count * SCROLL_PER_PROJECT}px)` }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden pt-24">
         <Detail project={project} index={active} count={count} />
