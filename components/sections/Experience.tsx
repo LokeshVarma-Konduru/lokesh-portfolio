@@ -60,25 +60,32 @@ export function Experience() {
           className="absolute bottom-2 left-[27px] top-2 w-px bg-brand md:left-[35px]"
         />
 
+        {/* BlurFade goes inside the item, not around it. Wrapping each <li> in
+            a <div> put every item alone in its own parent, so `last:pb-0`
+            matched all four and every entry lost its trailing gap — and a <div>
+            is not a legal child of <ol> in the first place. */}
         {experience.map((role, index) => (
-          <BlurFade key={role.company} inView delay={0.05 * index}>
-            <li className="relative pb-24 pl-20 last:pb-0 md:pb-28 md:pl-28">
-              {/* One tile size for every company, so the line reads as evenly
-                  marked. The marks themselves are wildly different shapes —
-                  225x44 through 200x200 — so each is contained inside the tile
-                  rather than filling it, and the white backing is there because
-                  they are dark-on-transparent and would vanish otherwise. */}
-              <span className="absolute left-0 top-0 flex size-14 items-center justify-center rounded-xl border border-border bg-white ring-4 ring-background md:size-[72px]">
-                <Image
-                  src={role.logo}
-                  alt={role.company}
-                  width={role.logoWidth}
-                  height={role.logoHeight}
-                  sizes="144px"
-                  className="max-h-[58%] max-w-[76%] object-contain"
-                />
-              </span>
+          <li
+            key={role.company}
+            className="relative pb-24 pl-20 last:pb-0 md:pb-32 md:pl-28"
+          >
+            {/* One tile size for every company, so the line reads as evenly
+                marked. The marks themselves are wildly different shapes —
+                225x44 through 200x200 — so each is contained inside the tile
+                rather than filling it, and the white backing is there because
+                they are dark-on-transparent and would vanish otherwise. */}
+            <span className="absolute left-0 top-0 flex size-14 items-center justify-center rounded-xl border border-border bg-white ring-4 ring-background md:size-[72px]">
+              <Image
+                src={role.logo}
+                alt={role.company}
+                width={role.logoWidth}
+                height={role.logoHeight}
+                sizes="144px"
+                className="max-h-[58%] max-w-[76%] object-contain"
+              />
+            </span>
 
+            <BlurFade inView delay={0.05 * index}>
               <p className="font-heading text-sm font-semibold text-brand">
                 {role.period}
               </p>
@@ -113,8 +120,8 @@ export function Experience() {
                   </li>
                 ))}
               </ul>
-            </li>
-          </BlurFade>
+            </BlurFade>
+          </li>
         ))}
       </ol>
     </section>
