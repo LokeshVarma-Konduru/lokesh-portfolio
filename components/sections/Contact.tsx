@@ -128,18 +128,22 @@ export function Contact() {
       id="contact"
       className="mx-auto max-w-6xl px-6 pb-24 pt-16 md:pb-32 md:pt-24"
     >
-      <BlurFade inView>
-        <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
-          Contact
-        </h2>
-        <p className="mt-5 max-w-md text-lg text-muted-foreground">
-          {personal.seeking}
-        </p>
-      </BlurFade>
-
-      <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-16">
+      {/* The heading sits inside the left column rather than above both, so the
+          form starts level with it instead of a heading's height further down —
+          which was leaving the left column short and the space under the links
+          uneven against the box. */}
+      <div className="grid gap-10 md:grid-cols-2 md:gap-16">
         <BlurFade inView delay={0.1}>
           <div className="flex flex-col gap-8">
+            <div>
+              <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
+                Contact
+              </h2>
+              <p className="mt-5 max-w-md text-lg text-muted-foreground">
+                {personal.seeking}
+              </p>
+            </div>
+
             <div>
               <p className="text-sm font-semibold text-foreground">Email</p>
               <button
