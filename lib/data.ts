@@ -14,6 +14,7 @@ export const personal = {
   resumeUrl: "/resume.pdf",
   resumeFilename: "Lokesh_Varma_Konduru_Resume.pdf",
   location: "Virginia, USA",
+  photo: "/Lokesh.jpeg",
   /**
    * No date in here on purpose. "Graduating May 2026" was true when it was
    * written and false by August, and it renders in three places at once —

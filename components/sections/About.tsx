@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { NumberTicker } from "@/components/ui/number-ticker";
@@ -21,12 +22,17 @@ export function About() {
               {/* Offset frame behind the portrait, so it reads as placed rather
                 than as one more bordered box. */}
               <div className="absolute -bottom-4 -left-4 hidden size-full rounded-2xl border border-brand/25 md:block" />
-              {/* eslint-disable-next-line @next/next/no-img-element -- placeholder SVG, swapped for a real photo later */}
-              <img
-                src="/portrait-placeholder.svg"
-                alt={personal.name}
-                className="relative aspect-4/5 w-full rounded-2xl border border-border object-cover"
-              />
+              {/* The source is 402x469 — slightly wider than the 4:5 frame, so
+                  cover trims the sides rather than the top of his head. */}
+              <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl border border-border">
+                <Image
+                  src={personal.photo}
+                  alt={personal.name}
+                  fill
+                  sizes="288px"
+                  className="object-cover"
+                />
+              </div>
             </div>
           </BlurFade>
 
