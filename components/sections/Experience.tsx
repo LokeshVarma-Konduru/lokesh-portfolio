@@ -67,7 +67,7 @@ export function Experience() {
         {experience.map((role, index) => (
           <li
             key={role.company}
-            className="relative pb-24 pl-20 last:pb-0 md:pb-32 md:pl-28"
+            className="relative pb-14 pl-20 last:pb-0 md:pb-16 md:pl-28"
           >
             {/* One tile size for every company, so the line reads as evenly
                 marked. The marks themselves are wildly different shapes —
