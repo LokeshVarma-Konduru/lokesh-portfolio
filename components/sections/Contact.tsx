@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Check,
   Download,
@@ -25,9 +25,16 @@ export function Contact() {
   const [copied, setCopied] = useState(false);
   const [form, setForm] = useState(EMPTY);
   const [status, setStatus] = useState<Status>("idle");
+  const resetTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const set = (field: keyof typeof EMPTY) => (value: string) =>
+  useEffect(() => () => clearTimeout(resetTimer.current), []);
+
+  // Typing again means they are writing a second message, so the confirmation
+  // for the first one gets out of the way.
+  const set = (field: keyof typeof EMPTY) => (value: string) => {
+    setStatus((prev) => (prev === "sending" ? prev : "idle"));
     setForm((prev) => ({ ...prev, [field]: value }));
+  };
 
   const copyEmail = async () => {
     try {
@@ -68,6 +75,10 @@ export function Contact() {
       if (response.ok) {
         setStatus("sent");
         setForm(EMPTY);
+        // The confirmation is a message, not a state to be left in: without
+        // this the button read "Message sent" for the rest of the visit.
+        clearTimeout(resetTimer.current);
+        resetTimer.current = setTimeout(() => setStatus("idle"), 6000);
         return;
       }
 
