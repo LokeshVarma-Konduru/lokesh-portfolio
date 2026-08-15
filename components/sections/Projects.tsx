@@ -7,6 +7,7 @@ import { Safari } from "@/components/ui/safari";
 import { Badge } from "@/components/ui/badge";
 import { ProjectLinks, hostOf, type Project } from "./ProjectLinks";
 import { ProjectWheel } from "./ProjectWheel";
+import { ProjectCarousel } from "./ProjectCarousel";
 import { useMediaQuery } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
 import { projects } from "@/lib/data";
@@ -76,10 +77,11 @@ function ProjectCardContent({
 }
 
 export function Projects() {
-  // The wheel needs both room and a pointer. Below 1024px there is no hover to
-  // drive it and the ring would have to shrink past the point where a card is
-  // readable, so the stacked list stays the layout there — as it does for
-  // anyone who has asked for reduced motion, since the ring is scroll-driven.
+  // Three layouts, because the same one does not work in all three cases.
+  // Wide screens get the ring, which needs both the room and a pointer to hover
+  // with. Narrow screens get a swipe carousel, since the ring cannot shrink to
+  // a phone without the screenshot becoming a smudge. Anyone who asked for
+  // reduced motion gets the plain stack: nothing pinned, nothing snapping.
   const roomy = useMediaQuery("(min-width: 1024px)");
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
@@ -91,7 +93,13 @@ export function Projects() {
         </h2>
       </BlurFade>
 
-      {roomy && !reducedMotion ? <ProjectWheel /> : <ProjectList />}
+      {reducedMotion ? (
+        <ProjectList />
+      ) : roomy ? (
+        <ProjectWheel />
+      ) : (
+        <ProjectCarousel />
+      )}
     </section>
   );
 }
