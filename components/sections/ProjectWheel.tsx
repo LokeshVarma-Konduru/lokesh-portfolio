@@ -39,21 +39,26 @@ import { ProjectLinks, type Project } from "./ProjectLinks";
 import { cn } from "@/lib/utils";
 import { projects } from "@/lib/data";
 
-/** Radius of the ring, in pixels. */
-const RADIUS = 340;
-/** Extra scroll, per project, that the section consumes while pinned. */
-const SCROLL_PER_PROJECT = 320;
 /**
- * Landscape, because the images are browser screenshots. Four cards on a 340px
- * ring sit 2·R·sin(45°) ≈ 481px apart, so 320 wide still leaves them clear of
- * each other.
+ * Cards are landscape because the images are browser screenshots. Four of them
+ * on a ring sit 2·R·sin(45°) apart — 481px on the wide ring, 283px on the
+ * compact one — so in both cases the card width leaves them clear of each
+ * other, even with the active one scaled up.
+ *
+ * The compact set is what makes a phone possible. Height is the real constraint
+ * there, not width: the panel and the visible arc have to share about 700px, so
+ * the ring drops to a 200px radius and the panel loses a tech chip and some
+ * type size. Below that height Projects falls back to the swipe carousel.
  */
-const CARD_W = 320;
-const CARD_H = 200;
+const SIZES = {
+  wide: { radius: 340, cardW: 320, cardH: 200, scrollPer: 320 },
+  compact: { radius: 200, cardW: 240, cardH: 150, scrollPer: 280 },
+};
 
-export function ProjectWheel() {
+export function ProjectWheel({ compact = false }: { compact?: boolean }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const count = projects.length;
+  const size = compact ? SIZES.compact : SIZES.wide;
 
   const { scrollYProgress } = useScroll({
     target: trackRef,
@@ -91,15 +96,25 @@ export function ProjectWheel() {
       // One slice per project, not per gap: the last card used to reach the top
       // at the exact scroll position where the sticky panel unsticks, so it was
       // gone before it could be read. Its slice now holds it there.
-      style={{ height: `calc(100vh + ${count * SCROLL_PER_PROJECT}px)` }}
+      style={{ height: `calc(100vh + ${count * size.scrollPer}px)` }}
     >
-      <div className="sticky top-0 flex h-screen flex-col overflow-hidden pt-24">
-        <Detail project={project} index={active} count={count} />
+      <div
+        className={cn(
+          "sticky top-0 flex h-screen flex-col overflow-hidden",
+          compact ? "pt-20" : "pt-24",
+        )}
+      >
+        <Detail
+          project={project}
+          index={active}
+          count={count}
+          compact={compact}
+        />
 
         {/* The ring. Cropped at the bottom and faded out, so it reads as
             something larger than the viewport rather than a floating circle. */}
         <div
-          className="relative mt-8 flex-1"
+          className={cn("relative flex-1", compact ? "mt-5" : "mt-8")}
           style={{
             maskImage:
               "linear-gradient(to bottom, black 0%, black 62%, transparent 96%)",
@@ -110,9 +125,9 @@ export function ProjectWheel() {
           <motion.ul
             className="absolute left-1/2 m-0 list-none p-0"
             style={{
-              width: RADIUS * 2,
-              height: RADIUS * 2,
-              top: CARD_H / 2,
+              width: size.radius * 2,
+              height: size.radius * 2,
+              top: size.cardH / 2,
               x: "-50%",
               rotate,
             }}
@@ -120,8 +135,8 @@ export function ProjectWheel() {
             {projects.map((item, index) => {
               // Card 0 sits at the top of the circle; the rest follow clockwise.
               const angle = (index / count) * 2 * Math.PI;
-              const x = RADIUS * Math.sin(angle);
-              const y = -RADIUS * Math.cos(angle);
+              const x = size.radius * Math.sin(angle);
+              const y = -size.radius * Math.cos(angle);
 
               return (
                 <li
@@ -134,6 +149,8 @@ export function ProjectWheel() {
                   <motion.div style={{ rotate: counterRotate }}>
                     <RimCard
                       project={item}
+                      width={size.cardW}
+                      height={size.cardH}
                       isActive={index === active}
                       dimmed={focused !== null && focused !== index}
                       onFocus={() => setFocused(index)}
@@ -154,10 +171,12 @@ function Detail({
   project,
   index,
   count,
+  compact,
 }: {
   project: Project;
   index: number;
   count: number;
+  compact: boolean;
 }) {
   return (
     <div className="mx-auto w-full max-w-3xl shrink-0 px-6 text-center">
@@ -176,20 +195,40 @@ function Detail({
             </span>
           </p>
 
-          <h3 className="mt-3 text-2xl font-bold leading-[1.1] tracking-[-0.025em] text-foreground md:text-4xl">
+          <h3
+            className={cn(
+              "mt-2 font-bold leading-[1.15] tracking-[-0.025em] text-foreground",
+              compact ? "text-xl" : "mt-3 text-2xl md:text-4xl",
+            )}
+          >
             {project.title}
           </h3>
 
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p
+            className={cn(
+              "text-muted-foreground",
+              compact ? "mt-1 text-xs" : "mt-2 text-sm",
+            )}
+          >
             {project.client} · {project.period}
           </p>
 
-          <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+          <p
+            className={cn(
+              "mx-auto max-w-2xl leading-relaxed text-muted-foreground",
+              compact ? "mt-3 line-clamp-3 text-sm" : "mt-4 text-[15px]",
+            )}
+          >
             {project.description}
           </p>
 
-          <div className="mt-5 flex flex-wrap justify-center gap-2">
-            {project.tech.slice(0, 5).map((tech) => (
+          <div
+            className={cn(
+              "flex flex-wrap justify-center gap-2",
+              compact ? "mt-3" : "mt-5",
+            )}
+          >
+            {project.tech.slice(0, compact ? 3 : 5).map((tech) => (
               <Badge
                 key={tech}
                 variant="outline"
@@ -200,18 +239,29 @@ function Detail({
             ))}
           </div>
 
-          <p className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+          <p
+            className={cn(
+              "inline-flex items-center gap-2 font-semibold text-foreground",
+              compact ? "mt-3 text-xs" : "mt-5 text-sm",
+            )}
+          >
             <span className="size-1.5 shrink-0 rounded-full bg-brand" />
             {project.metrics[0]}
           </p>
 
-          <ProjectLinks project={project} className="mt-5 justify-center" />
+          <ProjectLinks
+            project={project}
+            className={cn("justify-center", compact ? "mt-3" : "mt-5")}
+          />
         </motion.div>
       </AnimatePresence>
 
       {/* Fixed-height rail under the panel: a progress read-out that does not
           reflow when a longer title swaps in. */}
-      <div className="mx-auto mt-8 flex w-40 gap-1.5" aria-hidden="true">
+      <div
+        className={cn("mx-auto flex w-40 gap-1.5", compact ? "mt-5" : "mt-8")}
+        aria-hidden="true"
+      >
         {Array.from({ length: count }, (_, i) => (
           <span
             key={i}
@@ -228,12 +278,16 @@ function Detail({
 
 function RimCard({
   project,
+  width,
+  height,
   isActive,
   dimmed,
   onFocus,
   onBlur,
 }: {
   project: Project;
+  width: number;
+  height: number;
   isActive: boolean;
   dimmed: boolean;
   onFocus: () => void;
@@ -247,7 +301,7 @@ function RimCard({
       onFocus={onFocus}
       onBlur={onBlur}
       aria-label={project.title}
-      style={{ width: CARD_W, height: CARD_H }}
+      style={{ width, height }}
       className={cn(
         "group relative block overflow-hidden rounded-xl border bg-surface text-left shadow-lg outline-none transition-all duration-500 ease-out focus-visible:ring-2 focus-visible:ring-brand",
         isActive

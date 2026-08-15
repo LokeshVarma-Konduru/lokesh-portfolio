@@ -77,12 +77,14 @@ function ProjectCardContent({
 }
 
 export function Projects() {
-  // Three layouts, because the same one does not work in all three cases.
-  // Wide screens get the ring, which needs both the room and a pointer to hover
-  // with. Narrow screens get a swipe carousel, since the ring cannot shrink to
-  // a phone without the screenshot becoming a smudge. Anyone who asked for
-  // reduced motion gets the plain stack: nothing pinned, nothing snapping.
+  // The ring's constraint is height, not width. The panel and the visible arc
+  // have to share the viewport, which a phone can do at the compact size but
+  // only above about 700px tall; a short window has room for one or the other.
+  // So: the ring wherever it fits, the swipe carousel where it does not, and
+  // the plain stack for anyone who asked for reduced motion — nothing pinned,
+  // nothing snapping, no scroll-driven anything.
   const roomy = useMediaQuery("(min-width: 1024px)");
+  const tallEnough = useMediaQuery("(min-height: 700px)");
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
   return (
@@ -97,6 +99,8 @@ export function Projects() {
         <ProjectList />
       ) : roomy ? (
         <ProjectWheel />
+      ) : tallEnough ? (
+        <ProjectWheel compact />
       ) : (
         <ProjectCarousel />
       )}
