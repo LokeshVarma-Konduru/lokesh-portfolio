@@ -1,12 +1,18 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { AnimatePresence, MotionConfig, motion } from "motion/react";
+import {
+  AnimatePresence,
+  MotionConfig,
+  motion,
+  type Transition,
+} from "motion/react";
 import { SendHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChatMessage, TypingIndicator, type Message } from "./ChatMessage";
 import { RobotAvatar } from "./RobotAvatar";
+import { useMediaQuery } from "@/lib/use-media-query";
 
 const SUGGESTED_QUESTIONS = [
   "What's Lokesh's backend experience?",
@@ -34,6 +40,13 @@ const ENTRANCE_DELAY_MS = 1400;
 /** Past this much scroll the visitor has moved on; skip the entrance. */
 const ENTRANCE_SKIP_SCROLL = 600;
 
+/** Gravity in, then two shrinking bounces — the shape of a dropped thing. */
+const DROP: Transition = {
+  duration: 1.15,
+  times: [0, 0.42, 0.6, 0.76, 0.89, 1],
+  ease: ["easeIn", "easeOut", "easeIn", "easeOut", "easeIn"],
+};
+
 type Bubble = { text: string; ask: boolean };
 
 export function ChatWidget() {
@@ -41,8 +54,10 @@ export function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [entered, setEntered] = useState(false);
+  /** null before it arrives; the pixels it falls from, or 0 for no drop. */
+  const [entrance, setEntrance] = useState<number | null>(null);
   const [bubble, setBubble] = useState<Bubble | null>(null);
+  const wide = useMediaQuery("(min-width: 768px)");
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -66,15 +81,15 @@ export function ChatWidget() {
     return () => window.removeEventListener("open-ai-chat", openChat);
   }, [openChat]);
 
-  // The robot flies into its own corner rather than across the page: a mascot
-  // crossing the viewport reads as an interstitial, and covers the content on a
-  // phone on the way. Someone who has already scrolled gets it with no delay,
-  // since a late arrival to a corner they passed just looks broken.
+  // The robot drops in from above its own corner and bounces to a stop. It
+  // falls down the right-hand margin rather than crossing the page, so it never
+  // covers what is being read. Someone who has already scrolled gets it with no
+  // drop at all, since a late arrival in a corner they passed looks broken.
   useEffect(() => {
     const late = window.scrollY > ENTRANCE_SKIP_SCROLL;
     const arrive = setTimeout(
       () => {
-        setEntered(true);
+        setEntrance(late ? 0 : window.innerHeight + 140);
         if (late || sessionStorage.getItem(GREETING_SEEN_KEY)) return;
         sessionStorage.setItem(GREETING_SEEN_KEY, "1");
         showBubble({ text: GREETING, ask: false }, GREETING_VISIBLE_MS);
@@ -203,7 +218,7 @@ export function ChatWidget() {
             role="dialog"
             aria-modal="false"
             aria-label="Ask about Lokesh"
-            className="fixed bottom-24 right-6 z-50 flex h-[500px] max-h-[70vh] w-[380px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-2xl"
+            className="fixed bottom-24 right-6 z-50 flex h-[500px] max-h-[70vh] w-[380px] max-w-[calc(100vw-3rem)] flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-2xl md:bottom-36"
           >
             <div className="flex items-center justify-between border-b border-border p-4">
               <span className="flex items-center gap-2 font-heading text-sm font-semibold text-foreground">
@@ -284,18 +299,19 @@ export function ChatWidget() {
       <MotionConfig reducedMotion="user">
         <motion.div
           className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3"
-          initial={{ opacity: 0, x: 60, y: 60, scale: 0.6, rotate: -12 }}
+          initial={{ opacity: 0 }}
           animate={
-            entered
-              ? { opacity: 1, x: 0, y: 0, scale: 1, rotate: 0 }
-              : undefined
+            entrance === null
+              ? { opacity: 0 }
+              : entrance === 0
+                ? { opacity: 1, y: 0, rotate: 0 }
+                : {
+                    opacity: 1,
+                    y: [-entrance, 0, -38, 0, -11, 0],
+                    rotate: [-18, 0, 7, -4, 2, 0],
+                  }
           }
-          transition={{
-            type: "spring",
-            stiffness: 260,
-            damping: 18,
-            mass: 0.9,
-          }}
+          transition={entrance ? DROP : { duration: 0.2 }}
         >
           <AnimatePresence>
             {bubble && !open && (
@@ -316,23 +332,24 @@ export function ChatWidget() {
             )}
           </AnimatePresence>
 
-          <Button
+          {/* No filled button behind it: a blue circle is the shape every
+              support widget on the web already has, and the robot's own
+              silhouette is the thing worth noticing. */}
+          <button
             ref={triggerRef}
             onClick={() => (open ? setOpen(false) : openChat())}
-            size="icon"
             aria-expanded={open}
             aria-label={open ? "Close chat" : "Ask about Lokesh"}
-            className="relative size-14 rounded-full p-0 shadow-lg shadow-brand/20"
+            className="relative rounded-2xl outline-none transition-transform hover:scale-105 focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-95"
           >
-            {/* A face, not a speech bubble: the point is that it gets looked at. */}
-            <RobotAvatar active={open} wave={entered} />
+            <RobotAvatar active={open} wave={entrance !== null} full={wide} />
             {bubble && !open && (
               <span className="absolute -right-0.5 -top-0.5 flex size-3">
                 <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-70" />
                 <span className="relative inline-flex size-3 rounded-full border-2 border-background bg-brand" />
               </span>
             )}
-          </Button>
+          </button>
         </motion.div>
       </MotionConfig>
     </>
