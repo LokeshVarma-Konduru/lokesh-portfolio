@@ -154,12 +154,34 @@ export function Experience() {
                 225x44 through 200x200 — so each is contained inside the tile
                 rather than filling it, and the white backing is there because
                 they are dark-on-transparent and would vanish otherwise. */}
+            {/* The beam arriving: a dot swings once around the tile before the
+                rail carries on. It sits below the tile in the stack, so it
+                passes behind the mark on the far half of the turn — which is
+                what makes it read as an orbit rather than a circling dot. */}
+            {!reducedMotion && index === reached && (
+              <motion.span
+                key={`orbit-${role.company}`}
+                aria-hidden="true"
+                animate={{ opacity: [0, 1, 1, 0] }}
+                transition={{ duration: 1.2, times: [0, 0.15, 0.7, 1] }}
+                className="pointer-events-none absolute left-0 top-0 z-0 flex size-14 items-center justify-center md:size-[72px]"
+              >
+                <motion.span
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1.2, ease: "easeInOut" }}
+                  className="relative size-[138%]"
+                >
+                  <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand shadow-[0_0_10px_3px_rgba(59,130,246,0.6)]" />
+                </motion.span>
+              </motion.span>
+            )}
+
             {/* The node lights as the beam reaches it, which is what makes the
                 rail read as causal rather than decorative — and marks how far
                 through the section you are. */}
             <span
               className={cn(
-                "absolute left-0 top-0 flex size-14 items-center justify-center rounded-xl border bg-white ring-4 ring-background transition-[border-color,box-shadow] duration-500 md:size-[72px]",
+                "absolute left-0 top-0 z-10 flex size-14 items-center justify-center rounded-xl border bg-white ring-4 ring-background transition-[border-color,box-shadow] duration-500 md:size-[72px]",
                 index <= reached
                   ? "border-brand shadow-[0_0_18px_-2px_rgba(59,130,246,0.65)]"
                   : "border-border",
