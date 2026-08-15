@@ -237,7 +237,7 @@ export const projects = [
       "JWT claim-based data privacy permissions",
     ],
     github: "https://github.com/LokeshVarma-Konduru/NovaClinic",
-    live: "",
+    live: "https://novaclinic-d4zz.onrender.com/",
   },
 ];
 
