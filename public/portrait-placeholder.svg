@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000" role="img" aria-label="Portrait placeholder">
+  <defs>
+    <linearGradient id="ground" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#16202C"/>
+      <stop offset="100%" stop-color="#0B1017"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="38%" r="46%">
+      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="figure" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4E8FF5"/>
+      <stop offset="100%" stop-color="#1E3A6B"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="1000" fill="url(#ground)"/>
+  <rect width="800" height="1000" fill="url(#halo)"/>
+
+  <!-- faint grid, so the frame reads as a placeholder rather than a broken image -->
+  <g stroke="#3B82F6" stroke-opacity="0.06" stroke-width="1">
+    <path d="M100 0V1000M200 0V1000M300 0V1000M400 0V1000M500 0V1000M600 0V1000M700 0V1000"/>
+    <path d="M0 100H800M0 200H800M0 300H800M0 400H800M0 500H800M0 600H800M0 700H800M0 800H800M0 900H800"/>
+  </g>
+
+  <!-- head and shoulders -->
+  <circle cx="400" cy="380" r="132" fill="url(#figure)"/>
+  <path d="M188 1000c0-134 95-236 212-236s212 102 212 236Z" fill="url(#figure)"/>
+
+  <circle cx="400" cy="380" r="160" fill="none" stroke="#3B82F6" stroke-opacity="0.25" stroke-width="1.5"/>
+  <circle cx="400" cy="380" r="196" fill="none" stroke="#3B82F6" stroke-opacity="0.12" stroke-width="1.5"/>
+</svg>
