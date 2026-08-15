@@ -6,6 +6,7 @@ import {
   Briefcase,
   Download,
   FolderGit2,
+  GraduationCap,
   Handshake,
   Mail,
   MessageCircle,
@@ -31,6 +32,7 @@ const NAV_ITEMS = [
   { label: "Go to About", id: "about", icon: User },
   { label: "Go to Experience", id: "experience", icon: Briefcase },
   { label: "Go to Projects", id: "projects", icon: FolderGit2 },
+  { label: "Go to Education", id: "education", icon: GraduationCap },
   { label: "Go to Skills", id: "skills", icon: Sparkles },
   { label: "Go to Contact", id: "contact", icon: Mail },
 ];

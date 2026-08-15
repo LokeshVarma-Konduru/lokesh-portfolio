@@ -19,6 +19,7 @@ const navLinks = [
   { label: "About", href: "#about" },
   { label: "Experience", href: "#experience" },
   { label: "Projects", href: "#projects" },
+  { label: "Education", href: "#education" },
   { label: "Skills", href: "#skills" },
   { label: "Contact", href: "#contact" },
 ];
@@ -56,7 +57,7 @@ export function Navbar() {
           }
         });
       },
-      { rootMargin: "-40% 0px -55% 0px" }
+      { rootMargin: "-40% 0px -55% 0px" },
     );
 
     sections.forEach((section) => observer.observe(section));
@@ -72,7 +73,7 @@ export function Navbar() {
       <nav
         className={cn(
           "mx-auto flex h-14 max-w-4xl items-center justify-between gap-2 rounded-full border border-border bg-background/70 pl-5 pr-3 backdrop-blur-xl transition-shadow duration-300",
-          scrolled ? "shadow-lg shadow-black/5" : "shadow-none"
+          scrolled ? "shadow-lg shadow-black/5" : "shadow-none",
         )}
       >
         <a href="#" className="font-heading text-lg font-bold text-foreground">
@@ -88,7 +89,7 @@ export function Navbar() {
                 "text-sm font-medium transition-colors",
                 active === link.href
                   ? "text-brand"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               {link.label}
@@ -102,7 +103,9 @@ export function Navbar() {
             size="icon"
             className="rounded-full"
             aria-label="Open command palette"
-            onClick={() => window.dispatchEvent(new Event("open-command-palette"))}
+            onClick={() =>
+              window.dispatchEvent(new Event("open-command-palette"))
+            }
           >
             <Search className="size-4" />
           </Button>
@@ -115,7 +118,9 @@ export function Navbar() {
             size="icon"
             className="rounded-full"
             aria-label="Open command palette"
-            onClick={() => window.dispatchEvent(new Event("open-command-palette"))}
+            onClick={() =>
+              window.dispatchEvent(new Event("open-command-palette"))
+            }
           >
             <Search className="size-4" />
           </Button>
@@ -146,7 +151,7 @@ export function Navbar() {
                       "rounded-md px-3 py-2 text-sm font-medium transition-colors",
                       active === link.href
                         ? "text-brand"
-                        : "text-muted-foreground hover:bg-surface-hover hover:text-foreground"
+                        : "text-muted-foreground hover:bg-surface-hover hover:text-foreground",
                     )}
                   >
                     {link.label}
@@ -155,7 +160,9 @@ export function Navbar() {
               </div>
               <div className="mt-4 flex items-center gap-3 border-t border-border px-4 pt-4">
                 <ThemeToggle />
-                <span className="text-sm text-muted-foreground">Toggle theme</span>
+                <span className="text-sm text-muted-foreground">
+                  Toggle theme
+                </span>
               </div>
             </SheetContent>
           </Sheet>
