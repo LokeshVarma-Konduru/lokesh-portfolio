@@ -35,6 +35,75 @@ function clean(value: unknown, max: number) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
+/**
+ * Everything below is written by a stranger and lands in an HTML document, so
+ * it is escaped before it goes anywhere near the markup.
+ */
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
+ * Inline styles and no images, because mail clients strip <style> blocks and
+ * block remote assets by default. System fonts for the same reason.
+ */
+function buildHtml({
+  name,
+  email,
+  subject,
+  message,
+}: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}) {
+  const row = (label: string, value: string) => `
+    <tr>
+      <td style="padding:6px 0;color:#71717a;font-size:13px;width:88px;vertical-align:top;">${label}</td>
+      <td style="padding:6px 0;color:#18181b;font-size:14px;font-weight:500;">${value}</td>
+    </tr>`;
+
+  return `<!doctype html>
+<html>
+  <body style="margin:0;padding:24px;background:#f4f4f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <div style="max-width:560px;margin:0 auto;background:#ffffff;border:1px solid #e4e4e7;border-radius:12px;overflow:hidden;">
+      <div style="background:#3b82f6;padding:14px 24px;">
+        <p style="margin:0;color:#ffffff;font-size:13px;font-weight:600;letter-spacing:0.02em;">
+          New message from your portfolio
+        </p>
+      </div>
+
+      <div style="padding:24px;">
+        <table style="width:100%;border-collapse:collapse;">
+          ${row("From", escapeHtml(name))}
+          ${row("Email", `<a href="mailto:${escapeHtml(email)}" style="color:#3b82f6;text-decoration:none;">${escapeHtml(email)}</a>`)}
+          ${row("Subject", escapeHtml(subject))}
+        </table>
+
+        <div style="margin:20px 0 0;padding-top:20px;border-top:1px solid #e4e4e7;">
+          <p style="margin:0 0 10px;color:#71717a;font-size:13px;">Message</p>
+          <div style="color:#18181b;font-size:15px;line-height:1.6;white-space:pre-wrap;">${escapeHtml(
+            message,
+          )}</div>
+        </div>
+      </div>
+
+      <div style="padding:14px 24px;background:#fafafa;border-top:1px solid #e4e4e7;">
+        <p style="margin:0;color:#71717a;font-size:12px;">
+          Reply to this email and it goes straight to ${escapeHtml(name)}.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>`;
+}
+
 export async function POST(request: Request) {
   const key = process.env.RESEND_API_KEY;
   if (!key) {
@@ -82,8 +151,25 @@ export async function POST(request: Request) {
       to: [personal.email],
       // Replying in the mail client goes to the visitor, not to Resend.
       reply_to: email,
-      subject: subject || `Portfolio enquiry from ${name}`,
-      text: `${message}\n\n—\n${name}\n${email}`,
+      // Who it is from leads, since that is what an inbox list truncates last.
+      subject: `${name}: ${subject || "Message from your portfolio"}`,
+      html: buildHtml({
+        name,
+        email,
+        subject: subject || "No subject",
+        message,
+      }),
+      // Plain-text alternative, for clients that refuse HTML and for the
+      // notification previews that only ever read this part.
+      text: [
+        `From:    ${name}`,
+        `Email:   ${email}`,
+        `Subject: ${subject || "No subject"}`,
+        "",
+        "Message",
+        "-------",
+        message,
+      ].join("\n"),
     }),
   });
 
