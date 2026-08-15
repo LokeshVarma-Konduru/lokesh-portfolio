@@ -61,18 +61,16 @@ export const techLogos: Record<string, string> = {
 };
 
 /**
- * Brands whose real mark is black or white rather than coloured. Rendering these
- * as plain images would put a black blob on the dark background, so they are
- * drawn as CSS masks instead and take the current text colour.
+ * Brands whose registered colour is black or near-black — Simple Icons lists
+ * Next.js at #000000, Express at #0A0A0A, GitHub at #181717, Kafka at #231F20
+ * and Socket.IO at #010101, and OpenAI is no longer carried there at all.
+ * Drawn as an image each of these is a black blob on the dark background, so
+ * they render as CSS masks instead and take the current text colour.
  */
 const monochromeLogos = new Set([
   "express",
-  "flask",
   "github",
   "kafka",
-  "mongodb",
-  "motion",
-  "mysql",
   "nextjs",
   "openai",
   "socketio",
