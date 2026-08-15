@@ -14,7 +14,13 @@ export const personal = {
   resumeUrl: "/resume.pdf",
   resumeFilename: "Lokesh_Varma_Konduru_Resume.pdf",
   location: "Virginia, USA",
-  seeking: "Full-time SDE roles · Graduating May 2026",
+  /**
+   * No date in here on purpose. "Graduating May 2026" was true when it was
+   * written and false by August, and it renders in three places at once —
+   * Contact, the Open Graph card and the assistant's context — so a date here
+   * goes stale everywhere at the same time.
+   */
+  seeking: "Open to full-time SDE roles",
   taglines: [
     "Full-Stack Engineer",
     "AI Systems Builder",
@@ -28,11 +34,11 @@ of a product people never see — the services, the pipelines, the infrastructur
 that has to stay up while everything else changes.
 
 That's meant fraud detection for a government client, climate tools for
-researchers, and e-commerce platforms with real users on them. Right now I'm
-finishing my M.S. in Computer Science at Virginia Tech.
+researchers, and e-commerce platforms with real users on them. I finished my
+M.S. in Computer Science at Virginia Tech in May 2026.
 
-I like systems that scale and code the next person can read. Open to full-time
-SDE roles starting May 2026.`,
+I like systems that scale and code the next person can read, and I'm looking
+for a full-time SDE role.`,
 };
 
 export const stats = [

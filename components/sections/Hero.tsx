@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Command } from "lucide-react";
 import { motion } from "motion/react";
 import {
   INNER_PLANETS,
@@ -15,7 +15,9 @@ export function Hero() {
   // The canvas runs on the main thread, so phones get the four inner planets
   // and a thinner star field instead of all eight bodies with their full wakes.
   const compact = useMediaQuery("(max-width: 768px)");
-  const nameWords = personal.name.split(" ");
+  // Two lines: given names together, surname on its own.
+  const [first, middle, ...rest] = personal.name.split(" ");
+  const nameLines = [[first, middle], rest];
 
   return (
     <section
@@ -43,7 +45,7 @@ export function Hero() {
       <div className="relative z-10 mx-auto w-full max-w-6xl px-6">
         {/* Sitting a little below centre rather than on it: the greeting was
             riding high against the top of the canvas. */}
-        <div className="flex max-w-xl flex-col gap-7 pt-16 md:pt-24">
+        <div className="flex max-w-3xl flex-col gap-7 pt-16 md:pt-24">
           <BlurFade delay={0.1}>
             <span className="flex items-center gap-2 text-lg text-white/70 md:text-xl">
               <span
@@ -60,24 +62,26 @@ export function Hero() {
               each word runs small on the same baseline, so L V K reads out of
               the name rather than replacing it. */}
           <h1 className="flex flex-col gap-1 font-display leading-[0.9] text-white">
-            {nameWords.map((word, index) => (
+            {nameLines.map((line, index) => (
               <motion.span
-                key={word}
+                key={line.join(" ")}
                 initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{
-                  delay: 0.2 + index * 0.14,
+                  delay: 0.2 + index * 0.16,
                   duration: 0.7,
                   ease: [0.16, 1, 0.3, 1],
                 }}
                 className="block whitespace-nowrap"
               >
-                <span className="text-6xl sm:text-7xl lg:text-8xl">
-                  {word[0]}
-                </span>
-                <span className="text-3xl text-white/85 sm:text-4xl lg:text-5xl">
-                  {word.slice(1)}
-                </span>
+                {line.map((word) => (
+                  <span key={word} className="mr-4 last:mr-0">
+                    <span className="text-7xl sm:text-8xl">{word[0]}</span>
+                    <span className="text-4xl text-white/85 sm:text-5xl">
+                      {word.slice(1)}
+                    </span>
+                  </span>
+                ))}
               </motion.span>
             ))}
           </h1>
@@ -98,19 +102,24 @@ export function Hero() {
             </p>
           </BlurFade>
 
-          {/* Status, not navigation. The buttons that were here duplicated the
-              navbar and the contact section, and a jump-to-anything control in
-              the hero invites skipping the page it sits on top of. Availability
-              is the one thing a recruiter wants in the first five seconds and
-              cannot get anywhere else on screen. */}
+          {/* The command palette is the one thing the hero can offer that
+              nothing else on the page does — it works well and has no visible
+              entry point beyond a magnifying glass that reads as search. */}
           <BlurFade delay={1.1}>
-            <p className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 py-2 pl-3 pr-5 text-sm text-white/80 backdrop-blur-sm">
-              <span className="relative flex size-2">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-75" />
-                <span className="relative inline-flex size-2 rounded-full bg-brand" />
+            <button
+              type="button"
+              onClick={() =>
+                window.dispatchEvent(new Event("open-command-palette"))
+              }
+              className="group flex items-center gap-3 rounded-full border border-white/15 bg-white/5 py-2 pl-2 pr-5 text-left backdrop-blur-sm transition-colors hover:border-white/30 hover:bg-white/10"
+            >
+              <kbd className="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 font-sans text-sm font-medium text-white">
+                <Command className="size-3.5" />K
+              </kbd>
+              <span className="text-sm text-white/70 transition-colors group-hover:text-white">
+                Jump to anything
               </span>
-              {personal.seeking}
-            </p>
+            </button>
           </BlurFade>
         </div>
       </div>
