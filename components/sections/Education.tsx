@@ -14,13 +14,15 @@ import { education } from "@/lib/data";
  */
 export function Education() {
   return (
-    <section id="education" className="mx-auto max-w-5xl px-6 py-16 md:py-24">
+    <section id="education" className="mx-auto max-w-7xl px-6 py-16 md:py-24">
       <BlurFade inView>
         <SectionHeading>Education</SectionHeading>
       </BlurFade>
 
       <BlurFade inView delay={0.1}>
-        <div className="mt-10 grid gap-6 md:grid-cols-2 md:gap-8">
+        {/* Capped below the section: two degree cards spread across 1280px
+            would be 600px each for four short lines of text. */}
+        <div className="mt-10 grid max-w-4xl gap-6 md:grid-cols-2 md:gap-8">
           {education.map((entry, index) => (
             <div
               key={entry.school}

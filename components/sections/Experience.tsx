@@ -97,12 +97,16 @@ export function Experience() {
   }, []);
 
   return (
-    <section id="experience" className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+    // The section is as wide as every other one so the heading starts on the
+    // same left edge; the list below constrains itself instead, because prose
+    // at 1280px is a bad line length and a heading at 896px is out of line with
+    // the rest of the page.
+    <section id="experience" className="mx-auto max-w-7xl px-6 py-16 md:py-24">
       <BlurFade inView>
         <SectionHeading>Experience</SectionHeading>
       </BlurFade>
 
-      <ol ref={listRef} className="relative mt-14">
+      <ol ref={listRef} className="relative mt-14 max-w-4xl">
         <TimelineRail
           nodes={geometry.nodes}
           height={geometry.height}
