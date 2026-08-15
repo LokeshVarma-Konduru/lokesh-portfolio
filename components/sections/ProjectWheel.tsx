@@ -62,9 +62,6 @@ export function ProjectWheel() {
 
   const [scrolled, setScrolled] = useState(0);
   const [focused, setFocused] = useState<number | null>(null);
-  /** 1 while moving forward through the projects, -1 scrolling back up. */
-  const [direction, setDirection] = useState(1);
-  const lastSlice = useRef(0);
 
   // Scroll picks which card is at the top; it does not drive the angle directly.
   // Mapping rotation straight off progress meant the ring was only ever aligned
@@ -72,14 +69,8 @@ export function ProjectWheel() {
   // apex only if you scrolled to the pixel. Each project owns an equal slice of
   // the track instead, and the spring below walks the ring between the stops.
   useMotionValueEvent(scrollYProgress, "change", (value) => {
-    const slice = Math.min(
-      count - 1,
-      Math.floor(Math.max(0, Math.min(0.999, value)) * count),
-    );
-    if (slice === lastSlice.current) return;
-    setDirection(slice > lastSlice.current ? 1 : -1);
-    lastSlice.current = slice;
-    setScrolled(slice);
+    const slice = Math.floor(Math.max(0, Math.min(0.999, value)) * count);
+    setScrolled(Math.min(count - 1, slice));
   });
 
   const rotate = useSpring(0, { stiffness: 120, damping: 24, mass: 0.5 });
@@ -103,12 +94,7 @@ export function ProjectWheel() {
       style={{ height: `calc(100vh + ${count * SCROLL_PER_PROJECT}px)` }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden pt-24">
-        <Detail
-          project={project}
-          index={active}
-          count={count}
-          direction={direction}
-        />
+        <Detail project={project} index={active} count={count} />
 
         {/* The ring. Cropped at the bottom and faded out, so it reads as
             something larger than the viewport rather than a floating circle. */}
@@ -164,113 +150,64 @@ export function ProjectWheel() {
   );
 }
 
-/** Degrees the heading tips through. A full 90 reads as a tumbling slab. */
-const DRUM_TILT = 38;
-const DRUM_LIFT = 26;
-
 function Detail({
   project,
   index,
   count,
-  direction,
 }: {
   project: Project;
   index: number;
   count: number;
-  direction: number;
 }) {
   return (
     <div className="mx-auto w-full max-w-3xl shrink-0 px-6 text-center">
-      {/*
-        The heading rides a drum, matching the ring below it. It rotates on X
-        rather than Z: text foreshortens on the way through and lands flat and
-        readable, where a Z rotation would put it upside down — the reason the
-        rim cards counter-rotate.
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={project.id}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -12 }}
+          transition={{ duration: 0.25, ease: "easeOut" }}
+        >
+          <p className="font-heading text-sm font-bold text-brand">
+            {project.id}{" "}
+            <span className="text-muted-foreground">
+              / {String(count).padStart(2, "0")}
+            </span>
+          </p>
 
-        Only the heading. The body underneath is taller and holds the links, and
-        a 350px slab tumbling on every change reads as heavy rather than
-        mechanical; moving a click target on every scroll step is worse. Nothing
-        below cross-fades.
+          <h3 className="mt-3 text-2xl font-bold leading-[1.1] tracking-[-0.025em] text-foreground md:text-4xl">
+            {project.title}
+          </h3>
 
-        The children are absolutely placed so the outgoing and incoming lines
-        overlap. With mode="wait" the panel would sit empty between them.
-      */}
-      <div
-        className="relative min-h-[9.5rem]"
-        style={{ perspective: "700px", transformStyle: "preserve-3d" }}
-      >
-        <AnimatePresence initial={false} custom={direction}>
-          <motion.div
-            key={project.id}
-            className="absolute inset-x-0 top-0"
-            custom={direction}
-            variants={{
-              enter: (dir: number) => ({
-                opacity: 0,
-                rotateX: -DRUM_TILT * dir,
-                y: DRUM_LIFT * dir,
-              }),
-              center: { opacity: 1, rotateX: 0, y: 0 },
-              exit: (dir: number) => ({
-                opacity: 0,
-                rotateX: DRUM_TILT * dir,
-                y: -DRUM_LIFT * dir,
-              }),
-            }}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <p className="font-heading text-sm font-bold text-brand">
-              {project.id}{" "}
-              <span className="text-muted-foreground">
-                / {String(count).padStart(2, "0")}
-              </span>
-            </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {project.client} · {project.period}
+          </p>
 
-            <h3 className="mt-3 text-2xl font-bold leading-[1.1] tracking-[-0.025em] text-foreground md:text-4xl">
-              {project.title}
-            </h3>
+          <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
+            {project.description}
+          </p>
 
-            <p className="mt-2 text-sm text-muted-foreground">
-              {project.client} · {project.period}
-            </p>
-          </motion.div>
-        </AnimatePresence>
-      </div>
+          <div className="mt-5 flex flex-wrap justify-center gap-2">
+            {project.tech.slice(0, 5).map((tech) => (
+              <Badge
+                key={tech}
+                variant="outline"
+                className="border-brand/30 text-muted-foreground"
+              >
+                {tech}
+              </Badge>
+            ))}
+          </div>
 
-      {/* Keyed, so React swaps the body outright and it fades in. No exit
-          animation: the links must not move while someone is reaching. */}
-      <motion.div
-        key={project.id}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-      >
-        <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-muted-foreground">
-          {project.description}
-        </p>
+          <p className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+            <span className="size-1.5 shrink-0 rounded-full bg-brand" />
+            {project.metrics[0]}
+          </p>
 
-        <div className="mt-5 flex flex-wrap justify-center gap-2">
-          {project.tech.slice(0, 5).map((tech) => (
-            <Badge
-              key={tech}
-              variant="outline"
-              className="border-brand/30 text-muted-foreground"
-            >
-              {tech}
-            </Badge>
-          ))}
-        </div>
-
-        <p className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-foreground">
-          <span className="size-1.5 shrink-0 rounded-full bg-brand" />
-          {project.metrics[0]}
-        </p>
-
-        <ProjectLinks project={project} className="mt-5 justify-center" />
-      </motion.div>
+          <ProjectLinks project={project} className="mt-5 justify-center" />
+        </motion.div>
+      </AnimatePresence>
 
       {/* Fixed-height rail under the panel: a progress read-out that does not
           reflow when a longer title swaps in. */}

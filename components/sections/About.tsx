@@ -8,7 +8,9 @@ export function About() {
     <section id="about" className="mx-auto max-w-6xl px-6 py-28 md:py-40">
       <div className="grid items-center gap-12 md:grid-cols-5 md:gap-16">
         <BlurFade inView className="md:col-span-2">
-          <div className="relative">
+          {/* Capped and centred on a phone: at full width a 4:5 portrait is
+              360x450, a whole screen of photograph before a word of text. */}
+          <div className="relative mx-auto max-w-56 md:max-w-none">
             {/* Offset frame behind the portrait, so it reads as placed rather
                 than as one more bordered box. */}
             <div className="absolute -bottom-4 -left-4 hidden size-full rounded-2xl border border-brand/25 md:block" />
@@ -70,7 +72,9 @@ export function About() {
                 />
                 {stat.suffix}
               </dt>
-              <dd className="mt-2 text-sm text-muted-foreground">{stat.label}</dd>
+              <dd className="mt-2 text-sm text-muted-foreground">
+                {stat.label}
+              </dd>
             </div>
           ))}
         </dl>

@@ -52,7 +52,10 @@ export function RobotAvatar({
 
   const finePointer = useMediaQuery("(pointer: fine)");
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
-  const animated = finePointer && !reducedMotion;
+  // Only the gaze needs a pointer to follow. Breathing, blinking and the wave
+  // are its own, and gating those on a mouse left the robot dead on a phone.
+  const animated = !reducedMotion;
+  const tracking = finePointer && animated;
 
   // -1..1 on each axis, relative to the robot's own centre.
   const pointerX = useMotionValue(0);
@@ -68,7 +71,7 @@ export function RobotAvatar({
   const [blinking, setBlinking] = useState(false);
 
   useEffect(() => {
-    if (!animated) return;
+    if (!tracking) return;
 
     const onMove = (event: MouseEvent) => {
       const box = hostRef.current?.getBoundingClientRect();
@@ -81,7 +84,7 @@ export function RobotAvatar({
 
     window.addEventListener("mousemove", onMove);
     return () => window.removeEventListener("mousemove", onMove);
-  }, [animated, pointerX, pointerY]);
+  }, [tracking, pointerX, pointerY]);
 
   // Irregular gaps: a blink on a fixed metronome looks like a loading spinner.
   useEffect(() => {
