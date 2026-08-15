@@ -17,9 +17,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { personal } from "@/lib/data";
 
+const EMPTY = { name: "", email: "", subject: "", message: "", company: "" };
+
+type Status = "idle" | "sending" | "sent" | "error";
+
 export function Contact() {
   const [copied, setCopied] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState(EMPTY);
+  const [status, setStatus] = useState<Status>("idle");
+
+  const set = (field: keyof typeof EMPTY) => (value: string) =>
+    setForm((prev) => ({ ...prev, [field]: value }));
 
   const copyEmail = async () => {
     try {
@@ -31,21 +39,51 @@ export function Contact() {
     }
   };
 
-  /**
-   * Composes the mail rather than posting it.
-   *
-   * Sending server-side would mean an email provider, an API key in the
-   * deployment, and a spam-handling story for a public endpoint. Handing a
-   * filled-in draft to the visitor's own mail client costs none of that, and it
-   * leaves them a copy of what they sent — which a form post does not.
-   */
-  const compose = (event: React.FormEvent) => {
-    event.preventDefault();
-    const subject = `Portfolio enquiry from ${form.name || "someone"}`;
+  /** Hands the message to the visitor's own mail client, filled in. */
+  const composeInMailClient = () => {
+    const subject = form.subject || `Portfolio enquiry from ${form.name}`;
     const body = `${form.message}\n\n— ${form.name}\n${form.email}`;
     window.location.href = `mailto:${personal.email}?subject=${encodeURIComponent(
       subject,
     )}&body=${encodeURIComponent(body)}`;
+  };
+
+  /**
+   * Posts the message, and falls back to composing it if the send cannot
+   * happen — no API key configured, provider down, offline. A contact form that
+   * silently fails is worse than one that hands the visitor a draft.
+   */
+  const send = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (status === "sending") return;
+    setStatus("sending");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (response.ok) {
+        setStatus("sent");
+        setForm(EMPTY);
+        return;
+      }
+
+      // Too many messages is the one failure where handing them a draft would
+      // just route around the limit.
+      if (response.status === 429) {
+        setStatus("error");
+        return;
+      }
+
+      composeInMailClient();
+      setStatus("idle");
+    } catch {
+      composeInMailClient();
+      setStatus("idle");
+    }
   };
 
   const links = [
@@ -159,55 +197,92 @@ export function Contact() {
 
         <BlurFade inView delay={0.2}>
           <form
-            onSubmit={compose}
+            onSubmit={send}
             className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-6 md:p-8"
           >
             <p className="text-sm font-semibold text-foreground">
               Send me a message
             </p>
 
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Input
+                value={form.name}
+                onChange={(event) => set("name")(event.target.value)}
+                placeholder="Your name"
+                aria-label="Your name"
+                autoComplete="name"
+                required
+              />
+              <Input
+                type="email"
+                value={form.email}
+                onChange={(event) => set("email")(event.target.value)}
+                placeholder="Your email"
+                aria-label="Your email"
+                autoComplete="email"
+                required
+              />
+            </div>
+
             <Input
-              value={form.name}
-              onChange={(event) =>
-                setForm((prev) => ({ ...prev, name: event.target.value }))
-              }
-              placeholder="Your name"
-              aria-label="Your name"
-              required
+              value={form.subject}
+              onChange={(event) => set("subject")(event.target.value)}
+              placeholder="Subject"
+              aria-label="Subject"
             />
-            <Input
-              type="email"
-              value={form.email}
-              onChange={(event) =>
-                setForm((prev) => ({ ...prev, email: event.target.value }))
-              }
-              placeholder="Your email"
-              aria-label="Your email"
-              required
-            />
+
             <Textarea
               value={form.message}
-              onChange={(event) =>
-                setForm((prev) => ({ ...prev, message: event.target.value }))
-              }
+              onChange={(event) => set("message")(event.target.value)}
               placeholder="What would you like to talk about?"
               aria-label="Your message"
-              rows={5}
+              rows={9}
               required
+              className="min-h-52 resize-y"
+            />
+
+            {/* Honeypot. Bots fill in every field they can find; nobody using
+                the page can see or tab to this one. */}
+            <input
+              type="text"
+              name="company"
+              value={form.company}
+              onChange={(event) => set("company")(event.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="hidden"
             />
 
             <ShimmerButton
               background="var(--brand)"
               borderRadius="0.625rem"
               className="text-sm font-medium"
+              disabled={status === "sending"}
             >
-              <SendHorizontal className="mr-1.5 size-4" />
-              Send message
+              {status === "sent" ? (
+                <>
+                  <Check className="mr-1.5 size-4" />
+                  Message sent
+                </>
+              ) : (
+                <>
+                  <SendHorizontal className="mr-1.5 size-4" />
+                  {status === "sending" ? "Sending…" : "Send message"}
+                </>
+              )}
             </ShimmerButton>
 
-            <p className="text-xs text-muted-foreground">
-              Opens your mail app with the message ready to send, so you keep a
-              copy.
+            <p
+              className="text-xs text-muted-foreground"
+              role="status"
+              aria-live="polite"
+            >
+              {status === "sent"
+                ? "Thanks — I'll get back to you soon."
+                : status === "error"
+                  ? "That's a few messages already. Try again shortly, or email me directly."
+                  : "Goes straight to my inbox. I usually reply within a day."}
             </p>
           </form>
         </BlurFade>
