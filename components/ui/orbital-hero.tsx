@@ -149,14 +149,14 @@ export interface OrbitalHeroSectionProps
 /* -------------------------------------------------------------------------- */
 
 export const SOLAR_SYSTEM: Planet[] = [
-  { name: "Mercury", a: 0.38710, e: 0.20563, i: 7.005, node: 48.331, peri: 29.125, M0: 174.796, color: "#EAF2FF", size: 2.2 },
-  { name: "Venus",   a: 0.72333, e: 0.00677, i: 3.395, node: 76.680, peri: 54.853, M0: 50.115,  color: "#CFE2FF", size: 3.4 },
-  { name: "Earth",   a: 1.00000, e: 0.01671, i: 0.000, node: 348.739, peri: 114.208, M0: 357.517, color: "#93C5FD", size: 3.8, glow: 1.25 },
-  { name: "Mars",    a: 1.52371, e: 0.09339, i: 1.850, node: 49.558, peri: 286.483, M0: 19.373, color: "#60A5FA", size: 2.9 },
-  { name: "Jupiter", a: 5.20290, e: 0.04839, i: 1.303, node: 100.464, peri: 273.867, M0: 20.020, color: "#3B82F6", size: 5.4 },
-  { name: "Saturn",  a: 9.53700, e: 0.05386, i: 2.485, node: 113.665, peri: 339.392, M0: 317.020, color: "#2F76E8", size: 4.8 },
-  { name: "Uranus",  a: 19.1913, e: 0.04726, i: 0.773, node: 74.006, peri: 98.999, M0: 142.238, color: "#4E8FF5", size: 4.2 },
-  { name: "Neptune", a: 30.0690, e: 0.00859, i: 1.770, node: 131.784, peri: 276.336, M0: 256.228, color: "#2563EB", size: 4.4 },
+  { name: "Mercury", a: 0.38710, e: 0.20563, i: 7.005, node: 48.331, peri: 29.125, M0: 174.796, color: "#fff0d0", size: 2.2 },
+  { name: "Venus",   a: 0.72333, e: 0.00677, i: 3.395, node: 76.680, peri: 54.853, M0: 50.115,  color: "#ffc65a", size: 3.4 },
+  { name: "Earth",   a: 1.00000, e: 0.01671, i: 0.000, node: 348.739, peri: 114.208, M0: 357.517, color: "#5fd8ff", size: 3.8, glow: 1.1 },
+  { name: "Mars",    a: 1.52371, e: 0.09339, i: 1.850, node: 49.558, peri: 286.483, M0: 19.373, color: "#ff4a32", size: 2.9 },
+  { name: "Jupiter", a: 5.20290, e: 0.04839, i: 1.303, node: 100.464, peri: 273.867, M0: 20.020, color: "#ffa62e", size: 5.4 },
+  { name: "Saturn",  a: 9.53700, e: 0.05386, i: 2.485, node: 113.665, peri: 339.392, M0: 317.020, color: "#ffd884", size: 4.8 },
+  { name: "Uranus",  a: 19.1913, e: 0.04726, i: 0.773, node: 74.006, peri: 98.999, M0: 142.238, color: "#7fe6ff", size: 4.2 },
+  { name: "Neptune", a: 30.0690, e: 0.00859, i: 1.770, node: 131.784, peri: 276.336, M0: 256.228, color: "#3f7dff", size: 4.4 },
 ];
 
 /** Just the four rocky ones, for a tighter frame. */
@@ -254,7 +254,7 @@ export function OrbitalHeroSection({
   showSunTrack = true,
   interactive = true,
   paused = false,
-  sunColor = "#EAF2FF",
+  sunColor = "#FFF2CC",
   background = "#0A0A0A",
   className = "",
   children,
@@ -271,7 +271,7 @@ export function OrbitalHeroSection({
   // Written in an effect rather than during render: the draw loop reads this ref
   // once a frame, so it only has to be current by the next frame.
   useEffect(() => {
-    props.current = {
+    props.current = {  
       planets, yearSeconds, trailYears, compress, maxTurns, planeSpread, eccentricity, alignToCourse, driftSpeed, apex,
       viewRadius, tilt, spin, roll, lead, focus, scrim, scrimStrength, starCount, glow, showOrbits, showSunTrack,
       interactive, paused, sunColor, background,
@@ -622,8 +622,8 @@ export function OrbitalHeroSection({
       // sits close around it.
       const haze = ctx!.createRadialGradient(cx, cy, 0, cx, cy, R * 14);
       haze.addColorStop(0, `rgba(${r},${g},${b},${0.05 * k})`);
-      haze.addColorStop(0.4, `rgba(147,197,253,${0.014 * k})`);
-      haze.addColorStop(1, "rgba(59,130,246,0)");
+      haze.addColorStop(0.4, `rgba(255,190,110,${0.014 * k})`);
+      haze.addColorStop(1, "rgba(255,160,80,0)");
       ctx!.fillStyle = haze;
       ctx!.beginPath();
       ctx!.arc(cx, cy, R * 14, 0, TAU);
@@ -631,9 +631,9 @@ export function OrbitalHeroSection({
 
       const outer = ctx!.createRadialGradient(cx, cy, 0, cx, cy, R * 4.6);
       outer.addColorStop(0, `rgba(${r},${g},${b},${0.34 * k})`);
-      outer.addColorStop(0.3, `rgba(191,219,254,${0.1 * k})`);
-      outer.addColorStop(0.62, `rgba(147,197,253,${0.025 * k})`);
-      outer.addColorStop(1, "rgba(59,130,246,0)");
+      outer.addColorStop(0.3, `rgba(255,222,160,${0.1 * k})`);
+      outer.addColorStop(0.62, `rgba(255,196,110,${0.025 * k})`);
+      outer.addColorStop(1, "rgba(255,180,90,0)");
       ctx!.fillStyle = outer;
       ctx!.beginPath();
       ctx!.arc(cx, cy, R * 4.6, 0, TAU);
@@ -641,9 +641,9 @@ export function OrbitalHeroSection({
 
       const bloom = ctx!.createRadialGradient(cx, cy, 0, cx, cy, R * 2.3);
       bloom.addColorStop(0, `rgba(255,255,255,${k})`);
-      bloom.addColorStop(0.42, `rgba(240,246,255,${0.7 * k})`);
+      bloom.addColorStop(0.42, `rgba(255,252,240,${0.7 * k})`);
       bloom.addColorStop(0.72, `rgba(${r},${g},${b},${0.22 * k})`);
-      bloom.addColorStop(1, "rgba(96,165,250,0)");
+      bloom.addColorStop(1, "rgba(255,210,140,0)");
       ctx!.fillStyle = bloom;
       ctx!.beginPath();
       ctx!.arc(cx, cy, R * 2.3, 0, TAU);
@@ -720,7 +720,7 @@ export function OrbitalHeroSection({
         let a = (0.2 + sMag[s] * 1.05) * Math.pow(dRef / P.depth, 0.8) * near * far;
         if (a <= 0.012) continue;
         a *= 0.82 + 0.18 * Math.sin(t * 9 + sPhase[s]);
-        const col = sTint[s] === 1 ? "175,205,255" : sTint[s] === 2 ? "210,228,255" : "255,255,255";
+        const col = sTint[s] === 1 ? "175,205,255" : sTint[s] === 2 ? "255,214,170" : "255,255,255";
         const size = Math.min(2.3, 0.55 + sMag[s] * 1.5 * Math.pow(dRef / P.depth, 0.5));
         ctx!.fillStyle = `rgba(${col},${Math.min(1, a).toFixed(3)})`;
         if (size < 1.05) {
@@ -742,9 +742,9 @@ export function OrbitalHeroSection({
         project(-DIR.x * back, -DIR.y * back, -DIR.z * back);
         if (P.ok) {
           const grad = ctx!.createLinearGradient(hx, hy, P.x, P.y);
-          grad.addColorStop(0, `rgba(234,242,255,${k})`);
-          grad.addColorStop(0.45, `rgba(147,197,253,${0.55 * k})`);
-          grad.addColorStop(1, "rgba(59,130,246,0)");
+          grad.addColorStop(0, `rgba(255,246,214,${k})`);
+          grad.addColorStop(0.45, `rgba(255,206,110,${0.55 * k})`);
+          grad.addColorStop(1, "rgba(255,180,80,0)");
           ctx!.strokeStyle = grad;
           ctx!.lineCap = "round";
           ctx!.beginPath();

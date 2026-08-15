@@ -40,28 +40,14 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
+      className="grid min-h-screen grid-rows-[1fr_auto] overflow-hidden md:grid-cols-[1fr_52%] md:grid-rows-1"
     >
-      <div className="absolute inset-0">
-        <OrbitalHeroSection
-          planets={compact ? INNER_PLANETS : SOLAR_SYSTEM}
-          starCount={compact ? 500 : 1400}
-          interactive={!compact}
-          yearSeconds={18}
-          glow={0.9}
-          focus={[0.5, 0.54]}
-          lead={0.14}
-          scrim="bottom"
-          scrimStrength={0.55}
-          // A canvas fill needs a literal colour, and the hero stays dark in
-          // both themes, so this is the site's dark background rather than a var.
-          background="#0A0A0A"
-        />
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center gap-7">
+      {/* Copy sits on the page, never over the canvas, so it keeps the theme
+          tokens and stays readable in light mode. The left padding matches the
+          max-w-6xl gutter every other section uses. */}
+      <div className="relative z-10 flex flex-col justify-center gap-7 px-6 pb-10 pt-28 md:py-0 md:pl-[max(1.5rem,calc((100vw-72rem)/2))] md:pr-10">
         <BlurFade delay={0.1}>
-          <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60 md:text-sm">
+          <span className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground md:text-sm">
             {personal.role}
           </span>
         </BlurFade>
@@ -73,7 +59,7 @@ export function Hero() {
           delay={0.2}
           duration={0.5}
           once
-          className="max-w-5xl text-5xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-6xl md:text-7xl lg:text-8xl"
+          className="text-5xl font-extrabold leading-[0.95] tracking-[-0.03em] text-foreground sm:text-6xl lg:text-7xl xl:text-8xl"
         >
           {personal.name.toUpperCase()}
         </TextAnimate>
@@ -81,18 +67,18 @@ export function Hero() {
         <BlurFade delay={0.5}>
           <WordRotate
             words={personal.taglines}
-            className="text-2xl font-semibold tracking-[-0.02em] text-white md:text-3xl"
+            className="text-2xl font-semibold tracking-[-0.02em] text-foreground md:text-3xl"
           />
         </BlurFade>
 
         <BlurFade delay={0.6}>
-          <p className="max-w-xl text-lg leading-relaxed text-white/70">
+          <p className="max-w-md text-lg leading-relaxed text-muted-foreground">
             Building production-grade systems at Virginia Tech and beyond.
           </p>
         </BlurFade>
 
         <BlurFade delay={0.7}>
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+          <div className="flex flex-wrap items-center gap-4 pt-2">
             <ShimmerButton
               background="var(--brand)"
               borderRadius="0.625rem"
@@ -111,7 +97,6 @@ export function Hero() {
               variant="outline"
               size="lg"
               nativeButton={false}
-              className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
               render={
                 <a
                   href={personal.github}
@@ -128,7 +113,6 @@ export function Hero() {
               variant="outline"
               size="lg"
               nativeButton={false}
-              className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
               render={<a href={personal.resumeUrl} download />}
             >
               <Download className="size-4" />
@@ -138,13 +122,30 @@ export function Hero() {
         </BlurFade>
       </div>
 
-      <motion.div
-        className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <ChevronDown className="size-5 text-white/50" />
-      </motion.div>
+      <div className="relative h-[46vh] md:h-auto">
+        <OrbitalHeroSection
+          planets={compact ? INNER_PLANETS : SOLAR_SYSTEM}
+          starCount={compact ? 500 : 1400}
+          interactive={!compact}
+          yearSeconds={18}
+          focus={[0.5, 0.5]}
+          lead={0.12}
+          background="#0A0A0A"
+        />
+
+        {/* Feathers the canvas into the page instead of butting up as a hard
+            edge: down its left side on desktop, across its top on mobile. */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background md:hidden" />
+        <div className="pointer-events-none absolute inset-y-0 left-0 hidden w-32 bg-gradient-to-r from-background md:block" />
+
+        <motion.div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <ChevronDown className="size-5 text-white/40" />
+        </motion.div>
+      </div>
     </section>
   );
 }
