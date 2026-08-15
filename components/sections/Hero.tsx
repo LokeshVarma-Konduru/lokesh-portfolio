@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Command } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { motion } from "motion/react";
 import {
   INNER_PLANETS,
@@ -8,7 +8,6 @@ import {
   SOLAR_SYSTEM,
 } from "@/components/ui/orbital-hero";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { TextAnimate } from "@/components/ui/text-animate";
 import { useMediaQuery } from "@/lib/use-media-query";
 import { personal } from "@/lib/data";
 
@@ -16,7 +15,7 @@ export function Hero() {
   // The canvas runs on the main thread, so phones get the four inner planets
   // and a thinner star field instead of all eight bodies with their full wakes.
   const compact = useMediaQuery("(max-width: 768px)");
-  const initials = personal.name.split(" ").map((word) => word[0]);
+  const nameWords = personal.name.split(" ");
 
   return (
     <section
@@ -57,52 +56,39 @@ export function Hero() {
             </span>
           </BlurFade>
 
-          {/* The monogram carries the size; the full name sits under it at a
-              fraction of the weight. Each initial rises on its own, and the
-              rule draws itself out from the left once they have landed. */}
-          <h1 className="flex flex-col gap-4">
-            <span className="flex gap-5 font-display text-7xl leading-none text-white sm:text-8xl lg:text-9xl">
-              {initials.map((letter, index) => (
-                <motion.span
-                  key={letter}
-                  initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  transition={{
-                    delay: 0.25 + index * 0.12,
-                    duration: 0.7,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                  className="inline-block"
-                >
-                  {letter}
-                </motion.span>
-              ))}
-            </span>
-
-            <motion.span
-              aria-hidden="true"
-              initial={{ scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{
-                delay: 0.7,
-                duration: 0.8,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="h-px w-40 origin-left bg-gradient-to-r from-white/60 to-transparent"
-            />
-
-            <TextAnimate
-              as="span"
-              by="character"
-              animation="blurInUp"
-              delay={0.75}
-              duration={0.4}
-              once
-              className="block text-sm font-medium uppercase tracking-[0.42em] text-white/75 sm:text-base"
-            >
-              {personal.name}
-            </TextAnimate>
+          {/* The whole name, with only its initials at full size. The rest of
+              each word runs small on the same baseline, so L V K reads out of
+              the name rather than replacing it. */}
+          <h1 className="flex flex-col gap-1 font-display leading-[0.9] text-white">
+            {nameWords.map((word, index) => (
+              <motion.span
+                key={word}
+                initial={{ opacity: 0, y: 24, filter: "blur(8px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                transition={{
+                  delay: 0.2 + index * 0.14,
+                  duration: 0.7,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="block whitespace-nowrap"
+              >
+                <span className="text-6xl sm:text-7xl lg:text-8xl">
+                  {word[0]}
+                </span>
+                <span className="text-3xl text-white/85 sm:text-4xl lg:text-5xl">
+                  {word.slice(1)}
+                </span>
+              </motion.span>
+            ))}
           </h1>
+
+          <motion.span
+            aria-hidden="true"
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.75, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="h-px w-40 origin-left bg-gradient-to-r from-white/60 to-transparent"
+          />
 
           {/* One title, held still. The rotating list moved to About, where
               there is room to read all four at once. */}
@@ -112,25 +98,19 @@ export function Hero() {
             </p>
           </BlurFade>
 
-          {/* Three buttons repeated links the navbar and the contact section
-              already carry. This is the one thing the hero can offer that
-              nothing else does: the command palette, which is otherwise a
-              feature nobody discovers because it has no visible entry point. */}
-          <BlurFade delay={1.15}>
-            <button
-              type="button"
-              onClick={() =>
-                window.dispatchEvent(new Event("open-command-palette"))
-              }
-              className="group flex items-center gap-3 rounded-full border border-white/15 bg-white/5 py-2 pl-2 pr-5 text-left backdrop-blur-sm transition-colors hover:border-white/30 hover:bg-white/10"
-            >
-              <kbd className="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 font-sans text-sm font-medium text-white">
-                <Command className="size-3.5" />K
-              </kbd>
-              <span className="text-sm text-white/70 transition-colors group-hover:text-white">
-                Jump to anything
+          {/* Status, not navigation. The buttons that were here duplicated the
+              navbar and the contact section, and a jump-to-anything control in
+              the hero invites skipping the page it sits on top of. Availability
+              is the one thing a recruiter wants in the first five seconds and
+              cannot get anywhere else on screen. */}
+          <BlurFade delay={1.1}>
+            <p className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 py-2 pl-3 pr-5 text-sm text-white/80 backdrop-blur-sm">
+              <span className="relative flex size-2">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-75" />
+                <span className="relative inline-flex size-2 rounded-full bg-brand" />
               </span>
-            </button>
+              {personal.seeking}
+            </p>
           </BlurFade>
         </div>
       </div>
