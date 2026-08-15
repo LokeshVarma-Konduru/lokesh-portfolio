@@ -1,59 +1,15 @@
-import { ArrowUpRight, FileText } from "lucide-react";
+"use client";
+
 import { BlurFade } from "@/components/ui/blur-fade";
 import { MovingBorder } from "@/components/ui/moving-border";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { Safari } from "@/components/ui/safari";
 import { Badge } from "@/components/ui/badge";
-import { GithubIcon } from "@/components/icons";
+import { ProjectLinks, hostOf, type Project } from "./ProjectLinks";
+import { ProjectWheel } from "./ProjectWheel";
+import { useMediaQuery } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
 import { projects } from "@/lib/data";
-
-type Project = (typeof projects)[number];
-
-/** The address bar reads better as a bare host than a full URL. */
-function hostOf(url: string) {
-  try {
-    return new URL(url).host.replace(/^www\./, "");
-  } catch {
-    return undefined;
-  }
-}
-
-function ProjectLinks({ project }: { project: Project }) {
-  const links = [
-    project.github && {
-      href: project.github,
-      label: "GitHub",
-      Icon: GithubIcon,
-    },
-    project.live && { href: project.live, label: "Live", Icon: ArrowUpRight },
-    "publication" in project &&
-      project.publication && {
-        href: project.publication,
-        label: "Publication",
-        Icon: FileText,
-      },
-  ].filter(Boolean) as { href: string; label: string; Icon: typeof FileText }[];
-
-  if (links.length === 0) return null;
-
-  return (
-    <div className="mt-6 flex flex-wrap items-center gap-5">
-      {links.map(({ href, label, Icon }) => (
-        <a
-          key={label}
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-brand"
-        >
-          <Icon className="size-4" />
-          {label}
-        </a>
-      ))}
-    </div>
-  );
-}
 
 function ProjectCardContent({
   project,
@@ -120,6 +76,13 @@ function ProjectCardContent({
 }
 
 export function Projects() {
+  // The wheel needs both room and a pointer. Below 1024px there is no hover to
+  // drive it and the ring would have to shrink past the point where a card is
+  // readable, so the stacked list stays the layout there — as it does for
+  // anyone who has asked for reduced motion, since the ring is scroll-driven.
+  const roomy = useMediaQuery("(min-width: 1024px)");
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+
   return (
     <section id="projects" className="mx-auto max-w-6xl px-6 py-28 md:py-44">
       <BlurFade inView>
@@ -128,38 +91,47 @@ export function Projects() {
         </h2>
       </BlurFade>
 
-      <div className="mt-14 flex flex-col gap-10">
-        {projects.map((project, index) => (
-          <BlurFade key={project.id} inView delay={0.1 * (index + 1)}>
-            {project.featured ? (
-              // The featured project keeps the travelling border, so it reads as
-              // the headline piece without every other card competing with it.
-              <div className="relative overflow-hidden rounded-2xl p-px">
-                <div className="absolute inset-0">
-                  <MovingBorder duration={5000} rx="10%" ry="10%">
-                    <div className="size-40 bg-[radial-gradient(var(--brand)_40%,transparent_60%)] opacity-80" />
-                  </MovingBorder>
-                </div>
-                <div className="relative rounded-2xl bg-surface">
-                  <ProjectCardContent project={project} flipped={index % 2 === 1} />
-                </div>
-              </div>
-            ) : (
-              <div className="relative rounded-2xl border border-border bg-surface">
-                <GlowingEffect
-                  disabled={false}
-                  glow
-                  spread={40}
-                  proximity={80}
-                  borderWidth={2}
-                  inactiveZone={0.55}
-                />
-                <ProjectCardContent project={project} flipped={index % 2 === 1} />
-              </div>
-            )}
-          </BlurFade>
-        ))}
-      </div>
+      {roomy && !reducedMotion ? <ProjectWheel /> : <ProjectList />}
     </section>
+  );
+}
+
+function ProjectList() {
+  return (
+    <div className="mt-14 flex flex-col gap-10">
+      {projects.map((project, index) => (
+        <BlurFade key={project.id} inView delay={0.1 * (index + 1)}>
+          {project.featured ? (
+            // The featured project keeps the travelling border, so it reads as
+            // the headline piece without every other card competing with it.
+            <div className="relative overflow-hidden rounded-2xl p-px">
+              <div className="absolute inset-0">
+                <MovingBorder duration={5000} rx="10%" ry="10%">
+                  <div className="size-40 bg-[radial-gradient(var(--brand)_40%,transparent_60%)] opacity-80" />
+                </MovingBorder>
+              </div>
+              <div className="relative rounded-2xl bg-surface">
+                <ProjectCardContent
+                  project={project}
+                  flipped={index % 2 === 1}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="relative rounded-2xl border border-border bg-surface">
+              <GlowingEffect
+                disabled={false}
+                glow
+                spread={40}
+                proximity={80}
+                borderWidth={2}
+                inactiveZone={0.55}
+              />
+              <ProjectCardContent project={project} flipped={index % 2 === 1} />
+            </div>
+          )}
+        </BlurFade>
+      ))}
+    </div>
   );
 }
