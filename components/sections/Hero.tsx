@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, Download } from "lucide-react";
+import { ChevronDown, Command } from "lucide-react";
 import { motion } from "motion/react";
 import {
   INNER_PLANETS,
@@ -9,9 +9,6 @@ import {
 } from "@/components/ui/orbital-hero";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { TextAnimate } from "@/components/ui/text-animate";
-import { ShimmerButton } from "@/components/ui/shimmer-button";
-import { Button } from "@/components/ui/button";
-import { GithubIcon } from "@/components/icons";
 import { useMediaQuery } from "@/lib/use-media-query";
 import { personal } from "@/lib/data";
 
@@ -19,7 +16,7 @@ export function Hero() {
   // The canvas runs on the main thread, so phones get the four inner planets
   // and a thinner star field instead of all eight bodies with their full wakes.
   const compact = useMediaQuery("(max-width: 768px)");
-  const nameLines = personal.name.toUpperCase().split(" ");
+  const initials = personal.name.split(" ").map((word) => word[0]);
 
   return (
     <section
@@ -60,82 +57,80 @@ export function Hero() {
             </span>
           </BlurFade>
 
-          {/* One line per word. Splitting by character makes every letter its
-              own inline-block, which lets a name wrap mid-word. */}
-          <h1 className="text-5xl font-extrabold leading-[0.95] tracking-[-0.03em] text-white sm:text-6xl lg:text-7xl">
-            {nameLines.map((word, index) => (
-              <TextAnimate
-                key={word}
-                as="span"
-                by="character"
-                animation="blurInUp"
-                delay={0.2 + index * 0.15}
-                duration={0.5}
-                once
-                className="block whitespace-nowrap"
-              >
-                {word}
-              </TextAnimate>
-            ))}
+          {/* The monogram carries the size; the full name sits under it at a
+              fraction of the weight. Each initial rises on its own, and the
+              rule draws itself out from the left once they have landed. */}
+          <h1 className="flex flex-col gap-4">
+            <span className="flex gap-5 font-display text-7xl leading-none text-white sm:text-8xl lg:text-9xl">
+              {initials.map((letter, index) => (
+                <motion.span
+                  key={letter}
+                  initial={{ opacity: 0, y: 28, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  transition={{
+                    delay: 0.25 + index * 0.12,
+                    duration: 0.7,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className="inline-block"
+                >
+                  {letter}
+                </motion.span>
+              ))}
+            </span>
+
+            <motion.span
+              aria-hidden="true"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{
+                delay: 0.7,
+                duration: 0.8,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+              className="h-px w-40 origin-left bg-gradient-to-r from-white/60 to-transparent"
+            />
+
+            <TextAnimate
+              as="span"
+              by="character"
+              animation="blurInUp"
+              delay={0.75}
+              duration={0.4}
+              once
+              className="block text-sm font-medium uppercase tracking-[0.42em] text-white/75 sm:text-base"
+            >
+              {personal.name}
+            </TextAnimate>
           </h1>
 
           {/* One title, held still. The rotating list moved to About, where
               there is room to read all four at once. */}
-          <BlurFade delay={0.7}>
-            <p className="text-2xl font-semibold tracking-[-0.02em] text-white md:text-3xl">
+          <BlurFade delay={1}>
+            <p className="font-display text-3xl italic leading-none text-brand md:text-4xl">
               {personal.role}
             </p>
           </BlurFade>
 
-          <BlurFade delay={0.9}>
-            <div className="flex flex-wrap items-center gap-4 pt-2">
-              <ShimmerButton
-                background="var(--brand)"
-                borderRadius="0.625rem"
-                className="text-sm font-medium"
-                onClick={() =>
-                  document
-                    .querySelector("#about")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-              >
-                View My Work
-                <ChevronDown className="ml-1.5 size-4" />
-              </ShimmerButton>
-
-              <Button
-                variant="outline"
-                size="lg"
-                nativeButton={false}
-                className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
-                render={
-                  <a
-                    href={personal.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  />
-                }
-              >
-                <GithubIcon className="size-4" />
-                GitHub
-              </Button>
-
-              <Button
-                variant="outline"
-                size="lg"
-                nativeButton={false}
-                className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
-                render={
-                  <a
-                    href={personal.resumeUrl}
-                    download={personal.resumeFilename}
-                  />
-                }
-              >
-                <Download className="size-4" />
-                Resume PDF
-              </Button>
-            </div>
+          {/* Three buttons repeated links the navbar and the contact section
+              already carry. This is the one thing the hero can offer that
+              nothing else does: the command palette, which is otherwise a
+              feature nobody discovers because it has no visible entry point. */}
+          <BlurFade delay={1.15}>
+            <button
+              type="button"
+              onClick={() =>
+                window.dispatchEvent(new Event("open-command-palette"))
+              }
+              className="group flex items-center gap-3 rounded-full border border-white/15 bg-white/5 py-2 pl-2 pr-5 text-left backdrop-blur-sm transition-colors hover:border-white/30 hover:bg-white/10"
+            >
+              <kbd className="flex items-center gap-1 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 font-sans text-sm font-medium text-white">
+                <Command className="size-3.5" />K
+              </kbd>
+              <span className="text-sm text-white/70 transition-colors group-hover:text-white">
+                Jump to anything
+              </span>
+            </button>
           </BlurFade>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, Inter, Instrument_Serif } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { personal } from "@/lib/data";
 import "./globals.css";
@@ -14,6 +14,17 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   weight: ["400", "500", "600"],
+});
+
+/**
+ * For the monogram alone. A high-contrast serif against the sans everything
+ * else is set in is what makes three initials read as a mark rather than as
+ * large text.
+ */
+const instrument = Instrument_Serif({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: "400",
 });
 
 /**
@@ -72,7 +83,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${jakarta.variable} ${inter.variable} h-full scroll-smooth antialiased`}
+      className={`${jakarta.variable} ${inter.variable} ${instrument.variable} h-full scroll-smooth antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>

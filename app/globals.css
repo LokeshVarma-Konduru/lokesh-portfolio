@@ -9,6 +9,7 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter);
   --font-heading: var(--font-jakarta);
+  --font-display: var(--font-display);
   --color-surface: var(--surface);
   --color-surface-hover: var(--surface-hover);
   --color-text-primary: var(--text-primary);
