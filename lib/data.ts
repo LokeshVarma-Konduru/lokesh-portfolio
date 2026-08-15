@@ -93,6 +93,7 @@ export const skills = {
 export const projects = [
   {
     id: "01",
+    image: "/projects/placeholder-01.svg",
     title: "AI-Powered Fraud Detection Platform",
     client: "Marine Corps Community Services (MCCS)",
     period: "Sept 2024 – Dec 2025",
@@ -112,6 +113,7 @@ export const projects = [
   },
   {
     id: "02",
+    image: "/projects/placeholder-02.svg",
     title: "Agroclimate Viewer & Planner App",
     client: "Virginia Tech Research",
     period: "Sept 2024 – May 2026",
@@ -131,6 +133,7 @@ export const projects = [
   },
   {
     id: "03",
+    image: "/projects/placeholder-03.svg",
     title: "AI-Powered Bookstore E-Commerce",
     client: "Virginia Tech (Personal Project)",
     period: "Feb 2025 – May 2025",
@@ -149,6 +152,7 @@ export const projects = [
   },
   {
     id: "04",
+    image: "/projects/placeholder-04.svg",
     title: "Nova Clinic — Appointment Management Platform",
     client: "Virginia Tech (Personal Project)",
     period: "Feb 2026 – May 2026",
