@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Reference material, not shipped code. The canvas in here is live as
+    // components/ui/orbital-hero; the rest are notes.
+    "BG/**",
   ]),
 ]);
 
