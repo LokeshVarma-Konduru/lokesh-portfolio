@@ -181,6 +181,10 @@
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
   }
+  /* The navbar floats above the page, so anchored sections need to clear it. */
+  section[id] {
+    scroll-margin-top: 6rem;
+  }
 }
 
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {

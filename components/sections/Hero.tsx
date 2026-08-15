@@ -2,7 +2,6 @@
 
 import { ChevronDown, Download } from "lucide-react";
 import { motion } from "motion/react";
-import { Meteors } from "@/components/ui/meteors";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { WordRotate } from "@/components/ui/word-rotate";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
@@ -16,9 +15,7 @@ export function Hero() {
       id="hero"
       className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center"
     >
-      <div className="absolute inset-0 [mask-image:linear-gradient(to_bottom,white,transparent_28%,transparent_72%,white)]">
-        <Meteors number={25} />
-      </div>
+      {/* Background lands in Phase 4 (orbital canvas). */}
 
       <div className="relative z-10 flex flex-col items-center gap-7">
         <BlurFade delay={0.1}>
