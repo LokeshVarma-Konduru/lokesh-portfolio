@@ -54,15 +54,21 @@ export function ChatWidget() {
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
-      let assistantText = "";
 
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        assistantText += decoder.decode(value, { stream: true });
+        // Append to the message already in state rather than to a running local
+        // string: the transcript is the single source of truth for what has
+        // arrived, and nothing outside React has to be kept in step with it.
+        const chunk = decoder.decode(value, { stream: true });
         setMessages((prev) => {
           const updated = [...prev];
-          updated[updated.length - 1] = { role: "assistant", content: assistantText };
+          const last = updated[updated.length - 1];
+          updated[updated.length - 1] = {
+            role: "assistant",
+            content: last.content + chunk,
+          };
           return updated;
         });
       }

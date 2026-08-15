@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { ChevronDown, Download } from "lucide-react";
 import { motion } from "motion/react";
 import {
@@ -14,28 +13,13 @@ import { WordRotate } from "@/components/ui/word-rotate";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { Button } from "@/components/ui/button";
 import { GithubIcon } from "@/components/icons";
+import { useMediaQuery } from "@/lib/use-media-query";
 import { personal } from "@/lib/data";
 
-/**
- * The canvas runs on the main thread, so phones get the four inner planets and
- * a thinner star field instead of all eight bodies with their full wakes.
- */
-function useCompactScene() {
-  const [compact, setCompact] = useState(false);
-
-  useEffect(() => {
-    const query = window.matchMedia("(max-width: 768px)");
-    const sync = () => setCompact(query.matches);
-    sync();
-    query.addEventListener("change", sync);
-    return () => query.removeEventListener("change", sync);
-  }, []);
-
-  return compact;
-}
-
 export function Hero() {
-  const compact = useCompactScene();
+  // The canvas runs on the main thread, so phones get the four inner planets
+  // and a thinner star field instead of all eight bodies with their full wakes.
+  const compact = useMediaQuery("(max-width: 768px)");
   const nameLines = personal.name.toUpperCase().split(" ");
 
   return (

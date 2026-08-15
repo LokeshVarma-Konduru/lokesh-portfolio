@@ -2,9 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
+import { useMediaQuery } from "@/lib/use-media-query";
 
 export function CustomCursor() {
-  const [enabled, setEnabled] = useState(false);
+  const finePointer = useMediaQuery("(pointer: fine)");
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  const enabled = finePointer && !reducedMotion;
+
   const [hovering, setHovering] = useState(false);
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -12,13 +16,7 @@ export function CustomCursor() {
   const springY = useSpring(cursorY, { damping: 30, stiffness: 400, mass: 0.5 });
 
   useEffect(() => {
-    const isFinePointer = window.matchMedia("(pointer: fine)").matches;
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (!isFinePointer || prefersReducedMotion) return;
-    setEnabled(true);
+    if (!enabled) return;
 
     const handleMouseMove = (e: MouseEvent) => {
       cursorX.set(e.clientX);
@@ -36,7 +34,7 @@ export function CustomCursor() {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseover", handleMouseOver);
     };
-  }, [cursorX, cursorY]);
+  }, [enabled, cursorX, cursorY]);
 
   if (!enabled) return null;
 

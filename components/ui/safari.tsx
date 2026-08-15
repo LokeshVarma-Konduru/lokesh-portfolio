@@ -76,6 +76,7 @@ export function Safari({
             borderRadius: "0 0 11px 11px",
           }}
         >
+          {/* eslint-disable-next-line @next/next/no-img-element -- the screenshots are SVG placeholders; swap to next/image when real captures land */}
           <img
             src={imageSrc}
             alt=""

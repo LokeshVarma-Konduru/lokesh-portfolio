@@ -1,15 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+/** Never fires, so the snapshot below is read once per render and never again. */
+const noSubscribe = () => () => {};
+
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  // The theme is only known on the client, so the button renders disabled until
+  // hydration. Asking the store rather than flipping state in an effect means
+  // React never renders the wrong icon and then corrects it.
+  const mounted = useSyncExternalStore(
+    noSubscribe,
+    () => true,
+    () => false
+  );
 
   if (!mounted) {
     return (
