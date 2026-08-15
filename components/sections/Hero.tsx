@@ -48,8 +48,14 @@ export function Hero() {
       <div className="relative z-10 mx-auto w-full max-w-6xl px-6">
         <div className="flex max-w-xl flex-col gap-7 pt-16 md:pt-0">
           <BlurFade delay={0.1}>
-            <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60 md:text-sm">
-              {personal.role}
+            <span className="flex items-center gap-2 text-lg text-white/70 md:text-xl">
+              <span
+                aria-hidden="true"
+                className="inline-block origin-[70%_80%] motion-safe:animate-wave"
+              >
+                👋
+              </span>
+              Hey, I&apos;m
             </span>
           </BlurFade>
 
@@ -77,12 +83,6 @@ export function Hero() {
               words={personal.taglines}
               className="text-2xl font-semibold tracking-[-0.02em] text-white md:text-3xl"
             />
-          </BlurFade>
-
-          <BlurFade delay={0.8}>
-            <p className="max-w-md text-lg leading-relaxed text-white/70">
-              Building production-grade systems at Virginia Tech and beyond.
-            </p>
           </BlurFade>
 
           <BlurFade delay={0.9}>

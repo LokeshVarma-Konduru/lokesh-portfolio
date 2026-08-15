@@ -14,17 +14,15 @@ export const personal = {
     "Node.js + React Developer",
     "Cloud & Backend Engineer",
   ],
-  about: `Software Engineer with 3+ years specializing in distributed systems,
-real-time architectures, and cloud infrastructure. I've shipped production-grade
-applications and backend microservices across agri-tech, fraud detection, and
-e-commerce — currently completing my M.S. in Computer Science at Virginia Tech
-with a 4.0 GPA.
+  // Kept short on purpose: the stats row carries the numbers and the Skills
+  // section right below carries the stack, so repeating either here only makes
+  // the part that is actually about him harder to find.
+  about: `Software Engineer with 3+ years on distributed systems, real-time
+architectures, and cloud infrastructure — across agri-tech, fraud detection,
+and e-commerce.
 
-I work across the entire stack — React/TypeScript and Next.js frontends,
-Node.js/Express and Python/FastAPI backends, AWS/Kubernetes infrastructure —
-and integrate AI-powered features like RAG pipelines and LangChain agents into
-production systems. I care about systems that scale, code that is maintainable,
-and products that actually ship.
+Currently finishing my M.S. in Computer Science at Virginia Tech. I care about
+systems that scale and code the next person can read.
 
 Open to full-time SDE roles starting May 2026.`,
 };

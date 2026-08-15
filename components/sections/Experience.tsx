@@ -14,14 +14,8 @@ export function Experience() {
   return (
     <section id="experience" className="mx-auto max-w-6xl px-6 py-28 md:py-36">
       <BlurFade inView>
-        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand">
+        <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
           Experience
-        </span>
-      </BlurFade>
-
-      <BlurFade inView delay={0.1}>
-        <h2 className="mt-5 text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
-          Where I&apos;ve worked.
         </h2>
       </BlurFade>
 

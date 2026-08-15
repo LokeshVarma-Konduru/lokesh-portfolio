@@ -106,14 +106,8 @@ export function Skills() {
     >
       <div className="mx-auto max-w-6xl px-6">
         <BlurFade inView>
-          <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand">
+          <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
             Skills
-          </span>
-        </BlurFade>
-
-        <BlurFade inView delay={0.1}>
-          <h2 className="mt-5 text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
-            The stack I build with.
           </h2>
         </BlurFade>
       </div>

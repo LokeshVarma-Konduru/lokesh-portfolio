@@ -26,14 +26,8 @@ export function Contact() {
       className="mx-auto flex max-w-6xl flex-col items-center px-6 pb-36 pt-28 text-center md:pb-48 md:pt-44"
     >
       <BlurFade inView>
-        <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand">
+        <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
           Contact
-        </span>
-      </BlurFade>
-
-      <BlurFade inView delay={0.1}>
-        <h2 className="mt-5 text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
-          Let&apos;s Build Something.
         </h2>
       </BlurFade>
 

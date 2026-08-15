@@ -23,14 +23,8 @@ export function About() {
 
         <div className="md:col-span-3">
           <BlurFade inView>
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand">
+            <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-5xl">
               About
-            </span>
-          </BlurFade>
-
-          <BlurFade inView delay={0.1}>
-            <h2 className="mt-5 text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-5xl">
-              I build systems that ship.
             </h2>
           </BlurFade>
 
