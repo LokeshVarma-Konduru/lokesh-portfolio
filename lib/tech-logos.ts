@@ -15,6 +15,8 @@ export const techLogos: Record<string, string> = {
   JavaScript: "javascript",
   TypeScript: "typescript",
   Java: "java",
+  C: "c",
+  "C++": "cplusplus",
   HTML5: "html5",
   CSS3: "css",
 
@@ -25,6 +27,7 @@ export const techLogos: Record<string, string> = {
   "React Query": "react-query",
   "Tailwind CSS": "tailwindcss",
   "Socket.io": "socketio",
+  "Plotly Dash": "plotly",
   "Framer Motion": "motion",
 
   // Backend
@@ -35,6 +38,10 @@ export const techLogos: Record<string, string> = {
   FastAPI: "fastapi",
   Flask: "flask",
   GraphQL: "graphql",
+  PySpark: "apachespark",
+  // The JWT mark, which is the half of this pairing that has one.
+  "JWT/OAuth2": "jsonwebtokens",
+  JWT: "jsonwebtokens",
 
   // AI
   LangChain: "langchain",
@@ -44,6 +51,7 @@ export const techLogos: Record<string, string> = {
   "GPT-4o": "openai",
   Claude: "claude",
   Gemini: "gemini",
+  "MCP Tool Calling": "modelcontextprotocol",
 
   // Cloud
   "AWS EC2": "aws",
@@ -56,6 +64,11 @@ export const techLogos: Record<string, string> = {
   Kafka: "kafka",
   "GitHub Actions": "github",
   Terraform: "terraform",
+  "Apache Airflow": "apacheairflow",
+  OpenTelemetry: "opentelemetry",
+  Prometheus: "prometheus",
+  Grafana: "grafana",
+  Linux: "linux",
 
   // Databases
   PostgreSQL: "postgresql",
@@ -65,7 +78,11 @@ export const techLogos: Record<string, string> = {
   Firebase: "firebase",
 
   // Tools
+  Jest: "jest",
+  PyTest: "pytest",
   Git: "github",
+  Jira: "jira",
+  "Google Earth Engine": "googleearthengine",
 };
 
 /**
@@ -78,9 +95,12 @@ export const techLogos: Record<string, string> = {
 const monochromeLogos = new Set([
   "express",
   "github",
+  "jsonwebtokens",
   "kafka",
+  "modelcontextprotocol",
   "nextjs",
   "openai",
+  "opentelemetry",
   "socketio",
 ]);
 
