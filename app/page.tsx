@@ -8,7 +8,6 @@ import { Contact } from "@/components/sections/Contact";
 import { Footer } from "@/components/sections/Footer";
 import { ChatWidget } from "@/components/ai-widget/ChatWidget";
 import { CommandPalette } from "@/components/command-palette/CommandPalette";
-import { CustomCursor } from "@/components/custom-cursor";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
 
 export default function Home() {
@@ -27,7 +26,6 @@ export default function Home() {
       <Footer />
       <ChatWidget />
       <CommandPalette />
-      <CustomCursor />
     </>
   );
 }
