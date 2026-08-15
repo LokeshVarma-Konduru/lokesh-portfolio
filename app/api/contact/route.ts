@@ -1,4 +1,5 @@
 import { personal } from "@/lib/data";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 
 /**
  * Delivers the contact form.
@@ -13,23 +14,7 @@ import { personal } from "@/lib/data";
 
 const FROM = process.env.CONTACT_FROM ?? "Portfolio <onboarding@resend.dev>";
 
-const MAX_PER_WINDOW = 3;
-const WINDOW_MS = 10 * 60 * 1000;
-
-/**
- * ponytail: per-instance rate limit, in memory. A serverless deployment can run
- * several instances, so the real ceiling is MAX_PER_WINDOW times however many
- * are warm. That is fine for a portfolio inbox; move to Upstash or Vercel KV if
- * this ever needs to be exact.
- */
-const hits = new Map<string, number[]>();
-
-function rateLimited(ip: string) {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((at) => now - at < WINDOW_MS);
-  hits.set(ip, [...recent, now]);
-  return recent.length >= MAX_PER_WINDOW;
-}
+const RATE = { limit: 3, windowMs: 10 * 60 * 1000 };
 
 function clean(value: unknown, max: number) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
@@ -110,10 +95,15 @@ export async function POST(request: Request) {
     return Response.json({ error: "not-configured" }, { status: 503 });
   }
 
-  const ip =
-    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  if (rateLimited(ip)) {
-    return Response.json({ error: "rate-limited" }, { status: 429 });
+  const { limited, retryAfter } = rateLimit(
+    `contact:${clientIp(request)}`,
+    RATE,
+  );
+  if (limited) {
+    return Response.json(
+      { error: "rate-limited" },
+      { status: 429, headers: { "Retry-After": String(retryAfter) } },
+    );
   }
 
   const body = await request.json().catch(() => null);

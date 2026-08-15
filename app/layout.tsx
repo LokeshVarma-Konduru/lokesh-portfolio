@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { personal } from "@/lib/data";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -15,10 +16,52 @@ const inter = Inter({
   weight: ["400", "500", "600"],
 });
 
+/**
+ * Absolute URLs, which Open Graph requires — a relative image path is silently
+ * dropped by every crawler. Vercel exposes the production domain at build time,
+ * so a deployment needs no configuration; set NEXT_PUBLIC_SITE_URL to override
+ * it once there is a custom domain.
+ */
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+
+const title = `${personal.name} | ${personal.role}`;
+const description =
+  "Software Engineer with 3+ years building full-stack platforms, cloud-native microservices, and production-grade GenAI systems.";
+
 export const metadata: Metadata = {
-  title: "Lokesh Varma Konduru | Software Engineer",
-  description:
-    "Software Engineer with 3+ years building full-stack platforms, cloud-native microservices, and production-grade GenAI systems.",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  authors: [{ name: personal.name, url: personal.linkedin }],
+  creator: personal.name,
+  keywords: [
+    "Software Engineer",
+    "Full-Stack Engineer",
+    "Backend Engineer",
+    "Distributed Systems",
+    "React",
+    "Node.js",
+    "Python",
+    "AWS",
+    "Kubernetes",
+    "LangChain",
+    personal.name,
+  ],
+  openGraph: {
+    type: "profile",
+    siteName: personal.name,
+    title,
+    description,
+    url: siteUrl,
+    locale: "en_US",
+  },
+  twitter: { card: "summary_large_image", title, description },
+  robots: { index: true, follow: true },
+  alternates: { canonical: siteUrl },
 };
 
 export default function RootLayout({
