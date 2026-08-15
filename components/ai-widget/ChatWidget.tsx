@@ -184,7 +184,23 @@ export function ChatWidget() {
         signal: controller.signal,
       });
 
-      if (!res.ok || !res.body) {
+      // The route explains its own failures — the daily quota being the one
+      // that will actually happen — so show what it said rather than replacing
+      // it with a generic apology.
+      if (!res.ok) {
+        const reason = (await res.text().catch(() => "")).trim();
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            role: "assistant",
+            content: reason || "Sorry, something went wrong. Please try again.",
+          };
+          return updated;
+        });
+        return;
+      }
+
+      if (!res.body) {
         throw new Error("Request failed");
       }
 

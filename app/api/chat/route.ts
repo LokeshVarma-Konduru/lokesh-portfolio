@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { ragContext } from "@/lib/rag-context";
 import { clientIp, rateLimit } from "@/lib/rate-limit";
+import { personal } from "@/lib/data";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
@@ -65,11 +66,37 @@ export async function POST(request: Request) {
     parts: [{ text: message.content }],
   }));
 
-  const stream = await ai.models.generateContentStream({
-    model: "gemini-3.5-flash",
-    contents,
-    config: { systemInstruction: SYSTEM_PROMPT },
-  });
+  /**
+   * The upstream call can fail before a single token arrives, and the free tier
+   * allows twenty requests a day — so quota exhaustion is a normal Tuesday, not
+   * an exceptional case. Unhandled, it surfaced as a 500 and the widget said
+   * "something went wrong", which tells a visitor nothing and tells me nothing
+   * either. Each failure now says what it is.
+   */
+  let stream;
+  try {
+    stream = await ai.models.generateContentStream({
+      model: "gemini-3.5-flash",
+      contents,
+      config: { systemInstruction: SYSTEM_PROMPT },
+    });
+  } catch (error) {
+    const status = (error as { status?: number })?.status;
+    console.error("Gemini request failed:", status, error);
+
+    if (status === 429) {
+      return new Response(
+        "I've hit my question limit for today. Email me at " +
+          `${personal.email} and I'll reply myself.`,
+        { status: 503, headers: { "Retry-After": "3600" } },
+      );
+    }
+
+    return new Response(
+      `Something went wrong reaching the assistant. You can email me at ${personal.email}.`,
+      { status: 502 },
+    );
+  }
 
   const encoder = new TextEncoder();
   const readable = new ReadableStream({

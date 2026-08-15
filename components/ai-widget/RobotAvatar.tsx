@@ -132,6 +132,9 @@ export function RobotAvatar({
         cy="5.4"
         r="2.5"
         fill={BRAND}
+        // Without a starting value motion reads opacity as undefined on an SVG
+        // node and warns when the media query flips `animated` to true.
+        initial={{ opacity: 1 }}
         animate={
           animated
             ? { opacity: active ? 1 : [0.55, 1, 0.55], r: active ? 3 : 2.5 }
@@ -269,6 +272,7 @@ export function RobotAvatar({
         cy="56"
         r="3.2"
         fill={BRAND}
+        initial={{ opacity: 1 }}
         animate={
           animated ? { opacity: active ? 1 : [0.4, 0.9, 0.4] } : undefined
         }
