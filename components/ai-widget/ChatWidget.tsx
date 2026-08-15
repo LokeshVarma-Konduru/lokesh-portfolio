@@ -288,18 +288,19 @@ export function ChatWidget() {
                 </div>
               ) : (
                 <>
-                  {messages.map((message, index) => (
-                    <ChatMessage
-                      key={index}
-                      role={message.role}
-                      content={message.content}
-                      streaming={
-                        isLoading &&
-                        index === messages.length - 1 &&
-                        message.content !== ""
-                      }
-                    />
-                  ))}
+                  {/* The placeholder the reply streams into is empty until the
+                      first chunk; the typing indicator stands in for it, so it
+                      is skipped rather than drawn as an empty bubble. */}
+                  {messages.map((message, index) =>
+                    message.content === "" ? null : (
+                      <ChatMessage
+                        key={index}
+                        role={message.role}
+                        content={message.content}
+                        streaming={isLoading && index === messages.length - 1}
+                      />
+                    ),
+                  )}
                   {showTypingIndicator && <TypingIndicator />}
                 </>
               )}

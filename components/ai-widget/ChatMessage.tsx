@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
-import { RobotAvatar } from "./RobotAvatar";
 
 export interface Message {
   role: "user" | "assistant";
@@ -98,19 +97,15 @@ export function ChatMessage({
   const isUser = role === "user";
 
   return (
-    <div
-      className={cn(
-        "flex items-end gap-2",
-        isUser ? "justify-end" : "justify-start",
-      )}
-    >
-      {!isUser && <RobotAvatar className="mb-0.5 size-6" active />}
+    <div className={cn("flex", isUser ? "justify-end" : "justify-start")}>
       <div
         className={cn(
-          "max-w-[80%] space-y-2 rounded-2xl px-4 py-2 text-sm leading-relaxed",
+          "space-y-2 rounded-2xl px-4 py-2 text-sm leading-relaxed",
           isUser
-            ? "whitespace-pre-wrap rounded-br-sm bg-brand text-white"
-            : "rounded-bl-sm border border-border bg-surface-hover text-foreground",
+            ? "max-w-[80%] whitespace-pre-wrap rounded-br-sm bg-brand text-white"
+            : // The reply gets the full column: it is the part worth reading,
+              // and a list of projects wraps badly in a narrow bubble.
+              "w-full rounded-bl-sm border border-border bg-surface-hover text-foreground",
         )}
       >
         {isUser ? <Inline text={content} /> : <Rich text={content} />}
@@ -124,8 +119,7 @@ export function ChatMessage({
 
 export function TypingIndicator() {
   return (
-    <div className="flex items-end gap-2">
-      <RobotAvatar className="mb-0.5 size-6" active />
+    <div className="flex justify-start">
       <div className="flex items-center gap-1 rounded-2xl rounded-bl-sm border border-border bg-surface-hover px-4 py-3">
         <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.3s]" />
         <span className="size-1.5 animate-bounce rounded-full bg-muted-foreground [animation-delay:-0.15s]" />
