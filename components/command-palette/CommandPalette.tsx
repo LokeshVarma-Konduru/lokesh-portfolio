@@ -26,11 +26,12 @@ import {
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { personal } from "@/lib/data";
 
+/** Same order as the page, so this is a shortcut to the scroll, not a reshuffle. */
 const NAV_ITEMS = [
   { label: "Go to About", id: "about", icon: User },
-  { label: "Go to Skills", id: "skills", icon: Sparkles },
-  { label: "Go to Projects", id: "projects", icon: FolderGit2 },
   { label: "Go to Experience", id: "experience", icon: Briefcase },
+  { label: "Go to Projects", id: "projects", icon: FolderGit2 },
+  { label: "Go to Skills", id: "skills", icon: Sparkles },
   { label: "Go to Contact", id: "contact", icon: Mail },
 ];
 
