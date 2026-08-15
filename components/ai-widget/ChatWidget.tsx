@@ -6,7 +6,7 @@ import { SendHorizontal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChatMessage, TypingIndicator, type Message } from "./ChatMessage";
-import { OrbitalAvatar } from "./OrbitalAvatar";
+import { RobotAvatar } from "./RobotAvatar";
 
 const SUGGESTED_QUESTIONS = [
   "What's Lokesh's backend experience?",
@@ -162,7 +162,7 @@ export function ChatWidget() {
           >
             <div className="flex items-center justify-between border-b border-border p-4">
               <span className="flex items-center gap-2 font-heading text-sm font-semibold text-foreground">
-                <OrbitalAvatar className="size-5" />
+                <RobotAvatar className="size-7" active />
                 Ask about Lokesh
               </span>
               <button
@@ -248,14 +248,13 @@ export function ChatWidget() {
         <Button
           ref={triggerRef}
           onClick={() => (open ? setOpen(false) : openChat())}
-          size="lg"
+          size="icon"
           aria-expanded={open}
           aria-label={open ? "Close chat" : "Ask about Lokesh"}
-          className="relative gap-2.5 rounded-full py-3 pl-3 pr-4 shadow-lg"
+          className="relative size-14 rounded-full p-0 shadow-lg shadow-brand/20"
         >
-          {/* Ties the trigger to the hero: the same star and orbits, small. */}
-          <OrbitalAvatar />
-          Ask about Lokesh
+          {/* A face, not a speech bubble: the point is that it gets looked at. */}
+          <RobotAvatar active={open} />
           {teaser && !open && (
             <span className="absolute -right-0.5 -top-0.5 flex size-3">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-70" />

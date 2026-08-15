@@ -73,10 +73,6 @@
     transform: translateZ(0) rotate(360deg);
     }
   }
-  --animate-orbit: orbit var(--orbit-duration) linear infinite;
-  @keyframes orbit {
-  to {
-    transform: rotateZ(360deg);}}
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   @keyframes marquee {
