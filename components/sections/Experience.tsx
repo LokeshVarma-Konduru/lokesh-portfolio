@@ -17,14 +17,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import {
-  motion,
-  useInView,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "motion/react";
+import { motion, useScroll, useSpring } from "motion/react";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { TimelineRail } from "./TimelineRail";
 import { useMediaQuery } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
 import { experience } from "@/lib/data";
@@ -51,13 +46,31 @@ export function Experience() {
   });
   // Percentage of the rail's own height, so the head needs no measuring and
   // stays correct when the entries reflow at a different width.
-  const headTop = useTransform(fill, (value) => `${value * 100}%`);
-  const headOpacity = useTransform(fill, [0, 0.02, 0.98, 1], [0, 1, 1, 0]);
-  const trailHeight = useTransform(fill, (value) => `${value * 100}%`);
+  // The rail is drawn from the marks' own positions, so it stays correct when
+  // an entry's text reflows to a different height. ResizeObserver fires once on
+  // observe, which is why there is no measuring pass in the effect body.
+  const isMd = useMediaQuery("(min-width: 768px)");
+  const [geometry, setGeometry] = useState<{ height: number; nodes: number[] }>(
+    { height: 0, nodes: [] },
+  );
 
-  // The pulse only runs while the section is on screen. A loop animating in a
-  // viewport nobody is looking at is work for nothing.
-  const inView = useInView(listRef, { margin: "0px 0px -20% 0px" });
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+
+    const tileHalf = isMd ? 36 : 28;
+    const observer = new ResizeObserver(() => {
+      setGeometry({
+        height: list.offsetHeight,
+        nodes: itemsRef.current.flatMap((item) =>
+          item ? [item.offsetTop + tileHalf] : [],
+        ),
+      });
+    });
+
+    observer.observe(list);
+    return () => observer.disconnect();
+  }, [isMd]);
 
   // Which tiles the beam has passed. It only ever grows: a node that has been
   // lit stays lit, so scrolling back up does not switch the section off again.
@@ -90,52 +103,13 @@ export function Experience() {
       </BlurFade>
 
       <ol ref={listRef} className="relative mt-14">
-        {/* The rail. One positioned wrapper on the centre line of the tiles, so
-            the trail and its head can both size themselves against it. */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-y-2 left-[27px] w-px md:left-[35px]"
-        >
-          <span className="absolute inset-0 bg-border" />
-
-          {/* The trail fades in from nothing rather than being a flat bar, so
-              the beam reads as light being drawn down the wire and the entries
-              already passed sit quietly behind it. */}
-          <motion.span
-            style={{ scaleY: reducedMotion ? 1 : fill, originY: 0 }}
-            className="absolute inset-0 bg-gradient-to-b from-transparent via-brand/50 to-brand"
-          />
-
-          {/* A pulse running the length already drawn — a packet on a wire.
-              Deliberately quiet: it sits beside dense text, so it is thin, half
-              transparent, slow, and clipped to the trail so it never runs past
-              the head into line nobody has reached yet. */}
-          {!reducedMotion && inView && (
-            <motion.span
-              style={{ height: trailHeight }}
-              className="absolute inset-x-0 top-0 overflow-hidden"
-            >
-              <motion.span
-                className="absolute left-1/2 h-16 w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-brand/45 to-transparent"
-                animate={{ top: ["-4rem", "100%"] }}
-                transition={{
-                  duration: 3.4,
-                  repeat: Infinity,
-                  repeatDelay: 1.6,
-                  ease: "linear",
-                }}
-              />
-            </motion.span>
-          )}
-
-          {/* The head of the beam. */}
-          {!reducedMotion && (
-            <motion.span
-              style={{ top: headTop, opacity: headOpacity }}
-              className="absolute left-1/2 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand shadow-[0_0_14px_4px_rgba(59,130,246,0.55)]"
-            />
-          )}
-        </div>
+        <TimelineRail
+          nodes={geometry.nodes}
+          height={geometry.height}
+          railX={isMd ? 35 : 27}
+          fill={fill}
+          reducedMotion={reducedMotion}
+        />
 
         {/* BlurFade goes inside the item, not around it. Wrapping each <li> in
             a <div> put every item alone in its own parent, so `last:pb-0`
