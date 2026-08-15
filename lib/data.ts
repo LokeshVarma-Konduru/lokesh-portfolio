@@ -5,6 +5,8 @@ export const personal = {
   phone: "+1 571-244-4062",
   linkedin: "https://linkedin.com/in/lokeshvarmakonduru",
   github: "https://github.com/LokeshVarma-Konduru",
+  /** Paste the profile URL from Handshake; the link hides itself while empty. */
+  handshake: "",
   resumeUrl: "/resume.pdf",
   location: "Virginia, USA",
   seeking: "Full-time SDE roles · Graduating May 2026",
@@ -99,7 +101,14 @@ export const projects = [
       "Production fraud detection system processing 10K+ transactions with GenAI investigation assistant using RAG pipelines, semantic chunking, and MCP tool calling.",
     note: "3-semester capstone · Team of 5 · Real government client",
     featured: true,
-    tech: ["React", "Node.js", "Kafka", "AWS SageMaker", "LangChain", "MongoDB"],
+    tech: [
+      "React",
+      "Node.js",
+      "Kafka",
+      "AWS SageMaker",
+      "LangChain",
+      "MongoDB",
+    ],
     metrics: [
       "10,000+ transactions processed",
       "30% reduction in manual fraud review time",
@@ -118,7 +127,14 @@ export const projects = [
     description:
       "Consolidated 5+ Google Earth Engine analytics tools into one React platform with Firebase user telemetry, backed by an internal FastAPI analytics dashboard with Prometheus/Grafana observability.",
     featured: false,
-    tech: ["React", "TypeScript", "Google Earth Engine", "Firebase", "FastAPI", "PostgreSQL"],
+    tech: [
+      "React",
+      "TypeScript",
+      "Google Earth Engine",
+      "Firebase",
+      "FastAPI",
+      "PostgreSQL",
+    ],
     metrics: [
       "5+ GEE analytics tools consolidated into one platform",
       "Firebase telemetry tracking real user activity",
@@ -138,7 +154,14 @@ export const projects = [
     description:
       "Full-stack bookstore platform with catalog, cart, and checkout workflows, plus a LangChain-powered recommendation assistant using FAISS semantic search for personalized book discovery.",
     featured: false,
-    tech: ["React", "Spring Boot", "Spring Security", "MySQL", "LangChain", "FAISS"],
+    tech: [
+      "React",
+      "Spring Boot",
+      "Spring Security",
+      "MySQL",
+      "LangChain",
+      "FAISS",
+    ],
     metrics: [
       "Sub-200ms API response times",
       "200+ book catalog with personalized recommendations",
