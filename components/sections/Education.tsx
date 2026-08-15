@@ -20,16 +20,18 @@ export function Education() {
       </BlurFade>
 
       <BlurFade inView delay={0.1}>
-        {/* Capped below the section: two degree cards spread across 1280px
-            would be 600px each for four short lines of text. */}
-        <div className="mt-10 grid max-w-4xl gap-6 md:grid-cols-2 md:gap-8">
+        {/* Full width and stacked, so each degree is one shallow row rather
+            than a tall column — the content is four short lines and does not
+            need depth. */}
+        <div className="mt-10 flex flex-col gap-5">
           {education.map((entry, index) => (
             <div
               key={entry.school}
               className="relative overflow-hidden rounded-2xl p-px"
             >
               <div className="absolute inset-0">
-                {/* Offset so the two cards are never lit at the same point. */}
+                {/* Different durations, so the two are never lit at the same
+                    point on their edge. */}
                 <MovingBorder
                   duration={index === 0 ? 7000 : 8200}
                   rx="12%"
@@ -39,31 +41,32 @@ export function Education() {
                 </MovingBorder>
               </div>
 
-              <div className="relative h-full rounded-2xl border border-border bg-surface p-7">
-                <p className="font-heading text-sm font-semibold text-brand">
-                  {entry.period}
-                </p>
+              <div className="relative flex flex-col gap-5 rounded-2xl border border-border bg-surface p-6 sm:flex-row sm:items-center sm:justify-between sm:gap-8 md:px-8">
+                <div className="min-w-0">
+                  <p className="font-heading text-sm font-semibold text-brand">
+                    {entry.period}
+                  </p>
 
-                <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-foreground">
-                  {entry.degree}
-                </h3>
+                  <h3 className="mt-2 text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
+                    {entry.degree}
+                  </h3>
 
-                <p className="mt-1 text-[17px] text-foreground">
-                  {entry.school}
-                </p>
+                  <p className="mt-1.5 text-[15px] text-muted-foreground">
+                    {entry.school} · {entry.location}
+                  </p>
+                </div>
 
-                <p className="mt-0.5 text-[15px] text-muted-foreground">
-                  {entry.location}
-                </p>
-
-                <p className="mt-5 flex items-baseline gap-2">
-                  <span className="font-heading text-2xl font-bold tracking-[-0.02em] text-foreground">
+                {/* Right-aligned and rule-separated on a wide card: the number
+                    is the part worth a second look, and at this width it would
+                    otherwise be lost against a long degree title. */}
+                <div className="shrink-0 sm:border-l sm:border-border sm:pl-8 sm:text-right">
+                  <p className="font-heading text-3xl font-bold tracking-[-0.02em] text-foreground md:text-4xl">
                     {entry.gpa}
-                  </span>
-                  <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+                  </p>
+                  <p className="mt-1 text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     GPA
-                  </span>
-                </p>
+                  </p>
+                </div>
               </div>
             </div>
           ))}
