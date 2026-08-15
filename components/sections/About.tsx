@@ -22,7 +22,7 @@ export function About() {
               {/* Offset frame behind the portrait, so it reads as placed rather
                 than as one more bordered box. */}
               <div className="absolute -bottom-4 -left-4 hidden size-full rounded-2xl border border-brand/25 md:block" />
-              {/* The source is 402x469 — slightly wider than the 4:5 frame, so
+              {/* The source is 960x1120 — slightly wider than the 4:5 frame, so
                   cover trims the sides rather than the top of his head. */}
               <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl border border-border">
                 <Image
