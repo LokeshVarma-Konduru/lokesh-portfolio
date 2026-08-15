@@ -86,24 +86,25 @@ export function Experience() {
             </span>
 
             <BlurFade inView delay={0.05 * index}>
-              <p className="font-heading text-sm font-semibold text-brand">
-                {role.period}
-              </p>
-
-              <p className="mt-1 text-sm text-muted-foreground">
-                {role.location}
-              </p>
-
-              <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
+              {/* Role, then company, then the when and where. The dates led
+                  before, in brand colour and a heading face, which made the
+                  loudest thing on every entry the least interesting: what he
+                  did and who for should be read first. They are still directly
+                  under the title — visible without being the headline. */}
+              <h3 className="text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
                 {role.role}
               </h3>
 
-              <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-2">
-                <p className="text-sm font-medium text-foreground">
-                  {role.company}
-                </p>
+              <p className="mt-1 font-heading text-base font-semibold text-brand">
+                {role.company}
+              </p>
+
+              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+                <span>
+                  {role.period} · {role.location}
+                </span>
                 {role.note && (
-                  <span className="rounded-full border border-brand/30 px-3 py-0.5 text-xs text-muted-foreground">
+                  <span className="rounded-full border border-border px-3 py-0.5 text-xs">
                     {role.note}
                   </span>
                 )}
