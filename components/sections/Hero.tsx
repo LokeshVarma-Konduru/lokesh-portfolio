@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/orbital-hero";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { TextAnimate } from "@/components/ui/text-animate";
-import { WordRotate } from "@/components/ui/word-rotate";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { Button } from "@/components/ui/button";
 import { GithubIcon } from "@/components/icons";
@@ -78,11 +77,12 @@ export function Hero() {
             ))}
           </h1>
 
+          {/* One title, held still. The rotating list moved to About, where
+              there is room to read all four at once. */}
           <BlurFade delay={0.7}>
-            <WordRotate
-              words={personal.taglines}
-              className="text-2xl font-semibold tracking-[-0.02em] text-white md:text-3xl"
-            />
+            <p className="text-2xl font-semibold tracking-[-0.02em] text-white md:text-3xl">
+              {personal.role}
+            </p>
           </BlurFade>
 
           <BlurFade delay={0.9}>

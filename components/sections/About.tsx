@@ -36,6 +36,21 @@ export function About() {
               </h2>
             </BlurFade>
 
+            {/* The hero used to cycle these one at a time. Here they can all be
+                read at once, which is what a list of specialisms is for. */}
+            <BlurFade inView delay={0.1}>
+              <ul className="mt-6 flex flex-wrap gap-2">
+                {personal.taglines.map((tagline) => (
+                  <li
+                    key={tagline}
+                    className="rounded-full border border-brand/30 px-3 py-1 text-sm text-muted-foreground"
+                  >
+                    {tagline}
+                  </li>
+                ))}
+              </ul>
+            </BlurFade>
+
             <BlurFade inView delay={0.2}>
               <div className="mt-8 space-y-5 text-[17px] leading-relaxed text-muted-foreground">
                 {personal.about.split("\n\n").map((paragraph) => (
