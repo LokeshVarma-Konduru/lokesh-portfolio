@@ -1,10 +1,10 @@
 /**
  * Maps a skill name from `lib/data.ts` to its logo under `public/logos/tech`.
  *
- * Logos are rendered as CSS masks rather than images, so the file's own colours
- * are discarded and the mark takes the current text colour. That keeps the whole
- * wall monochrome in both themes and holds to the single-accent rule in PLAN.md
- * section 4 — a colour-per-brand logo wall would put a dozen hues on the page.
+ * Logos keep their brand colours: a recruiter recognises the React blue or the
+ * Python yellow long before they read the label, which is the whole reason for
+ * showing marks instead of text. This is a deliberate exception to the
+ * single-accent rule in PLAN.md section 4 — brand marks are not page accent.
  *
  * Skills with no brand behind them (RAG Pipelines, CI/CD, Prompt Engineering)
  * are absent on purpose and fall back to a text badge.
@@ -60,7 +60,28 @@ export const techLogos: Record<string, string> = {
   Firebase: "firebase",
 };
 
-export function logoFor(skill: string): string | undefined {
+/**
+ * Brands whose real mark is black or white rather than coloured. Rendering these
+ * as plain images would put a black blob on the dark background, so they are
+ * drawn as CSS masks instead and take the current text colour.
+ */
+const monochromeLogos = new Set([
+  "express",
+  "flask",
+  "github",
+  "kafka",
+  "mongodb",
+  "motion",
+  "mysql",
+  "nextjs",
+  "openai",
+  "socketio",
+]);
+
+export type TechLogo = { src: string; mono: boolean };
+
+export function logoFor(skill: string): TechLogo | undefined {
   const slug = techLogos[skill];
-  return slug ? `/logos/tech/${slug}.svg` : undefined;
+  if (!slug) return undefined;
+  return { src: `/logos/tech/${slug}.svg`, mono: monochromeLogos.has(slug) };
 }

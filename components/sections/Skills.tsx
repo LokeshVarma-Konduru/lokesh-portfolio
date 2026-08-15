@@ -2,7 +2,7 @@ import { Brain, Cloud, Database, Monitor, Server } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Badge } from "@/components/ui/badge";
 import { Marquee } from "@/components/ui/marquee";
-import { logoFor } from "@/lib/tech-logos";
+import { logoFor, type TechLogo } from "@/lib/tech-logos";
 import { skills } from "@/lib/data";
 
 const skillGroups = [
@@ -39,15 +39,28 @@ const skillGroups = [
 ];
 
 /**
- * The logo is a mask, not an image, so it inherits the current text colour and
- * shifts to the accent on hover along with the label.
+ * Coloured marks render as-is. Brands whose logo is genuinely black or white are
+ * drawn as a mask instead, so they take the current text colour rather than
+ * disappearing into the background.
  */
-function TechLogo({ src, className = "" }: { src: string; className?: string }) {
+function TechLogo({ logo, className = "" }: { logo: TechLogo; className?: string }) {
+  if (logo.mono) {
+    return (
+      <span
+        aria-hidden="true"
+        className={`shrink-0 bg-current [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] ${className}`}
+        style={{ maskImage: `url(${logo.src})`, WebkitMaskImage: `url(${logo.src})` }}
+      />
+    );
+  }
+
   return (
-    <span
+    // eslint-disable-next-line @next/next/no-img-element -- static SVG, nothing for next/image to optimise
+    <img
+      src={logo.src}
+      alt=""
       aria-hidden="true"
-      className={`shrink-0 bg-current [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] ${className}`}
-      style={{ maskImage: `url(${src})`, WebkitMaskImage: `url(${src})` }}
+      className={`shrink-0 object-contain ${className}`}
     />
   );
 }
@@ -64,21 +77,22 @@ function SkillChip({ skill }: { skill: string }) {
   }
 
   return (
-    <span className="inline-flex items-center gap-2 rounded-md border border-border bg-background/40 px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:text-brand">
-      <TechLogo src={logo} className="size-4" />
+    <span className="inline-flex items-center gap-2 rounded-md border border-border bg-background/40 px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:text-foreground">
+      <TechLogo logo={logo} className="size-4" />
       {skill}
     </span>
   );
 }
 
-/** One logo per file, so the ticker never shows the same mark twice in a row. */
+/** One entry per file, so the ticker never shows the same mark twice. */
 const marqueeLogos = [
-  ...new Set(
+  ...new Map(
     Object.values(skills)
       .flat()
       .map((skill) => logoFor(skill))
-      .filter((logo): logo is string => Boolean(logo))
-  ),
+      .filter((logo): logo is TechLogo => Boolean(logo))
+      .map((logo) => [logo.src, logo])
+  ).values(),
 ];
 
 export function Skills() {
@@ -104,20 +118,12 @@ export function Skills() {
         <div className="relative mt-14 flex w-full flex-col gap-4 overflow-hidden py-2">
           <Marquee pauseOnHover className="[--duration:60s] [--gap:3rem]">
             {marqueeLogos.map((logo) => (
-              <TechLogo
-                key={logo}
-                src={logo}
-                className="size-9 text-muted-foreground/60 transition-colors hover:text-brand"
-              />
+              <TechLogo key={logo.src} logo={logo} className="size-9" />
             ))}
           </Marquee>
           <Marquee reverse pauseOnHover className="[--duration:75s] [--gap:3rem]">
             {[...marqueeLogos].reverse().map((logo) => (
-              <TechLogo
-                key={logo}
-                src={logo}
-                className="size-9 text-muted-foreground/60 transition-colors hover:text-brand"
-              />
+              <TechLogo key={logo.src} logo={logo} className="size-9" />
             ))}
           </Marquee>
           <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-background" />
