@@ -88,22 +88,27 @@ export function Projects() {
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
   return (
-    <section id="projects" className="mx-auto max-w-6xl px-6 py-16 md:py-24">
-      <BlurFade inView>
-        <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
-          Projects
-        </h2>
-      </BlurFade>
+    <section
+      id="projects"
+      className="border-y border-border bg-surface py-16 md:py-24"
+    >
+      <div className="mx-auto max-w-6xl px-6">
+        <BlurFade inView>
+          <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
+            Projects
+          </h2>
+        </BlurFade>
 
-      {reducedMotion ? (
-        <ProjectList />
-      ) : roomy ? (
-        <ProjectWheel />
-      ) : tallEnough ? (
-        <ProjectWheel compact />
-      ) : (
-        <ProjectCarousel />
-      )}
+        {reducedMotion ? (
+          <ProjectList />
+        ) : roomy ? (
+          <ProjectWheel />
+        ) : tallEnough ? (
+          <ProjectWheel compact />
+        ) : (
+          <ProjectCarousel />
+        )}
+      </div>
     </section>
   );
 }
@@ -122,7 +127,7 @@ function ProjectList() {
                   <div className="size-40 bg-[radial-gradient(var(--brand)_40%,transparent_60%)] opacity-80" />
                 </MovingBorder>
               </div>
-              <div className="relative rounded-2xl bg-surface">
+              <div className="relative rounded-2xl bg-background">
                 <ProjectCardContent
                   project={project}
                   flipped={index % 2 === 1}
@@ -130,7 +135,7 @@ function ProjectList() {
               </div>
             </div>
           ) : (
-            <div className="relative rounded-2xl border border-border bg-surface">
+            <div className="relative rounded-2xl border border-border bg-background">
               <GlowingEffect
                 disabled={false}
                 glow

@@ -303,7 +303,7 @@ function RimCard({
       aria-label={project.title}
       style={{ width, height }}
       className={cn(
-        "group relative block overflow-hidden rounded-xl border bg-surface text-left shadow-lg outline-none transition-all duration-500 ease-out focus-visible:ring-2 focus-visible:ring-brand",
+        "group relative block overflow-hidden rounded-xl border bg-background text-left shadow-lg outline-none transition-all duration-500 ease-out focus-visible:ring-2 focus-visible:ring-brand",
         isActive
           ? "-translate-y-3 scale-105 border-brand/50"
           : "scale-100 border-border",

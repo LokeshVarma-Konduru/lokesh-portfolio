@@ -98,7 +98,7 @@ export function ProjectCarousel() {
 
 function Card({ project }: { project: Project }) {
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface">
+    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background">
       {/* eslint-disable-next-line @next/next/no-img-element -- placeholder SVGs
           of a known size, swapped for real screenshots later. */}
       <img
