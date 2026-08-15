@@ -23,7 +23,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="mx-auto flex max-w-6xl flex-col items-center px-6 pb-36 pt-28 text-center md:pb-48 md:pt-44"
+      className="mx-auto flex max-w-6xl flex-col items-center px-6 pb-24 pt-16 text-center md:pb-32 md:pt-24"
     >
       <BlurFade inView>
         <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">

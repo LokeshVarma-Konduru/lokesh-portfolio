@@ -95,7 +95,7 @@ export function Experience() {
   }, []);
 
   return (
-    <section id="experience" className="mx-auto max-w-4xl px-6 py-28 md:py-36">
+    <section id="experience" className="mx-auto max-w-4xl px-6 py-16 md:py-24">
       <BlurFade inView>
         <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
           Experience

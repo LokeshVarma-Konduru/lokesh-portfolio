@@ -102,7 +102,7 @@ export function Skills() {
     // identical sections without costing the cards their contrast.
     <section
       id="skills"
-      className="border-y border-border bg-surface py-28 md:py-40"
+      className="border-y border-border bg-surface py-16 md:py-24"
     >
       <div className="mx-auto max-w-6xl px-6">
         <BlurFade inView>

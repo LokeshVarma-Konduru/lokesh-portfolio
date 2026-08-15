@@ -5,7 +5,7 @@ import { personal, stats } from "@/lib/data";
 
 export function About() {
   return (
-    <section id="about" className="mx-auto max-w-6xl px-6 py-28 md:py-40">
+    <section id="about" className="mx-auto max-w-6xl px-6 py-16 md:py-24">
       <div className="grid items-center gap-12 md:grid-cols-5 md:gap-16">
         <BlurFade inView className="md:col-span-2">
           {/* Capped and centred on a phone: at full width a 4:5 portrait is
@@ -55,7 +55,7 @@ export function About() {
       {/* Numbers read as a headline row split by rules, rather than four more
           bordered cards on a page that already has plenty. */}
       <BlurFade inView delay={0.2}>
-        <dl className="mt-20 grid grid-cols-2 gap-y-10 border-y border-border py-10 md:grid-cols-4 md:gap-y-0">
+        <dl className="mt-14 grid grid-cols-2 gap-y-10 border-y border-border py-8 md:grid-cols-4 md:gap-y-0">
           {stats.map((stat, index) => (
             <div
               key={stat.label}
