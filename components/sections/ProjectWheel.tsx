@@ -35,6 +35,7 @@ import {
   useTransform,
 } from "motion/react";
 import { Badge } from "@/components/ui/badge";
+import { TextAnimate } from "@/components/ui/text-animate";
 import { ProjectLinks, type Project } from "./ProjectLinks";
 import { cn } from "@/lib/utils";
 import { projects } from "@/lib/data";
@@ -62,6 +63,9 @@ export function ProjectWheel() {
 
   const [scrolled, setScrolled] = useState(0);
   const [focused, setFocused] = useState<number | null>(null);
+  /** 1 while scrolling down the track, -1 back up. Drives which way text moves. */
+  const [direction, setDirection] = useState(1);
+  const lastProgress = useRef(0);
 
   // Scroll picks which card is at the top; it does not drive the angle directly.
   // Mapping rotation straight off progress meant the ring was only ever aligned
@@ -71,6 +75,10 @@ export function ProjectWheel() {
   useMotionValueEvent(scrollYProgress, "change", (value) => {
     const slice = Math.floor(Math.max(0, Math.min(0.999, value)) * count);
     setScrolled(Math.min(count - 1, slice));
+    if (value !== lastProgress.current) {
+      setDirection(value > lastProgress.current ? 1 : -1);
+      lastProgress.current = value;
+    }
   });
 
   const rotate = useSpring(0, { stiffness: 120, damping: 24, mass: 0.5 });
@@ -94,7 +102,12 @@ export function ProjectWheel() {
       style={{ height: `calc(100vh + ${count * SCROLL_PER_PROJECT}px)` }}
     >
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden pt-24">
-        <Detail project={project} index={active} count={count} />
+        <Detail
+          project={project}
+          index={active}
+          count={count}
+          direction={direction}
+        />
 
         {/* The ring. Cropped at the bottom and faded out, so it reads as
             something larger than the viewport rather than a floating circle. */}
@@ -150,35 +163,81 @@ export function ProjectWheel() {
   );
 }
 
+/**
+ * The counter is the one piece of text that rotates.
+ *
+ * Everything else in the panel has to be read while it moves, which is why the
+ * rim cards were made to stay upright in the first place. Two digits are the
+ * exception: nobody reads "03" letter by letter, so they can carry the wheel's
+ * turn without costing anything. A digit that does not change does not move.
+ */
+function Odometer({ value, direction }: { value: string; direction: number }) {
+  return (
+    <span className="inline-flex" style={{ perspective: "120px" }}>
+      {value.split("").map((char, position) => (
+        <span
+          key={position}
+          className="relative inline-block h-[1.2em] w-[0.62em] overflow-hidden"
+        >
+          <AnimatePresence initial={false}>
+            <motion.span
+              key={char}
+              initial={{ rotateX: direction > 0 ? -90 : 90, opacity: 0 }}
+              animate={{ rotateX: 0, opacity: 1 }}
+              exit={{ rotateX: direction > 0 ? 90 : -90, opacity: 0 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="absolute inset-0 flex items-center justify-center"
+            >
+              {char}
+            </motion.span>
+          </AnimatePresence>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 function Detail({
   project,
   index,
   count,
+  direction,
 }: {
   project: Project;
   index: number;
   count: number;
+  direction: number;
 }) {
   return (
     <div className="mx-auto w-full max-w-3xl shrink-0 px-6 text-center">
+      <p className="flex items-center justify-center gap-1 font-heading text-sm font-bold text-brand">
+        <Odometer value={project.id} direction={direction} />
+        <span className="text-muted-foreground">
+          / {String(count).padStart(2, "0")}
+        </span>
+      </p>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={project.id}
-          initial={{ opacity: 0, y: 12 }}
+          // Following the scroll direction: text used to rise on the way in and
+          // leave upward whichever way you were going, so scrolling back up
+          // read as though you were still going down.
+          initial={{ opacity: 0, y: 14 * direction }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
+          exit={{ opacity: 0, y: -14 * direction }}
           transition={{ duration: 0.25, ease: "easeOut" }}
         >
-          <p className="font-heading text-sm font-bold text-brand">
-            {project.id}{" "}
-            <span className="text-muted-foreground">
-              / {String(count).padStart(2, "0")}
-            </span>
-          </p>
-
-          <h3 className="mt-3 text-2xl font-bold leading-[1.1] tracking-[-0.025em] text-foreground md:text-4xl">
+          <TextAnimate
+            as="h3"
+            by="word"
+            animation="blurInUp"
+            duration={0.35}
+            startOnView={false}
+            className="mt-3 text-2xl font-bold leading-[1.1] tracking-[-0.025em] text-foreground md:text-4xl"
+          >
             {project.title}
-          </h3>
+          </TextAnimate>
 
           <p className="mt-2 text-sm text-muted-foreground">
             {project.client} · {project.period}
