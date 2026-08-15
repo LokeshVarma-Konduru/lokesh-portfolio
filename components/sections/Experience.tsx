@@ -17,6 +17,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useSpring } from "motion/react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { TimelineRail } from "./TimelineRail";
@@ -115,101 +116,125 @@ export function Experience() {
             a <div> put every item alone in its own parent, so `last:pb-0`
             matched all four and every entry lost its trailing gap — and a <div>
             is not a legal child of <ol> in the first place. */}
-        {experience.map((role, index) => (
-          <li
-            key={role.company}
-            ref={(node) => {
-              itemsRef.current[index] = node;
-            }}
-            className="relative pb-14 pl-20 last:pb-0 md:pb-16 md:pl-28"
-          >
-            {/* One tile size for every company, so the line reads as evenly
+        {experience.map((role, index) => {
+          const roleLinks: { label: string; href: string }[] =
+            ("links" in role && role.links) || [];
+
+          return (
+            <li
+              key={role.company}
+              ref={(node) => {
+                itemsRef.current[index] = node;
+              }}
+              className="relative pb-14 pl-20 last:pb-0 md:pb-16 md:pl-28"
+            >
+              {/* One tile size for every company, so the line reads as evenly
                 marked. The marks themselves are wildly different shapes —
                 225x44 through 200x200 — so each is contained inside the tile
                 rather than filling it, and the white backing is there because
                 they are dark-on-transparent and would vanish otherwise. */}
-            {/* The beam arriving: a dot swings once around the tile before the
+              {/* The beam arriving: a dot swings once around the tile before the
                 rail carries on. It sits below the tile in the stack, so it
                 passes behind the mark on the far half of the turn — which is
                 what makes it read as an orbit rather than a circling dot. */}
-            {!reducedMotion && index === reached && (
-              <motion.span
-                key={`orbit-${role.company}`}
-                aria-hidden="true"
-                animate={{ opacity: [0, 1, 1, 0] }}
-                transition={{ duration: 1.2, times: [0, 0.15, 0.7, 1] }}
-                className="pointer-events-none absolute left-0 top-0 z-0 flex size-14 items-center justify-center md:size-[72px]"
-              >
+              {!reducedMotion && index === reached && (
                 <motion.span
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1.2, ease: "easeInOut" }}
-                  className="relative size-[138%]"
+                  key={`orbit-${role.company}`}
+                  aria-hidden="true"
+                  animate={{ opacity: [0, 1, 1, 0] }}
+                  transition={{ duration: 1.2, times: [0, 0.15, 0.7, 1] }}
+                  className="pointer-events-none absolute left-0 top-0 z-0 flex size-14 items-center justify-center md:size-[72px]"
                 >
-                  <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand shadow-[0_0_10px_3px_rgba(59,130,246,0.6)]" />
+                  <motion.span
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1.2, ease: "easeInOut" }}
+                    className="relative size-[138%]"
+                  >
+                    <span className="absolute left-1/2 top-0 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand shadow-[0_0_10px_3px_rgba(59,130,246,0.6)]" />
+                  </motion.span>
                 </motion.span>
-              </motion.span>
-            )}
+              )}
 
-            {/* The node lights as the beam reaches it, which is what makes the
+              {/* The node lights as the beam reaches it, which is what makes the
                 rail read as causal rather than decorative — and marks how far
                 through the section you are. */}
-            <span
-              className={cn(
-                "absolute left-0 top-0 z-10 flex size-14 items-center justify-center rounded-xl border bg-white ring-4 ring-background transition-[border-color,box-shadow] duration-500 md:size-[72px]",
-                index <= reached
-                  ? "border-brand shadow-[0_0_18px_-2px_rgba(59,130,246,0.65)]"
-                  : "border-border",
-              )}
-            >
-              <Image
-                src={role.logo}
-                alt={role.company}
-                width={role.logoWidth}
-                height={role.logoHeight}
-                sizes="144px"
-                className="max-h-[58%] max-w-[76%] object-contain"
-              />
-            </span>
+              <span
+                className={cn(
+                  "absolute left-0 top-0 z-10 flex size-14 items-center justify-center rounded-xl border bg-white ring-4 ring-background transition-[border-color,box-shadow] duration-500 md:size-[72px]",
+                  index <= reached
+                    ? "border-brand shadow-[0_0_18px_-2px_rgba(59,130,246,0.65)]"
+                    : "border-border",
+                )}
+              >
+                <Image
+                  src={role.logo}
+                  alt={role.company}
+                  width={role.logoWidth}
+                  height={role.logoHeight}
+                  sizes="144px"
+                  className="max-h-[58%] max-w-[76%] object-contain"
+                />
+              </span>
 
-            <BlurFade inView delay={0.05 * index}>
-              {/* Role, then company, then the when and where. The dates led
+              <BlurFade inView delay={0.05 * index}>
+                {/* Role, then company, then the when and where. The dates led
                   before, in brand colour and a heading face, which made the
                   loudest thing on every entry the least interesting: what he
                   did and who for should be read first. They are still directly
                   under the title — visible without being the headline. */}
-              <h3 className="text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
-                {role.role}
-              </h3>
+                <h3 className="text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
+                  {role.role}
+                </h3>
 
-              <p className="mt-1 font-heading text-base font-semibold text-brand">
-                {role.company}
-              </p>
+                <p className="mt-1 font-heading text-base font-semibold text-brand">
+                  {role.company}
+                </p>
 
-              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
-                <span>
-                  {role.period} · {role.location}
-                </span>
-                {role.note && (
-                  <span className="rounded-full border border-border px-3 py-0.5 text-xs">
-                    {role.note}
+                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+                  <span>
+                    {role.period} · {role.location}
                   </span>
-                )}
-              </div>
+                  {role.note && (
+                    <span className="rounded-full border border-border px-3 py-0.5 text-xs">
+                      {role.note}
+                    </span>
+                  )}
+                </div>
 
-              <ul className="mt-5 space-y-3">
-                {role.bullets.slice(0, BULLETS_SHOWN).map((bullet) => (
-                  <li
-                    key={bullet.slice(0, 24)}
-                    className="flex items-start gap-3 text-[15px] leading-relaxed text-muted-foreground"
-                  >
-                    <span className="mt-2 size-1 shrink-0 rounded-full bg-border" />
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </BlurFade>
-          </li>
-        ))}
+                <ul className="mt-5 space-y-3">
+                  {role.bullets.slice(0, BULLETS_SHOWN).map((bullet) => (
+                    <li
+                      key={bullet.slice(0, 24)}
+                      className="flex items-start gap-3 text-[15px] leading-relaxed text-muted-foreground"
+                    >
+                      <span className="mt-2 size-1 shrink-0 rounded-full bg-border" />
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Only some roles carry references, so this is read through a
+                  guard rather than indexed straight off the union. */}
+                {roleLinks.length > 0 && (
+                  <div className="mt-5 flex flex-wrap items-center gap-4">
+                    {roleLinks.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm font-medium text-brand transition-colors hover:text-brand-hover"
+                      >
+                        {link.label}
+                        <ArrowUpRight className="size-3.5" />
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </BlurFade>
+            </li>
+          );
+        })}
       </ol>
     </section>
   );

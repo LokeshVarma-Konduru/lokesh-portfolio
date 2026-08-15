@@ -233,6 +233,17 @@ export const projects = [
   },
 ];
 
+/**
+ * The same facts as the résumé, in a different sentence.
+ *
+ * The résumé gets tailored per application, so copying its wording here means
+ * the site quietly goes stale every time a line is rewritten for a job
+ * description — and reads as a paste of whichever version was sent. The
+ * numbers are exact, because they are facts and identical in every version; the
+ * phrasing is not, because it is framing.
+ *
+ * `links` carry the references the résumé itself points at.
+ */
 export const experience = [
   {
     role: "Software Engineer",
@@ -242,12 +253,17 @@ export const experience = [
     logoHeight: 44,
     period: "Sept 2024 – May 2026",
     location: "Virginia, USA",
+    // The résumé also links "VT Publications" here; add it when you have the
+    // URL to hand and it will render alongside the site link.
+    links: [
+      { label: "Website", href: "https://datl-chandel.github.io/Agroclimate" },
+    ],
     bullets: [
-      "Cut bug turnaround time by 40% by building a full-stack platform with React/TypeScript, Next.js SSR, and PostgreSQL, backed by Jest unit and integration test coverage.",
-      "Reduced deployment time by 65% by containerizing services with Docker and Kubernetes on AWS EC2 and automating CI/CD pipelines via GitHub Actions with Terraform IaC.",
-      "Improved issue resolution by 20% by shipping 5+ geospatial analytics tools using Google Earth Engine APIs on a React/Tailwind platform with Firebase telemetry and Prometheus/Grafana observability.",
-      "Boosted geospatial data processing efficiency by 40% by building an async Python/FastAPI backend with Redis caching and PostgreSQL, improving overall pipeline throughput.",
-      "Engineered an AI-powered advisory assistant by integrating LangChain, LangGraph, and FAISS into Node.js/Express REST APIs, implementing RAG pipelines and MCP tool calling to deliver real-time contextual recommendations.",
+      "Cut bug turnaround by 40% with a full-stack platform — React and TypeScript on Next.js SSR, PostgreSQL behind it, Jest across both unit and integration paths.",
+      "Took 65% off deployment time by containerising the services with Docker and Kubernetes on EC2, and moving releases onto GitHub Actions with Terraform describing the infrastructure.",
+      "Shipped 5+ geospatial analytics tools on Google Earth Engine APIs, with Firebase telemetry and Prometheus and Grafana watching them — 20% better issue resolution.",
+      "Made the geospatial pipeline 40% more efficient with an async Python and FastAPI backend, Redis in front of PostgreSQL.",
+      "Built an AI advisory assistant into the Node.js and Express APIs: LangChain, LangGraph and FAISS, RAG retrieval and MCP tool calling for recommendations in real time.",
     ],
   },
   {
@@ -259,10 +275,16 @@ export const experience = [
     period: "Sept 2024 – Dec 2025",
     location: "Remote",
     note: "3-semester capstone · Team of 5 · Real government client",
+    links: [
+      {
+        label: "GitHub",
+        href: "https://github.com/LokeshVarma-Konduru/MCCS-E-commerce-Fraud-Detection",
+      },
+    ],
     bullets: [
-      "Scaled fraud detection to handle 10K+ transactions by architecting microservices with Node.js/Express, MongoDB, and Redis for real-time fraud score and transaction lookups.",
-      "Reduced fraud signal processing latency by 40% by orchestrating Kafka event streaming on Kubernetes with CloudWatch and OpenTelemetry distributed tracing, and S3 for model artifact storage.",
-      "Reduced manual fraud review time by 30% by building a GenAI fraud investigation assistant with LangChain, LangGraph, and FAISS, implementing RAG pipelines and MCP tool calling for intelligent fraud signal analysis.",
+      "Scaled fraud detection past 10,000 transactions by splitting it into Node.js and Express microservices, with MongoDB and Redis serving fraud scores and lookups in real time.",
+      "Cut fraud signal latency by 40% — Kafka event streaming on Kubernetes, CloudWatch and OpenTelemetry for distributed tracing, S3 holding the model artifacts.",
+      "Cut manual review time by 30% with a GenAI investigation assistant: LangChain, LangGraph and FAISS running RAG pipelines and MCP tool calling over the fraud signals.",
     ],
   },
   {
@@ -274,10 +296,10 @@ export const experience = [
     period: "July 2023 – July 2024",
     location: "India",
     bullets: [
-      "Delivered 4 production platforms — events, bookings, hostel, and food management — using React/TypeScript, Node.js/Express, and MongoDB with JWT/OAuth2 authentication.",
-      "Improved booking efficiency by 30% and cut response latency by 50% by building a real-time ordering platform with Socket.io and Kafka, integrating Razorpay payment processing and Redis-backed session caching.",
-      "Reduced manual paperwork by 60% for 25,000+ users by developing an RFID-integrated hostel management system with Node.js/Express and MongoDB indexed queries and event-driven access control.",
-      "Enabled zero-downtime releases for 25,000+ users by deploying microservices on AWS EC2 behind ALB, routing through API Gateway with GitHub Actions CI/CD and automated Jest testing.",
+      "Shipped 4 production platforms — events, bookings, hostel and food management — on React with TypeScript, Node.js and Express, MongoDB, behind JWT and OAuth2.",
+      "Built a real-time ordering platform on Socket.io and Kafka with Razorpay payments and Redis-backed sessions: 30% better booking efficiency, half the response latency.",
+      "Cut paperwork by 60% for 25,000+ users with an RFID hostel management system — indexed MongoDB queries and event-driven access control.",
+      "Gave those 25,000+ users zero-downtime releases, running the microservices on EC2 behind an ALB and API Gateway with GitHub Actions and Jest in the pipeline.",
     ],
   },
   {
@@ -289,8 +311,8 @@ export const experience = [
     period: "Jan 2023 – June 2023",
     location: "India",
     bullets: [
-      "Improved data visibility by 40% for Telecom and CPG clients by building dashboards with Python/Flask and Plotly Dash, integrating Azure AD SSO and deploying on Microsoft Azure with DevOps CI/CD.",
-      "Ensured data quality and reliability across 10M+ airline records by designing distributed pipelines with PySpark, Kafka, and Apache Airflow, with automated PyTest unit and integration testing.",
+      "Improved data visibility 40% for telecom and CPG clients with Python, Flask and Plotly Dash dashboards behind Azure AD SSO, deployed through Azure DevOps.",
+      "Kept 10M+ airline records clean with distributed pipelines in PySpark, Kafka and Apache Airflow, checked by PyTest at unit and integration level.",
     ],
   },
 ];
