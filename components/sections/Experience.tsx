@@ -48,48 +48,46 @@ export function Experience() {
       </BlurFade>
 
       <ol ref={listRef} className="relative mt-14">
-        {/* The rail, and the brand-coloured length of it that has been read. */}
+        {/* The rail, and the brand-coloured length of it that has been read.
+            Positioned on the centre line of the logo tiles. */}
         <span
           aria-hidden="true"
-          className="absolute bottom-2 left-[7px] top-2 w-px bg-border"
+          className="absolute bottom-2 left-[27px] top-2 w-px bg-border md:left-[35px]"
         />
         <motion.span
           aria-hidden="true"
           style={{ scaleY: fill, originY: 0 }}
-          className="absolute bottom-2 left-[7px] top-2 w-px bg-brand"
+          className="absolute bottom-2 left-[27px] top-2 w-px bg-brand md:left-[35px]"
         />
 
         {experience.map((role, index) => (
           <BlurFade key={role.company} inView delay={0.05 * index}>
-            <li className="relative pb-14 pl-9 last:pb-0 md:pl-14">
-              <span
-                aria-hidden="true"
-                className="absolute left-0 top-1.5 size-3.5 rounded-full bg-brand ring-4 ring-background"
-              />
+            <li className="relative pb-24 pl-20 last:pb-0 md:pb-28 md:pl-28">
+              {/* One tile size for every company, so the line reads as evenly
+                  marked. The marks themselves are wildly different shapes —
+                  225x44 through 200x200 — so each is contained inside the tile
+                  rather than filling it, and the white backing is there because
+                  they are dark-on-transparent and would vanish otherwise. */}
+              <span className="absolute left-0 top-0 flex size-14 items-center justify-center rounded-xl border border-border bg-white ring-4 ring-background md:size-[72px]">
+                <Image
+                  src={role.logo}
+                  alt={role.company}
+                  width={role.logoWidth}
+                  height={role.logoHeight}
+                  sizes="144px"
+                  className="max-h-[58%] max-w-[76%] object-contain"
+                />
+              </span>
 
               <p className="font-heading text-sm font-semibold text-brand">
                 {role.period}
               </p>
 
-              <div className="mt-3 flex flex-wrap items-center gap-3">
-                {/* White backing: the marks are dark-on-transparent, so they
-                    vanish against the dark theme without it. */}
-                <span className="flex h-9 shrink-0 items-center justify-center rounded-lg border border-border bg-white px-2">
-                  <Image
-                    src={role.logo}
-                    alt={role.company}
-                    width={role.logoWidth}
-                    height={role.logoHeight}
-                    sizes="160px"
-                    className="h-5 w-auto object-contain"
-                  />
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {role.location}
-                </span>
-              </div>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {role.location}
+              </p>
 
-              <h3 className="mt-4 text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
+              <h3 className="mt-3 text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
                 {role.role}
               </h3>
 
