@@ -92,7 +92,7 @@ export function Projects() {
       id="projects"
       className="border-y border-border bg-surface py-16 md:py-24"
     >
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-7xl px-6">
         <BlurFade inView>
           <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
             Projects
@@ -105,7 +105,7 @@ export function Projects() {
           width. Inside, a 1024px window clipped the side cards against the
           column edge. */}
       {reducedMotion ? (
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-7xl px-6">
           <ProjectList />
         </div>
       ) : roomy ? (
@@ -113,7 +113,7 @@ export function Projects() {
       ) : tallEnough ? (
         <ProjectWheel compact />
       ) : (
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-7xl px-6">
           <ProjectCarousel />
         </div>
       )}

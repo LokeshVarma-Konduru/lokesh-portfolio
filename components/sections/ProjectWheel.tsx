@@ -217,7 +217,7 @@ function Detail({
           <p
             className={cn(
               "mx-auto max-w-2xl leading-relaxed text-muted-foreground",
-              compact ? "mt-3 line-clamp-3 text-sm" : "mt-4 text-[15px]",
+              compact ? "mt-3 line-clamp-3 text-sm" : "mt-4 text-[17px]",
             )}
           >
             {project.description}

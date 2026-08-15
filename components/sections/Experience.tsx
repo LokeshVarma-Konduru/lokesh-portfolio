@@ -186,11 +186,11 @@ export function Experience() {
                   {role.role}
                 </h3>
 
-                <p className="mt-1 font-heading text-base font-semibold text-brand">
+                <p className="mt-1 font-heading text-lg font-semibold text-brand">
                   {role.company}
                 </p>
 
-                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-[15px] text-muted-foreground">
                   <span>
                     {role.period} · {role.location}
                   </span>
@@ -205,7 +205,7 @@ export function Experience() {
                   {role.bullets.slice(0, BULLETS_SHOWN).map((bullet) => (
                     <li
                       key={bullet.slice(0, 24)}
-                      className="flex items-start gap-3 text-[15px] leading-relaxed text-muted-foreground"
+                      className="flex items-start gap-3 text-[17px] leading-relaxed text-muted-foreground"
                     >
                       <span className="mt-2 size-1 shrink-0 rounded-full bg-border" />
                       {bullet}

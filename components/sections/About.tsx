@@ -11,7 +11,7 @@ export function About() {
       id="about"
       className="border-y border-border bg-surface py-16 md:py-24"
     >
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-7xl px-6">
         <div className="grid items-center gap-12 md:grid-cols-5 md:gap-16">
           <BlurFade inView className="md:col-span-2">
             {/* Capped and centred on a phone: at full width a 4:5 portrait is
@@ -43,7 +43,7 @@ export function About() {
                 {personal.taglines.map((tagline) => (
                   <li
                     key={tagline}
-                    className="rounded-full border border-brand/30 px-3 py-1 text-sm text-muted-foreground"
+                    className="rounded-full border border-brand/30 px-3 py-1.5 text-[15px] text-muted-foreground"
                   >
                     {tagline}
                   </li>
@@ -64,7 +64,7 @@ export function About() {
                 href={personal.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-brand transition-colors hover:text-brand-hover"
+                className="mt-6 inline-flex items-center gap-1.5 text-[15px] font-medium text-brand transition-colors hover:text-brand-hover"
               >
                 <LinkedinIcon className="size-4" />
                 Connect on LinkedIn
@@ -93,7 +93,7 @@ export function About() {
                   />
                   {stat.suffix}
                 </dt>
-                <dd className="mt-2 text-sm text-muted-foreground">
+                <dd className="mt-2 text-[15px] text-muted-foreground">
                   {stat.label}
                 </dd>
               </div>

@@ -12,7 +12,7 @@ import { education } from "@/lib/data";
  */
 export function Education() {
   return (
-    <section id="education" className="mx-auto max-w-4xl px-6 py-16 md:py-24">
+    <section id="education" className="mx-auto max-w-5xl px-6 py-16 md:py-24">
       <BlurFade inView>
         <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
           Education
@@ -34,9 +34,9 @@ export function Education() {
                 {entry.degree}
               </h3>
 
-              <p className="mt-1 text-[15px] text-foreground">{entry.school}</p>
+              <p className="mt-1 text-[17px] text-foreground">{entry.school}</p>
 
-              <p className="mt-0.5 text-sm text-muted-foreground">
+              <p className="mt-0.5 text-[15px] text-muted-foreground">
                 {entry.location}
               </p>
 

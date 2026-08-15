@@ -126,7 +126,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="mx-auto max-w-6xl px-6 pb-24 pt-16 md:pb-32 md:pt-24"
+      className="mx-auto max-w-7xl px-6 pb-24 pt-16 md:pb-32 md:pt-24"
     >
       {/* The heading sits inside the left column rather than above both, so the
           form starts level with it instead of a heading's height further down —
@@ -194,7 +194,7 @@ export function Contact() {
                       href={href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center gap-3 py-3 text-sm transition-colors hover:text-brand"
+                      className="group flex items-center gap-3 py-3 text-[15px] transition-colors hover:text-brand"
                     >
                       <Icon className="size-4 shrink-0 text-muted-foreground transition-colors group-hover:text-brand" />
                       <span className="font-medium text-foreground transition-colors group-hover:text-brand">

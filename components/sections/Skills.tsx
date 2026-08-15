@@ -114,7 +114,7 @@ function SkillChip({ skill }: { skill: string }) {
   }
 
   return (
-    <span className="inline-flex items-center gap-2 rounded-md border border-border bg-surface-hover px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:text-foreground">
+    <span className="inline-flex items-center gap-2 rounded-md border border-border bg-surface-hover px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:text-foreground">
       <TechLogo logo={logo} className="size-4" />
       {skill}
     </span>
@@ -141,7 +141,7 @@ export function Skills() {
       id="skills"
       className="border-y border-border bg-surface py-16 md:py-24"
     >
-      <div className="mx-auto max-w-6xl px-6">
+      <div className="mx-auto max-w-7xl px-6">
         <BlurFade inView>
           <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
             Skills
@@ -172,7 +172,7 @@ export function Skills() {
         </div>
       </BlurFade>
 
-      <div className="mx-auto mt-14 grid max-w-6xl gap-5 px-6 md:grid-cols-6">
+      <div className="mx-auto mt-14 grid max-w-7xl gap-5 px-6 md:grid-cols-6">
         {skillGroups.map((group, index) => (
           <BlurFade
             key={group.title}
