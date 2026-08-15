@@ -7,7 +7,7 @@ import {
   motion,
   type Transition,
 } from "motion/react";
-import { SendHorizontal, X } from "lucide-react";
+import { SendHorizontal, Square, SquarePen, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChatMessage, TypingIndicator, type Message } from "./ChatMessage";
@@ -47,6 +47,9 @@ const DROP: Transition = {
   ease: ["easeIn", "easeOut", "easeIn", "easeOut", "easeIn"],
 };
 
+/** Within this much of the bottom, a new chunk keeps the view pinned there. */
+const STICK_TO_BOTTOM_PX = 80;
+
 type Bubble = { text: string; ask: boolean };
 
 export function ChatWidget() {
@@ -63,6 +66,7 @@ export function ChatWidget() {
   const triggerRef = useRef<HTMLButtonElement>(null);
   /** Only one bubble is ever up, so one timer retires whichever is showing. */
   const bubbleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const abortRef = useRef<AbortController | null>(null);
 
   const showBubble = useCallback((next: Bubble, ms: number) => {
     clearTimeout(bubbleTimer.current);
@@ -141,11 +145,22 @@ export function ChatWidget() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
+  // Follow the answer as it streams, but only for someone who is at the bottom.
+  // Scrolling up to re-read an earlier reply used to be undone by the next chunk.
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    const box = scrollRef.current;
+    if (!box) return;
+    const distance = box.scrollHeight - box.scrollTop - box.clientHeight;
+    if (distance < STICK_TO_BOTTOM_PX) box.scrollTop = box.scrollHeight;
   }, [messages]);
+
+  const newChat = useCallback(() => {
+    abortRef.current?.abort();
+    setMessages([]);
+    setInput("");
+    setIsLoading(false);
+    inputRef.current?.focus();
+  }, []);
 
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
@@ -158,11 +173,15 @@ export function ChatWidget() {
     setInput("");
     setIsLoading(true);
 
+    const controller = new AbortController();
+    abortRef.current = controller;
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: nextMessages }),
+        signal: controller.signal,
       });
 
       if (!res.ok || !res.body) {
@@ -189,16 +208,20 @@ export function ChatWidget() {
           return updated;
         });
       }
-    } catch {
-      setMessages((prev) => {
-        const updated = [...prev];
-        updated[updated.length - 1] = {
-          role: "assistant",
-          content: "Sorry, something went wrong. Please try again.",
-        };
-        return updated;
-      });
+    } catch (error) {
+      // A stop is not a failure: keep whatever had already arrived.
+      if ((error as Error)?.name !== "AbortError") {
+        setMessages((prev) => {
+          const updated = [...prev];
+          updated[updated.length - 1] = {
+            role: "assistant",
+            content: "Sorry, something went wrong. Please try again.",
+          };
+          return updated;
+        });
+      }
     } finally {
+      abortRef.current = null;
       setIsLoading(false);
     }
   };
@@ -225,13 +248,25 @@ export function ChatWidget() {
                 <RobotAvatar className="size-7" active />
                 Ask about Lokesh
               </span>
-              <button
-                onClick={() => setOpen(false)}
-                aria-label="Close chat"
-                className="text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <X className="size-4" />
-              </button>
+              <div className="flex items-center gap-1">
+                {messages.length > 0 && (
+                  <button
+                    onClick={newChat}
+                    aria-label="Start a new chat"
+                    title="New chat"
+                    className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground"
+                  >
+                    <SquarePen className="size-4" />
+                  </button>
+                )}
+                <button
+                  onClick={() => setOpen(false)}
+                  aria-label="Close chat"
+                  className="rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-surface-hover hover:text-foreground"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
             </div>
 
             <div
@@ -258,6 +293,11 @@ export function ChatWidget() {
                       key={index}
                       role={message.role}
                       content={message.content}
+                      streaming={
+                        isLoading &&
+                        index === messages.length - 1 &&
+                        message.content !== ""
+                      }
                     />
                   ))}
                   {showTypingIndicator && <TypingIndicator />}
@@ -277,17 +317,31 @@ export function ChatWidget() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask a question..."
-                disabled={isLoading}
               />
-              <Button
-                type="submit"
-                size="icon"
-                disabled={isLoading || !input.trim()}
-                className="shrink-0"
-                aria-label="Send message"
-              >
-                <SendHorizontal className="size-4" />
-              </Button>
+              {/* While a reply is streaming the same slot stops it, rather than
+                  leaving a disabled button and no way out of a long answer. */}
+              {isLoading ? (
+                <Button
+                  type="button"
+                  size="icon"
+                  variant="secondary"
+                  onClick={() => abortRef.current?.abort()}
+                  className="shrink-0"
+                  aria-label="Stop generating"
+                >
+                  <Square className="size-3.5 fill-current" />
+                </Button>
+              ) : (
+                <Button
+                  type="submit"
+                  size="icon"
+                  disabled={!input.trim()}
+                  className="shrink-0"
+                  aria-label="Send message"
+                >
+                  <SendHorizontal className="size-4" />
+                </Button>
+              )}
             </form>
           </motion.div>
         )}
