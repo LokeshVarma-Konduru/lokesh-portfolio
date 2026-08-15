@@ -31,9 +31,12 @@ export function RobotAvatar({
   className = "",
   /** True while the chat panel is open: the robot squints and the antenna lifts. */
   active = false,
+  /** Flip to true once to play a single greeting tilt. */
+  wave = false,
 }: {
   className?: string;
   active?: boolean;
+  wave?: boolean;
 }) {
   const gradientId = useId();
   const hostRef = useRef<HTMLSpanElement>(null);
@@ -77,13 +80,16 @@ export function RobotAvatar({
 
     let open: ReturnType<typeof setTimeout>;
     const schedule = () =>
-      setTimeout(() => {
-        setBlinking(true);
-        open = setTimeout(() => {
-          setBlinking(false);
-          next = schedule();
-        }, 130);
-      }, 2600 + Math.random() * 3400);
+      setTimeout(
+        () => {
+          setBlinking(true);
+          open = setTimeout(() => {
+            setBlinking(false);
+            next = schedule();
+          }, 130);
+        },
+        2600 + Math.random() * 3400,
+      );
 
     let next = schedule();
     return () => {
@@ -99,98 +105,163 @@ export function RobotAvatar({
       className={`relative inline-block size-11 shrink-0 ${className}`}
       style={{ perspective: "220px" }}
     >
+      {/* Wave and float are separate elements so their transforms compose
+          instead of one keyframe list having to describe both. */}
       <motion.span
         className="block size-full"
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        animate={animated ? { y: [0, -1.8, 0] } : undefined}
-        transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+        initial={false}
+        animate={{ rotate: wave && animated ? [0, -11, 7, 0] : 0 }}
+        transition={{ duration: 0.9, ease: "easeInOut" }}
       >
-        <svg viewBox="0 0 48 48" className="size-full overflow-visible">
-          <defs>
-            <linearGradient id={`${gradientId}-shell`} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#FDFDFE" />
-              <stop offset="52%" stopColor="#DCE1EA" />
-              <stop offset="100%" stopColor="#A8B2C4" />
-            </linearGradient>
-            <linearGradient id={`${gradientId}-visor`} x1="0" y1="0" x2="0.4" y2="1">
-              <stop offset="0%" stopColor="#1B2436" />
-              <stop offset="100%" stopColor="#070B14" />
-            </linearGradient>
-          </defs>
+        <motion.span
+          className="block size-full"
+          style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+          animate={animated ? { y: [0, -3, 0] } : undefined}
+          transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <svg viewBox="0 0 48 48" className="size-full overflow-visible">
+            <defs>
+              <linearGradient
+                id={`${gradientId}-shell`}
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="#FDFDFE" />
+                <stop offset="52%" stopColor="#DCE1EA" />
+                <stop offset="100%" stopColor="#A8B2C4" />
+              </linearGradient>
+              <linearGradient
+                id={`${gradientId}-visor`}
+                x1="0"
+                y1="0"
+                x2="0.4"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="#1B2436" />
+                <stop offset="100%" stopColor="#070B14" />
+              </linearGradient>
+            </defs>
 
-          {/* Antenna. The tip is the one brand-coloured thing above the visor. */}
-          <line
-            x1="24"
-            y1="6.5"
-            x2="24"
-            y2="12.5"
-            stroke="#8E99AC"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-          />
-          <motion.circle
-            cx="24"
-            cy="5.4"
-            r="2.5"
-            fill="#3B82F6"
-            animate={
-              animated
-                ? { opacity: active ? 1 : [0.55, 1, 0.55], r: active ? 3 : 2.5 }
-                : undefined
-            }
-            transition={{ duration: 2, repeat: active ? 0 : Infinity, ease: "easeInOut" }}
-            style={{ filter: "drop-shadow(0 0 3px #3B82F6)" }}
-          />
+            {/* Antenna. The tip is the one brand-coloured thing above the visor. */}
+            <line
+              x1="24"
+              y1="6.5"
+              x2="24"
+              y2="12.5"
+              stroke="#8E99AC"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+            />
+            <motion.circle
+              cx="24"
+              cy="5.4"
+              r="2.5"
+              fill="#3B82F6"
+              animate={
+                animated
+                  ? {
+                      opacity: active ? 1 : [0.55, 1, 0.55],
+                      r: active ? 3 : 2.5,
+                    }
+                  : undefined
+              }
+              transition={{
+                duration: 2,
+                repeat: active ? 0 : Infinity,
+                ease: "easeInOut",
+              }}
+              style={{ filter: "drop-shadow(0 0 3px #3B82F6)" }}
+            />
 
-          {/* Ears, drawn before the head so the head's edge overlaps them. */}
-          <rect x="4" y="21" width="4.5" height="9" rx="2.2" fill="#94A0B4" />
-          <rect x="39.5" y="21" width="4.5" height="9" rx="2.2" fill="#7E8A9E" />
+            {/* Ears, drawn before the head so the head's edge overlaps them. */}
+            <rect x="4" y="21" width="4.5" height="9" rx="2.2" fill="#94A0B4" />
+            <rect
+              x="39.5"
+              y="21"
+              width="4.5"
+              height="9"
+              rx="2.2"
+              fill="#7E8A9E"
+            />
 
-          <rect
-            x="8"
-            y="12.5"
-            width="32"
-            height="26"
-            rx="9.5"
-            fill={`url(#${gradientId}-shell)`}
-          />
-          {/* A single specular streak: what sells the shell as curved. */}
-          <rect x="11" y="14.5" width="26" height="5" rx="2.5" fill="#FFFFFF" opacity="0.55" />
+            <rect
+              x="8"
+              y="12.5"
+              width="32"
+              height="26"
+              rx="9.5"
+              fill={`url(#${gradientId}-shell)`}
+            />
+            {/* A single specular streak: what sells the shell as curved. */}
+            <rect
+              x="11"
+              y="14.5"
+              width="26"
+              height="5"
+              rx="2.5"
+              fill="#FFFFFF"
+              opacity="0.55"
+            />
 
-          <rect
-            x="11.5"
-            y="18"
-            width="25"
-            height="14.5"
-            rx="7.2"
-            fill={`url(#${gradientId}-visor)`}
-          />
+            <rect
+              x="11.5"
+              y="18"
+              width="25"
+              height="14.5"
+              rx="7.2"
+              fill={`url(#${gradientId}-visor)`}
+            />
 
-          <motion.g style={{ x: gazeX, y: gazeY }}>
-            {active ? (
-              // Squint: the robot is listening rather than staring.
-              <>
-                <rect x="17" y="24.4" width="5.4" height="1.8" rx="0.9" fill="#3B82F6" />
-                <rect x="25.6" y="24.4" width="5.4" height="1.8" rx="0.9" fill="#3B82F6" />
-              </>
-            ) : (
-              [18.4, 29.6].map((cx) => (
-                <ellipse
-                  key={cx}
-                  cx={cx}
-                  cy="25.3"
-                  rx="2.5"
-                  ry={blinking ? 0.35 : 2.9}
-                  fill="#3B82F6"
-                  style={{ filter: "drop-shadow(0 0 2.5px #60A5FA)" }}
-                />
-              ))
-            )}
-          </motion.g>
+            <motion.g style={{ x: gazeX, y: gazeY }}>
+              {active ? (
+                // Squint: the robot is listening rather than staring.
+                <>
+                  <rect
+                    x="17"
+                    y="24.4"
+                    width="5.4"
+                    height="1.8"
+                    rx="0.9"
+                    fill="#3B82F6"
+                  />
+                  <rect
+                    x="25.6"
+                    y="24.4"
+                    width="5.4"
+                    height="1.8"
+                    rx="0.9"
+                    fill="#3B82F6"
+                  />
+                </>
+              ) : (
+                [18.4, 29.6].map((cx) => (
+                  <ellipse
+                    key={cx}
+                    cx={cx}
+                    cy="25.3"
+                    rx="2.5"
+                    ry={blinking ? 0.35 : 2.9}
+                    fill="#3B82F6"
+                    style={{ filter: "drop-shadow(0 0 2.5px #60A5FA)" }}
+                  />
+                ))
+              )}
+            </motion.g>
 
-          {/* Chin vent: keeps the lower shell from reading as an empty slab. */}
-          <rect x="20" y="35" width="8" height="1.4" rx="0.7" fill="#8E99AC" opacity="0.7" />
-        </svg>
+            {/* Chin vent: keeps the lower shell from reading as an empty slab. */}
+            <rect
+              x="20"
+              y="35"
+              width="8"
+              height="1.4"
+              rx="0.7"
+              fill="#8E99AC"
+              opacity="0.7"
+            />
+          </svg>
+        </motion.span>
       </motion.span>
     </span>
   );
