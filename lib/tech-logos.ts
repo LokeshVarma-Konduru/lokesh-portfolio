@@ -10,32 +10,36 @@
  * are absent on purpose and fall back to a text badge.
  */
 export const techLogos: Record<string, string> = {
+  // Languages
+  Python: "python",
+  JavaScript: "javascript",
+  TypeScript: "typescript",
+  Java: "java",
+  HTML5: "html5",
+  CSS3: "css",
+
   // Frontend
   "React.js": "react",
   "Next.js": "nextjs",
-  TypeScript: "typescript",
-  JavaScript: "javascript",
   "Redux Toolkit": "redux",
   "React Query": "react-query",
   "Tailwind CSS": "tailwindcss",
-  HTML5: "html5",
-  CSS3: "css",
+  "Socket.io": "socketio",
   "Framer Motion": "motion",
 
   // Backend
   "Node.js": "nodejs",
   "Express.js": "express",
-  Python: "python",
+  "Java/Spring Boot": "spring",
+  "Spring Security": "spring",
   FastAPI: "fastapi",
   Flask: "flask",
-  Java: "java",
-  "Spring Boot": "spring",
-  "Socket.io": "socketio",
   GraphQL: "graphql",
 
   // AI
   LangChain: "langchain",
   LangGraph: "langchain",
+  "OpenAI API": "openai",
   "OpenAI Embeddings": "openai",
   "GPT-4o": "openai",
   Claude: "claude",
@@ -44,7 +48,8 @@ export const techLogos: Record<string, string> = {
   // Cloud
   "AWS EC2": "aws",
   "Amazon S3": "aws",
-  SageMaker: "aws",
+  "API Gateway": "aws",
+  "AWS ALB": "aws",
   CloudWatch: "aws",
   Kubernetes: "kubernetes",
   Docker: "docker",
@@ -58,6 +63,9 @@ export const techLogos: Record<string, string> = {
   MySQL: "mysql",
   Redis: "redis",
   Firebase: "firebase",
+
+  // Tools
+  Git: "github",
 };
 
 /**

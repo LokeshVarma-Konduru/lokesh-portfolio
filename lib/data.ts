@@ -42,36 +42,57 @@ export const stats = [
   { value: 4, suffix: "", label: "Production Systems" },
 ];
 
+/**
+ * The superset, not a copy of any one résumé.
+ *
+ * The résumé gets tailored per application — a stack emphasised here, one
+ * dropped there — so this holds everything defensible in an interview. Someone
+ * who reads a tailored résumé and then opens the site should find more than it
+ * said, never something different from it.
+ */
 export const skills = {
+  languages: [
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "Java",
+    "SQL",
+    "C",
+    "C++",
+    "HTML5",
+    "CSS3",
+  ],
   frontend: [
     "React.js",
     "Next.js",
-    "TypeScript",
-    "JavaScript",
     "Redux Toolkit",
     "React Query",
     "Tailwind CSS",
-    "HTML5",
-    "CSS3",
+    "Socket.io",
+    "Plotly Dash",
     "Framer Motion",
   ],
   backend: [
     "Node.js",
     "Express.js",
-    "Python",
+    "Java/Spring Boot",
+    "Spring Security",
     "FastAPI",
     "Flask",
-    "Java",
-    "Spring Boot",
-    "Socket.io",
     "REST APIs",
     "GraphQL",
+    "Microservices",
+    "Distributed Systems",
+    "System Design",
+    "JWT/OAuth2",
+    "PySpark",
   ],
   ai: [
     "LangChain",
     "LangGraph",
     "RAG Pipelines",
     "FAISS",
+    "OpenAI API",
     "OpenAI Embeddings",
     "Prompt Engineering",
     "AI Agents",
@@ -83,16 +104,32 @@ export const skills = {
   cloud: [
     "AWS EC2",
     "Amazon S3",
+    "API Gateway",
+    "AWS ALB",
+    "CloudWatch",
     "Kubernetes",
     "Docker",
     "Kafka",
-    "GitHub Actions",
     "Terraform",
-    "CI/CD Pipelines",
+    "GitHub Actions",
+    "Apache Airflow",
+    "Microsoft Azure",
+    "Azure DevOps",
     "OpenTelemetry",
-    "CloudWatch",
+    "Prometheus",
+    "Grafana",
+    "Linux",
   ],
   databases: ["PostgreSQL", "MongoDB", "MySQL", "Redis", "Firebase"],
+  tools: [
+    "Jest",
+    "PyTest",
+    "TDD",
+    "Git",
+    "Agile/Scrum",
+    "Jira",
+    "Google Earth Engine",
+  ],
 };
 
 export const projects = [

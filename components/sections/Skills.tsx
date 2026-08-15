@@ -1,15 +1,46 @@
-import { Brain, Cloud, Database, Monitor, Server } from "lucide-react";
+import {
+  Brain,
+  Cloud,
+  Code2,
+  Database,
+  Monitor,
+  Server,
+  Wrench,
+} from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { Badge } from "@/components/ui/badge";
 import { Marquee } from "@/components/ui/marquee";
 import { logoFor, type TechLogo } from "@/lib/tech-logos";
 import { skills } from "@/lib/data";
 
+/**
+ * Seven groups on a six-column grid, sized by how much each holds rather than
+ * by importance: the two longest lists get half the width, the four-item tools
+ * list gets a third. Nothing wraps to a lonely second row.
+ */
 const skillGroups = [
+  {
+    title: "Languages",
+    icon: Code2,
+    items: skills.languages,
+    span: "md:col-span-2",
+  },
   {
     title: "Frontend",
     icon: Monitor,
     items: skills.frontend,
+    span: "md:col-span-2",
+  },
+  {
+    title: "Databases",
+    icon: Database,
+    items: skills.databases,
+    span: "md:col-span-2",
+  },
+  {
+    title: "Backend",
+    icon: Server,
+    items: skills.backend,
     span: "md:col-span-3",
   },
   {
@@ -19,21 +50,15 @@ const skillGroups = [
     span: "md:col-span-3",
   },
   {
-    title: "Backend",
-    icon: Server,
-    items: skills.backend,
-    span: "md:col-span-2",
-  },
-  {
     title: "Cloud & DevOps",
     icon: Cloud,
     items: skills.cloud,
-    span: "md:col-span-2",
+    span: "md:col-span-4",
   },
   {
-    title: "Databases",
-    icon: Database,
-    items: skills.databases,
+    title: "Testing & Tools",
+    icon: Wrench,
+    items: skills.tools,
     span: "md:col-span-2",
   },
 ];
@@ -43,13 +68,22 @@ const skillGroups = [
  * drawn as a mask instead, so they take the current text colour rather than
  * disappearing into the background.
  */
-function TechLogo({ logo, className = "" }: { logo: TechLogo; className?: string }) {
+function TechLogo({
+  logo,
+  className = "",
+}: {
+  logo: TechLogo;
+  className?: string;
+}) {
   if (logo.mono) {
     return (
       <span
         aria-hidden="true"
         className={`shrink-0 bg-current [mask-position:center] [mask-repeat:no-repeat] [mask-size:contain] ${className}`}
-        style={{ maskImage: `url(${logo.src})`, WebkitMaskImage: `url(${logo.src})` }}
+        style={{
+          maskImage: `url(${logo.src})`,
+          WebkitMaskImage: `url(${logo.src})`,
+        }}
       />
     );
   }
@@ -70,7 +104,10 @@ function SkillChip({ skill }: { skill: string }) {
 
   if (!logo) {
     return (
-      <Badge variant="outline" className="border-brand/30 text-muted-foreground">
+      <Badge
+        variant="outline"
+        className="border-brand/30 text-muted-foreground"
+      >
         {skill}
       </Badge>
     );
@@ -91,7 +128,7 @@ const marqueeLogos = [
       .flat()
       .map((skill) => logoFor(skill))
       .filter((logo): logo is TechLogo => Boolean(logo))
-      .map((logo) => [logo.src, logo])
+      .map((logo) => [logo.src, logo]),
   ).values(),
 ];
 
@@ -121,7 +158,11 @@ export function Skills() {
               <TechLogo key={logo.src} logo={logo} className="size-9" />
             ))}
           </Marquee>
-          <Marquee reverse pauseOnHover className="[--duration:75s] [--gap:3rem]">
+          <Marquee
+            reverse
+            pauseOnHover
+            className="[--duration:75s] [--gap:3rem]"
+          >
             {[...marqueeLogos].reverse().map((logo) => (
               <TechLogo key={logo.src} logo={logo} className="size-9" />
             ))}
