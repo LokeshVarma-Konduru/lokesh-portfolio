@@ -125,7 +125,12 @@ export function Hero() {
                 size="lg"
                 nativeButton={false}
                 className="border-white/20 bg-white/5 text-white hover:bg-white/10 hover:text-white"
-                render={<a href={personal.resumeUrl} download />}
+                render={
+                  <a
+                    href={personal.resumeUrl}
+                    download={personal.resumeFilename}
+                  />
+                }
               >
                 <Download className="size-4" />
                 Resume PDF

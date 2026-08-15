@@ -6,7 +6,13 @@ export const personal = {
   linkedin: "https://linkedin.com/in/lokeshvarmakonduru",
   github: "https://github.com/LokeshVarma-Konduru",
   handshake: "https://app.joinhandshake.com/profiles/lokeshvarmak",
+  /**
+   * A fixed path, so updating the résumé is only ever overwriting this file —
+   * no code change, nothing to break. The name a visitor's browser saves it
+   * under comes from `resumeFilename` on the download link instead.
+   */
   resumeUrl: "/resume.pdf",
+  resumeFilename: "Lokesh_Varma_Konduru_Resume.pdf",
   location: "Virginia, USA",
   seeking: "Full-time SDE roles · Graduating May 2026",
   taglines: [
@@ -77,7 +83,6 @@ export const skills = {
   cloud: [
     "AWS EC2",
     "Amazon S3",
-    "SageMaker",
     "Kubernetes",
     "Docker",
     "Kafka",
@@ -99,7 +104,7 @@ export const projects = [
     id: "01",
     image: "/projects/bookstore.png",
     title: "AI-Powered Bookstore E-Commerce",
-    client: "Virginia Tech (Personal Project)",
+    client: "Virginia Tech",
     period: "Feb 2025 – May 2025",
     description:
       "Full-stack bookstore platform with catalog, cart, and checkout workflows, plus a LangChain-powered recommendation assistant using FAISS semantic search for personalized book discovery.",
@@ -159,14 +164,7 @@ export const projects = [
       "Production fraud detection system processing 10K+ transactions with GenAI investigation assistant using RAG pipelines, semantic chunking, and MCP tool calling.",
     note: "3-semester capstone · Team of 5 · Real government client",
     featured: true,
-    tech: [
-      "React",
-      "Node.js",
-      "Kafka",
-      "AWS SageMaker",
-      "LangChain",
-      "MongoDB",
-    ],
+    tech: ["React", "Node.js", "Kafka", "MongoDB", "LangChain", "Kubernetes"],
     metrics: [
       "10,000+ transactions processed",
       "30% reduction in manual fraud review time",
@@ -181,7 +179,7 @@ export const projects = [
     id: "04",
     image: "/projects/nova-clinic.png",
     title: "Nova Clinic — Appointment Management Platform",
-    client: "Virginia Tech (Personal Project)",
+    client: "Virginia Tech",
     period: "Feb 2026 – May 2026",
     description:
       "JWT-authenticated REST APIs over HTTPS built with Python/FastAPI and MySQL, with a responsive HTML5/CSS frontend for appointment management and zero-downtime production deployment.",
@@ -226,7 +224,7 @@ export const experience = [
     note: "3-semester capstone · Team of 5 · Real government client",
     bullets: [
       "Scaled fraud detection to handle 10K+ transactions by architecting microservices with Node.js/Express, MongoDB, and Redis for real-time fraud score and transaction lookups.",
-      "Reduced fraud signal processing latency by 40% by orchestrating Kafka event streaming on Kubernetes with CloudWatch and OpenTelemetry distributed tracing, integrating SageMaker for ML inference and S3 for model artifact storage.",
+      "Reduced fraud signal processing latency by 40% by orchestrating Kafka event streaming on Kubernetes with CloudWatch and OpenTelemetry distributed tracing, and S3 for model artifact storage.",
       "Reduced manual fraud review time by 30% by building a GenAI fraud investigation assistant with LangChain, LangGraph, and FAISS, implementing RAG pipelines and MCP tool calling for intelligent fraud signal analysis.",
     ],
   },

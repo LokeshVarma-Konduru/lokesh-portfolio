@@ -113,7 +113,7 @@ export function CommandPalette() {
               runCommand(() => {
                 const link = document.createElement("a");
                 link.href = personal.resumeUrl;
-                link.download = "";
+                link.download = personal.resumeFilename;
                 link.click();
               })
             }

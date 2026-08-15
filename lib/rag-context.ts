@@ -30,7 +30,7 @@ WORK EXPERIENCE:
 - This was a 3-semester university capstone project with a real government client (MCCS)
 - Team of 5 engineers with a professor as mentor
 - Scaled fraud detection to handle 10K+ transactions by architecting microservices with Node.js/Express, MongoDB, and Redis for real-time fraud score and transaction lookups
-- Reduced fraud signal processing latency by 40% by orchestrating Kafka event streaming on Kubernetes with CloudWatch and OpenTelemetry distributed tracing, integrating SageMaker for ML inference and S3 for model artifact storage
+- Reduced fraud signal processing latency by 40% by orchestrating Kafka event streaming on Kubernetes with CloudWatch and OpenTelemetry distributed tracing, and S3 for model artifact storage
 - Reduced manual fraud review time by 30% by building a GenAI fraud investigation assistant with LangChain, LangGraph, and FAISS, implementing RAG pipelines and MCP tool calling for intelligent fraud signal analysis
 
 3. Software Engineer — DuoDecimal Tech LLP (July 2023 – July 2024)
@@ -44,7 +44,7 @@ WORK EXPERIENCE:
 - Ensured data quality and reliability across 10M+ airline records by designing distributed pipelines with PySpark, Kafka, and Apache Airflow, with automated PyTest unit and integration testing
 
 PROJECTS:
-1. MCCS Fraud Detection Platform — React, Node.js, Kafka, SageMaker, LangChain
+1. MCCS Fraud Detection Platform — React, Node.js, Kafka, Kubernetes, LangChain
 2. Agroclimate Viewer & Planner App — React, TypeScript, Google Earth Engine, Firebase, FastAPI, PostgreSQL. Consolidated 5+ GEE analytics tools into one platform with Firebase user telemetry, plus an internal FastAPI analytics dashboard with Prometheus/Grafana observability.
 3. Bookstore AI E-Commerce — React, Java/Spring Boot, MySQL, LangChain, FAISS, achieving sub-200ms API response times
 4. Nova Clinic — Python/FastAPI, MySQL, HTML5/CSS, JWT. JWT-authenticated REST APIs over HTTPS for appointment management, with a normalized MySQL schema and role-based access control (Feb 2026 – May 2026)
@@ -55,7 +55,7 @@ Frontend: React.js, Next.js SSR, Redux Toolkit, React Query, Tailwind CSS, HTML5
 Backend: Node.js/Express, Java/Spring Boot, Spring Security, FastAPI, Flask, REST APIs, Microservices, Distributed Systems, JWT/OAuth2, pandas, NumPy, PySpark
 Databases & Caching: PostgreSQL, MongoDB, MySQL, Redis, Firebase
 AI Integration: LangChain, LangGraph, OpenAI API, RAG Pipelines, FAISS, MCP Tool Calling
-Cloud & DevOps: AWS (EC2, S3, SageMaker, API Gateway, ALB, CloudWatch), Kubernetes, Docker, Kafka, Terraform, GitHub Actions CI/CD, Apache Airflow, Microsoft Azure, Azure DevOps, OpenTelemetry, Prometheus/Grafana, Linux
+Cloud & DevOps: AWS (EC2, S3, API Gateway, ALB, CloudWatch), Kubernetes, Docker, Kafka, Terraform, GitHub Actions CI/CD, Apache Airflow, Microsoft Azure, Azure DevOps, OpenTelemetry, Prometheus/Grafana, Linux
 Testing & Tools: Jest, PyTest, TDD, Git, Agile/Scrum, Jira, System Design, Google Earth Engine
 
 WHAT LOKESH IS LOOKING FOR:
