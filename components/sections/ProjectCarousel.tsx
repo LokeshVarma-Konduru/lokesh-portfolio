@@ -15,6 +15,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { ProjectLinks, type Project } from "./ProjectLinks";
 import { useMediaQuery } from "@/lib/use-media-query";
@@ -99,13 +100,18 @@ export function ProjectCarousel() {
 function Card({ project }: { project: Project }) {
   return (
     <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-background">
-      {/* eslint-disable-next-line @next/next/no-img-element -- placeholder SVGs
-          of a known size, swapped for real screenshots later. */}
-      <img
-        src={project.image}
-        alt=""
-        className="aspect-16/10 w-full border-b border-border object-cover"
-      />
+      {/* Resized and re-encoded by Next rather than shipping the source PNG,
+          which runs to megabytes for a card a phone shows at 320px. */}
+      {/* 1.95:1, the screenshots' own ratio, so object-cover crops nothing. */}
+      <div className="relative aspect-[1.95] w-full border-b border-border">
+        <Image
+          src={project.image}
+          alt=""
+          fill
+          sizes="(max-width: 480px) 90vw, 448px"
+          className="object-cover"
+        />
+      </div>
 
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-center gap-3">

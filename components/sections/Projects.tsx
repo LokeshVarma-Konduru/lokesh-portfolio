@@ -98,17 +98,25 @@ export function Projects() {
             Projects
           </h2>
         </BlurFade>
-
-        {reducedMotion ? (
-          <ProjectList />
-        ) : roomy ? (
-          <ProjectWheel />
-        ) : tallEnough ? (
-          <ProjectWheel compact />
-        ) : (
-          <ProjectCarousel />
-        )}
       </div>
+
+      {/* The ring is wider than the reading column — 340px of radius either side
+          of centre plus half a card — so it sits outside it and manages its own
+          width. Inside, a 1024px window clipped the side cards against the
+          column edge. */}
+      {reducedMotion ? (
+        <div className="mx-auto max-w-6xl px-6">
+          <ProjectList />
+        </div>
+      ) : roomy ? (
+        <ProjectWheel />
+      ) : tallEnough ? (
+        <ProjectWheel compact />
+      ) : (
+        <div className="mx-auto max-w-6xl px-6">
+          <ProjectCarousel />
+        </div>
+      )}
     </section>
   );
 }

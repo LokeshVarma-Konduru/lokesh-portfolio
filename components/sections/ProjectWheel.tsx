@@ -26,6 +26,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   AnimatePresence,
   motion,
@@ -40,19 +41,19 @@ import { cn } from "@/lib/utils";
 import { projects } from "@/lib/data";
 
 /**
- * Cards are landscape because the images are browser screenshots. Four of them
- * on a ring sit 2·R·sin(45°) apart — 481px on the wide ring, 283px on the
- * compact one — so in both cases the card width leaves them clear of each
- * other, even with the active one scaled up.
+ * The card ratio matches the screenshots — they are about 1.95:1, and at 16:10
+ * object-cover was slicing a strip off each side of every one.
  *
- * The compact set is what makes a phone possible. Height is the real constraint
- * there, not width: the panel and the visible arc have to share about 700px, so
- * the ring drops to a 200px radius and the panel loses a tech chip and some
- * type size. Below that height Projects falls back to the swipe carousel.
+ * Widths are bounded by the ring, since four cards sit 2·R·sin(45°) apart: 481px
+ * on the wide ring against a 400px card at 105%, and 318px on the compact one
+ * against 290px. The compact radius went up with the card to keep that gap.
+ *
+ * Height is what limits the compact set, not width: the panel and the visible
+ * arc have to share about 700px. Below that Projects falls back to the carousel.
  */
 const SIZES = {
-  wide: { radius: 340, cardW: 320, cardH: 200, scrollPer: 320 },
-  compact: { radius: 200, cardW: 240, cardH: 150, scrollPer: 280 },
+  wide: { radius: 340, cardW: 400, cardH: 205, scrollPer: 320 },
+  compact: { radius: 225, cardW: 290, cardH: 149, scrollPer: 280 },
 };
 
 export function ProjectWheel({ compact = false }: { compact?: boolean }) {
@@ -310,13 +311,17 @@ function RimCard({
         dimmed && "opacity-40 grayscale",
       )}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element -- the placeholders
-          are SVGs of a known size and this card never changes dimensions. */}
-      <img
+      {/* next/image, not a bare tag: the screenshots are 3MB PNGs at source and
+          this renders them 320px wide. Next resizes and re-encodes to AVIF or
+          WebP per request, which is the difference between a few hundred
+          kilobytes and five megabytes across the four cards. */}
+      <Image
         src={project.image}
         alt=""
+        fill
+        sizes="440px"
         className={cn(
-          "absolute inset-0 size-full object-cover transition-transform duration-700 ease-out",
+          "object-cover transition-transform duration-700 ease-out",
           isActive ? "scale-105" : "scale-100",
         )}
       />

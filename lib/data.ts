@@ -97,7 +97,7 @@ export const projects = [
   // since each placeholder was drawn for its own project.
   {
     id: "01",
-    image: "/projects/placeholder-03.svg",
+    image: "/projects/bookstore.png",
     title: "AI-Powered Bookstore E-Commerce",
     client: "Virginia Tech (Personal Project)",
     period: "Feb 2025 – May 2025",
@@ -118,12 +118,13 @@ export const projects = [
       "JWT/OAuth2 with Spring Security",
       "Redis session caching",
     ],
-    github: "",
-    live: "",
+    github:
+      "https://github.com/LokeshVarma-Konduru/E-Commerce-Bookstore-Platform",
+    live: "https://e-commerce-bookstore-platform.vercel.app/",
   },
   {
     id: "02",
-    image: "/projects/placeholder-02.svg",
+    image: "/projects/agroclimate.png",
     title: "Agroclimate Viewer & Planner App",
     client: "Virginia Tech Research",
     period: "Sept 2024 – May 2026",
@@ -144,13 +145,13 @@ export const projects = [
       "40% improvement in processing efficiency (FastAPI, Redis, asyncio)",
       "20% improvement in issue resolution via Prometheus/Grafana observability",
     ],
-    github: "",
-    live: "",
+    github: "https://github.com/DATL-Chandel/Agroclimate",
+    live: "https://datl-chandel.github.io/Agroclimate",
     publication: "",
   },
   {
     id: "03",
-    image: "/projects/placeholder-01.svg",
+    image: "/projects/fraud-detection.png",
     title: "AI-Powered Fraud Detection Platform",
     client: "Marine Corps Community Services (MCCS)",
     period: "Sept 2024 – Dec 2025",
@@ -172,12 +173,13 @@ export const projects = [
       "40% reduction in fraud signal processing latency",
       "GenAI RAG agent with MCP tool calling",
     ],
-    github: "",
+    github:
+      "https://github.com/LokeshVarma-Konduru/MCCS-E-commerce-Fraud-Detection",
     live: "",
   },
   {
     id: "04",
-    image: "/projects/placeholder-04.svg",
+    image: "/projects/nova-clinic.png",
     title: "Nova Clinic — Appointment Management Platform",
     client: "Virginia Tech (Personal Project)",
     period: "Feb 2026 – May 2026",
@@ -191,7 +193,7 @@ export const projects = [
       "Normalized MySQL schema with role-based access control",
       "JWT claim-based data privacy permissions",
     ],
-    github: "",
+    github: "https://github.com/LokeshVarma-Konduru/NovaClinic",
     live: "",
   },
 ];
