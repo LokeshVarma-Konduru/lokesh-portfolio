@@ -5,8 +5,7 @@ export const personal = {
   phone: "+1 571-244-4062",
   linkedin: "https://linkedin.com/in/lokeshvarmakonduru",
   github: "https://github.com/LokeshVarma-Konduru",
-  /** Paste the profile URL from Handshake; the link hides itself while empty. */
-  handshake: "",
+  handshake: "https://app.joinhandshake.com/profiles/lokeshvarmak",
   resumeUrl: "/resume.pdf",
   location: "Virginia, USA",
   seeking: "Full-time SDE roles · Graduating May 2026",

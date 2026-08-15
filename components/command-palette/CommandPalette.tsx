@@ -6,6 +6,7 @@ import {
   Briefcase,
   Download,
   FolderGit2,
+  Handshake,
   Mail,
   MessageCircle,
   Moon,
@@ -62,7 +63,8 @@ export function CommandPalette() {
   const goTo = (id: string) =>
     document.querySelector(`#${id}`)?.scrollIntoView({ behavior: "smooth" });
 
-  const openLink = (url: string) => window.open(url, "_blank", "noopener,noreferrer");
+  const openLink = (url: string) =>
+    window.open(url, "_blank", "noopener,noreferrer");
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
@@ -85,13 +87,23 @@ export function CommandPalette() {
         <CommandSeparator />
 
         <CommandGroup heading="Links">
-          <CommandItem onSelect={() => runCommand(() => openLink(personal.github))}>
+          <CommandItem
+            onSelect={() => runCommand(() => openLink(personal.github))}
+          >
             <GithubIcon className="size-4" />
             Open GitHub
           </CommandItem>
-          <CommandItem onSelect={() => runCommand(() => openLink(personal.linkedin))}>
+          <CommandItem
+            onSelect={() => runCommand(() => openLink(personal.linkedin))}
+          >
             <LinkedinIcon className="size-4" />
             Open LinkedIn
+          </CommandItem>
+          <CommandItem
+            onSelect={() => runCommand(() => openLink(personal.handshake))}
+          >
+            <Handshake className="size-4" />
+            Open Handshake
           </CommandItem>
           <CommandItem
             onSelect={() =>
@@ -113,7 +125,9 @@ export function CommandPalette() {
         <CommandGroup heading="Actions">
           <CommandItem
             onSelect={() =>
-              runCommand(() => setTheme(resolvedTheme === "dark" ? "light" : "dark"))
+              runCommand(() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark"),
+              )
             }
           >
             {resolvedTheme === "dark" ? <Sun /> : <Moon />}
