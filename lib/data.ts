@@ -254,10 +254,16 @@ export const experience = [
     logoHeight: 44,
     period: "Sept 2024 – May 2026",
     location: "Virginia, USA",
-    // The résumé also links "VT Publications" here; add it when you have the
-    // URL to hand and it will render alongside the site link.
+    // The work published out of this role, alongside the tool itself. Both
+    // extension publications live behind one author page, and the SPIE paper is
+    // research from the same lab.
     links: [
       { label: "Website", href: "https://datl-chandel.github.io/Agroclimate" },
+      {
+        label: "VT Publications",
+        href: "https://www.pubs.ext.vt.edu/content/pubs_ext_vt_edu/en/author/k/konduru-varma-lokesh.resource.html",
+      },
+      { label: "SPIE Paper", href: "https://doi.org/10.1117/12.3094626" },
     ],
     bullets: [
       "Cut bug turnaround by 40% with a full-stack platform — React and TypeScript on Next.js SSR, PostgreSQL behind it, Jest across both unit and integration paths.",
@@ -315,30 +321,6 @@ export const experience = [
       "Improved data visibility 40% for telecom and CPG clients with Python, Flask and Plotly Dash dashboards behind Azure AD SSO, deployed through Azure DevOps.",
       "Kept 10M+ airline records clean with distributed pipelines in PySpark, Kafka and Apache Airflow, checked by PyTest at unit and integration level.",
     ],
-  },
-];
-
-/**
- * Kept on the record rather than promoted: a quiet block under Education, not a
- * section of its own. The two extension publications are one entry because the
- * second is an NDVI-only variant of the first, and listing both separately
- * would read as padding.
- */
-export const publications = [
-  {
-    title:
-      "Weed detection in faba bean using unoccupied aerial system imagery and computer vision models",
-    venue: "SPIE Vol. 14045 — Autonomous Air and Ground Sensing Systems",
-    detail: "with Jjagwe, Chandel, Balota et al.",
-    year: "2026",
-    href: "https://doi.org/10.1117/12.3094626",
-  },
-  {
-    title: "Agroclimate Viewer & Planner App",
-    venue: "Virginia Cooperative Extension, BSE-372NP & BSE-371NP",
-    detail: "with Chandel, Kanakamedala, Maurya, Hota",
-    year: "2025",
-    href: "https://www.pubs.ext.vt.edu/content/pubs_ext_vt_edu/en/author/k/konduru-varma-lokesh.resource.html",
   },
 ];
 

@@ -1,5 +1,5 @@
 import { BlurFade } from "@/components/ui/blur-fade";
-import { education, publications } from "@/lib/data";
+import { education } from "@/lib/data";
 
 /**
  * Deliberately the quietest section on the page.
@@ -50,35 +50,6 @@ export function Education() {
               </p>
             </div>
           ))}
-        </div>
-      </BlurFade>
-
-      {/* On the record, not promoted: small type, one rule above it, no heading
-          large enough to compete with the degrees. */}
-      <BlurFade inView delay={0.2}>
-        <div className="mt-12 border-t border-border pt-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
-            Publications
-          </p>
-
-          <ul className="mt-5 space-y-4">
-            {publications.map((entry) => (
-              <li key={entry.title} className="text-sm">
-                <a
-                  href={entry.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-foreground transition-colors hover:text-brand"
-                >
-                  {entry.title}
-                </a>
-                <p className="mt-1 text-muted-foreground">
-                  {entry.venue} · {entry.year}
-                  <span className="hidden sm:inline"> · {entry.detail}</span>
-                </p>
-              </li>
-            ))}
-          </ul>
         </div>
       </BlurFade>
     </section>
