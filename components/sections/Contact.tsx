@@ -23,7 +23,7 @@ export function Contact() {
   return (
     <section
       id="contact"
-      className="mx-auto flex max-w-6xl flex-col items-center px-6 py-28 text-center md:py-44"
+      className="mx-auto flex max-w-6xl flex-col items-center px-6 pb-36 pt-28 text-center md:pb-48 md:pt-44"
     >
       <BlurFade inView>
         <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand">

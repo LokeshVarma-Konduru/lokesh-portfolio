@@ -5,7 +5,7 @@ import { experience } from "@/lib/data";
 
 export function Experience() {
   return (
-    <section id="experience" className="mx-auto max-w-6xl px-6 py-28 md:py-44">
+    <section id="experience" className="mx-auto max-w-6xl px-6 py-28 md:py-36">
       <BlurFade inView>
         <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand">
           Experience

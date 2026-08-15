@@ -77,7 +77,7 @@ function SkillChip({ skill }: { skill: string }) {
   }
 
   return (
-    <span className="inline-flex items-center gap-2 rounded-md border border-border bg-background/40 px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:text-foreground">
+    <span className="inline-flex items-center gap-2 rounded-md border border-border bg-surface-hover px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:text-foreground">
       <TechLogo logo={logo} className="size-4" />
       {skill}
     </span>
@@ -97,7 +97,13 @@ const marqueeLogos = [
 
 export function Skills() {
   return (
-    <section id="skills" className="py-28 md:py-44">
+    // The one inverted band on the page. Every other section runs on the page
+    // background with surface cards; here that flips, which breaks the run of
+    // identical sections without costing the cards their contrast.
+    <section
+      id="skills"
+      className="border-y border-border bg-surface py-28 md:py-40"
+    >
       <div className="mx-auto max-w-6xl px-6">
         <BlurFade inView>
           <span className="text-xs font-semibold uppercase tracking-[0.3em] text-brand">
@@ -126,8 +132,8 @@ export function Skills() {
               <TechLogo key={logo.src} logo={logo} className="size-9" />
             ))}
           </Marquee>
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-background" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-background" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-surface" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-surface" />
         </div>
       </BlurFade>
 
@@ -139,7 +145,7 @@ export function Skills() {
             delay={0.1 * index}
             className={group.span}
           >
-            <div className="flex h-full flex-col rounded-xl border border-border bg-surface p-8">
+            <div className="flex h-full flex-col rounded-xl border border-border bg-background p-8">
               <group.icon className="size-6 text-brand" />
               <h3 className="mt-4 text-2xl font-semibold tracking-[-0.02em] text-foreground">
                 {group.title}

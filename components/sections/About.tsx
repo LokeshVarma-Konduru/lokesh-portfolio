@@ -5,7 +5,7 @@ import { personal, stats } from "@/lib/data";
 
 export function About() {
   return (
-    <section id="about" className="mx-auto max-w-6xl px-6 py-28 md:py-44">
+    <section id="about" className="mx-auto max-w-6xl px-6 py-28 md:py-40">
       <div className="grid gap-12 md:grid-cols-5 md:gap-16">
         <div className="md:col-span-3">
           <BlurFade inView>
