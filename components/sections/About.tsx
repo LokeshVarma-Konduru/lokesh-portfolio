@@ -32,7 +32,7 @@ export function About() {
           <div className="md:col-span-3">
             <BlurFade inView>
               <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-5xl">
-                Who I am and what I do
+                About me
               </h2>
             </BlurFade>
 
