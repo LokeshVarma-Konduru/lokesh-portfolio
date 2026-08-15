@@ -1,7 +1,7 @@
 export const personal = {
   name: "Lokesh Varma Konduru",
   role: "Software Engineer",
-  email: "lokeshvarmak@vt.edu",
+  email: "lokesh.v.konduru@gmail.com",
   phone: "+1 571-244-4062",
   linkedin: "https://linkedin.com/in/lokeshvarmakonduru",
   github: "https://github.com/LokeshVarma-Konduru",
@@ -14,14 +14,17 @@ export const personal = {
     "Node.js + React Developer",
     "Cloud & Backend Engineer",
   ],
-  about: `Software Engineer with 3+ years building full-stack platforms,
-cloud-native microservices, and production-grade AI systems. Currently
-completing my M.S. in Computer Science at Virginia Tech with a 4.0 GPA.
+  about: `Software Engineer with 3+ years specializing in distributed systems,
+real-time architectures, and cloud infrastructure. I've shipped production-grade
+applications and backend microservices across agri-tech, fraud detection, and
+e-commerce — currently completing my M.S. in Computer Science at Virginia Tech
+with a 4.0 GPA.
 
-I work across the entire stack — React/TypeScript frontends, Node.js/Express
-backends, AWS infrastructure, and GenAI pipelines with RAG and LangChain.
-I care about systems that scale, code that is maintainable, and products that
-actually ship.
+I work across the entire stack — React/TypeScript and Next.js frontends,
+Node.js/Express and Python/FastAPI backends, AWS/Kubernetes infrastructure —
+and integrate AI-powered features like RAG pipelines and LangChain agents into
+production systems. I care about systems that scale, code that is maintainable,
+and products that actually ship.
 
 Open to full-time SDE roles starting May 2026.`,
 };
@@ -101,7 +104,7 @@ export const projects = [
     metrics: [
       "10,000+ transactions processed",
       "30% reduction in manual fraud review time",
-      "Real-time Kafka event streaming",
+      "40% reduction in fraud signal processing latency",
       "GenAI RAG agent with MCP tool calling",
     ],
     github: "",
@@ -109,18 +112,18 @@ export const projects = [
   },
   {
     id: "02",
-    title: "Agri-Tech Analytics & Advisory Platform",
+    title: "Agroclimate Viewer & Planner App",
     client: "Virginia Tech Research",
     period: "Sept 2024 – May 2026",
     description:
-      "Full-stack geospatial analytics platform with production GenAI advisory assistant, 5+ analytics tools, and AWS deployment with real-time observability.",
+      "Consolidated 5+ Google Earth Engine analytics tools into one React platform with Firebase user telemetry, backed by an internal FastAPI analytics dashboard with Prometheus/Grafana observability.",
     featured: false,
-    tech: ["React", "Node.js", "AWS", "GPT-4o", "LangChain", "Google Earth Engine"],
+    tech: ["React", "TypeScript", "Google Earth Engine", "Firebase", "FastAPI", "PostgreSQL"],
     metrics: [
-      "5+ analytics tools in one platform",
-      "40% improvement in processing efficiency",
-      "20% improvement in issue resolution",
-      "Production RAG with hybrid vector retrieval",
+      "5+ GEE analytics tools consolidated into one platform",
+      "Firebase telemetry tracking real user activity",
+      "40% improvement in processing efficiency (FastAPI, Redis, asyncio)",
+      "20% improvement in issue resolution via Prometheus/Grafana observability",
     ],
     github: "",
     live: "",
@@ -132,14 +135,32 @@ export const projects = [
     client: "Virginia Tech (Personal Project)",
     period: "Feb 2025 – May 2025",
     description:
-      "Full-stack bookstore platform with GenAI RAG recommendation assistant for semantic book search, personalized recommendations, and AI-assisted product discovery.",
+      "Full-stack bookstore platform with catalog, cart, and checkout workflows, plus a LangChain-powered recommendation assistant using FAISS semantic search for personalized book discovery.",
     featured: false,
-    tech: ["React", "Spring Boot", "MySQL", "LangChain", "FAISS", "Claude"],
+    tech: ["React", "Spring Boot", "Spring Security", "MySQL", "LangChain", "FAISS"],
     metrics: [
-      "Semantic search via RAG + FAISS",
-      "JWT/OAuth2 authentication",
-      "Redis caching layer",
-      "Hybrid retrieval with OpenAI embeddings",
+      "Sub-200ms API response times",
+      "200+ book catalog with personalized recommendations",
+      "JWT/OAuth2 with Spring Security",
+      "Redis session caching",
+    ],
+    github: "",
+    live: "",
+  },
+  {
+    id: "04",
+    title: "Nova Clinic — Appointment Management Platform",
+    client: "Virginia Tech (Personal Project)",
+    period: "Feb 2026 – May 2026",
+    description:
+      "JWT-authenticated REST APIs over HTTPS built with Python/FastAPI and MySQL, with a responsive HTML5/CSS frontend for appointment management and zero-downtime production deployment.",
+    featured: false,
+    tech: ["Python", "FastAPI", "MySQL", "HTML5/CSS", "JWT"],
+    metrics: [
+      "Zero downtime during production deployment",
+      "JWT-authenticated REST APIs over HTTPS",
+      "Normalized MySQL schema with role-based access control",
+      "JWT claim-based data privacy permissions",
     ],
     github: "",
     live: "",
@@ -150,53 +171,77 @@ export const experience = [
   {
     role: "Software Engineer",
     company: "Virginia Tech",
+    logo: "/logos/virginia-tech.svg",
+    logoWidth: 225,
+    logoHeight: 44,
     period: "Sept 2024 – May 2026",
     location: "Virginia, USA",
     bullets: [
-      "Architected full-stack agri-tech platform: React/TypeScript + Node.js/Express + PostgreSQL, deployed on AWS EC2 with Docker/Kubernetes and GitHub Actions CI/CD.",
-      "Built production GenAI advisory assistant with GPT-4o, LangChain, FAISS, RAG pipelines, semantic chunking, and MCP tool calling.",
-      "Developed geospatial app with Python/FastAPI + Google Earth Engine, improving processing efficiency by 40%.",
+      "Cut bug turnaround time by 40% by building a full-stack platform with React/TypeScript, Next.js SSR, and PostgreSQL, backed by Jest unit and integration test coverage.",
+      "Reduced deployment time by 65% by containerizing services with Docker and Kubernetes on AWS EC2 and automating CI/CD pipelines via GitHub Actions with Terraform IaC.",
+      "Improved issue resolution by 20% by shipping 5+ geospatial analytics tools using Google Earth Engine APIs on a React/Tailwind platform with Firebase telemetry and Prometheus/Grafana observability.",
+      "Boosted geospatial data processing efficiency by 40% by building an async Python/FastAPI backend with Redis caching and PostgreSQL, improving overall pipeline throughput.",
+      "Engineered an AI-powered advisory assistant by integrating LangChain, LangGraph, and FAISS into Node.js/Express REST APIs, implementing RAG pipelines and MCP tool calling to deliver real-time contextual recommendations.",
     ],
   },
   {
     role: "Software Engineer (Contract)",
     company: "Marine Corps Community Services (MCCS)",
+    logo: "/logos/mccs.png",
+    logoWidth: 962,
+    logoHeight: 290,
     period: "Sept 2024 – Dec 2025",
     location: "Remote",
     note: "3-semester capstone · Team of 5 · Real government client",
     bullets: [
-      "Architected AI-powered fraud detection platform handling 10K+ transactions using React + Node.js/Express + MongoDB + Redis across microservices.",
-      "Built GenAI fraud investigation assistant using Gemini, LangChain, LangGraph, FAISS, RAG pipelines, and MCP tool calling — reducing manual review by 30%.",
-      "Orchestrated microservices on AWS EC2 with Kafka event streaming, SageMaker ML inference, CloudWatch observability, and OpenTelemetry tracing.",
+      "Scaled fraud detection to handle 10K+ transactions by architecting microservices with Node.js/Express, MongoDB, and Redis for real-time fraud score and transaction lookups.",
+      "Reduced fraud signal processing latency by 40% by orchestrating Kafka event streaming on Kubernetes with CloudWatch and OpenTelemetry distributed tracing, integrating SageMaker for ML inference and S3 for model artifact storage.",
+      "Reduced manual fraud review time by 30% by building a GenAI fraud investigation assistant with LangChain, LangGraph, and FAISS, implementing RAG pipelines and MCP tool calling for intelligent fraud signal analysis.",
     ],
   },
   {
     role: "Software Engineer",
     company: "DuoDecimal Tech LLP",
+    logo: "/logos/duodecimal.png",
+    logoWidth: 200,
+    logoHeight: 200,
     period: "July 2023 – July 2024",
     location: "India",
     bullets: [
-      "Built conference booking platform: React + Node.js/Express + Socket.io + Redis + Kafka — improving booking efficiency by 30%, reducing latency by 50%.",
-      "Developed hostel management system with RFID integration for 25,000+ users, reducing manual paperwork by 60%.",
-      "Deployed microservices on AWS EC2 behind ALB load balancer with API Gateway and automated GitHub Actions CI/CD.",
+      "Delivered 4 production platforms — events, bookings, hostel, and food management — using React/TypeScript, Node.js/Express, and MongoDB with JWT/OAuth2 authentication.",
+      "Improved booking efficiency by 30% and cut response latency by 50% by building a real-time ordering platform with Socket.io and Kafka, integrating Razorpay payment processing and Redis-backed session caching.",
+      "Reduced manual paperwork by 60% for 25,000+ users by developing an RFID-integrated hostel management system with Node.js/Express and MongoDB indexed queries and event-driven access control.",
+      "Enabled zero-downtime releases for 25,000+ users by deploying microservices on AWS EC2 behind ALB, routing through API Gateway with GitHub Actions CI/CD and automated Jest testing.",
     ],
   },
   {
     role: "Software Engineer Intern",
     company: "MindGraph Technologies",
+    logo: "/logos/mindgraph.png",
+    logoWidth: 200,
+    logoHeight: 200,
     period: "Jan 2023 – June 2023",
     location: "India",
     bullets: [
-      "Built Telecom and CPG client dashboards using Python/Flask + Plotly Dash, deployed on Azure with Azure DevOps CI/CD — improving data visibility by 40%.",
-      "Designed distributed pipelines processing 10M+ airline records using PySpark, Spark SQL, Kafka, and Apache Airflow.",
+      "Improved data visibility by 40% for Telecom and CPG clients by building dashboards with Python/Flask and Plotly Dash, integrating Azure AD SSO and deploying on Microsoft Azure with DevOps CI/CD.",
+      "Ensured data quality and reliability across 10M+ airline records by designing distributed pipelines with PySpark, Kafka, and Apache Airflow, with automated PyTest unit and integration testing.",
     ],
   },
 ];
 
-export const education = {
-  school: "Virginia Tech",
-  degree: "Master's in Computer Science",
-  gpa: "4.0/4.0",
-  location: "Virginia, USA",
-  graduation: "May 2026",
-};
+export const education = [
+  {
+    school: "Virginia Tech",
+    degree: "M.S. in Computer Science",
+    gpa: "4.0/4.0",
+    location: "Virginia, USA",
+    period: "Aug 2024 – May 2026",
+  },
+  {
+    school: "Mahindra University",
+    degree: "B.Tech. in Computer Science",
+    gpa: "8.28/10",
+    location: "India",
+    period: "Jul 2019 – May 2023",
+  },
+];
