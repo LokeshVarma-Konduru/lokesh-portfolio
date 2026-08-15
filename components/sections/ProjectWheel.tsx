@@ -40,11 +40,16 @@ import { cn } from "@/lib/utils";
 import { projects } from "@/lib/data";
 
 /** Radius of the ring, in pixels. */
-const RADIUS = 330;
+const RADIUS = 340;
 /** Extra scroll, per project, that the section consumes while pinned. */
 const SCROLL_PER_PROJECT = 320;
-const CARD_W = 176;
-const CARD_H = 224;
+/**
+ * Landscape, because the images are browser screenshots. Four cards on a 340px
+ * ring sit 2·R·sin(45°) ≈ 481px apart, so 320 wide still leaves them clear of
+ * each other.
+ */
+const CARD_W = 320;
+const CARD_H = 200;
 
 export function ProjectWheel() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -240,7 +245,7 @@ function RimCard({
       className={cn(
         "group relative block overflow-hidden rounded-xl border bg-surface text-left shadow-lg outline-none transition-all duration-500 ease-out focus-visible:ring-2 focus-visible:ring-brand",
         isActive
-          ? "-translate-y-3 scale-110 border-brand/50"
+          ? "-translate-y-3 scale-105 border-brand/50"
           : "scale-100 border-border",
         dimmed && "opacity-40 grayscale",
       )}
@@ -255,13 +260,15 @@ function RimCard({
           isActive ? "scale-105" : "scale-100",
         )}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+      {/* A landscape screenshot has more of itself worth showing, so the scrim
+          covers the lower third rather than washing over the whole frame. */}
+      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 via-30% to-transparent to-60%" />
 
-      <div className="absolute inset-x-0 bottom-0 p-3">
+      <div className="absolute inset-x-0 bottom-0 p-4">
         <p className="font-heading text-[11px] font-bold text-brand">
           {project.id}
         </p>
-        <p className="mt-0.5 line-clamp-2 text-sm font-semibold leading-tight text-foreground">
+        <p className="mt-0.5 line-clamp-1 text-base font-semibold leading-tight text-foreground">
           {project.title}
         </p>
         <span
