@@ -45,7 +45,9 @@ export function Hero() {
       {/* The hero is dark in both themes, so its copy is set in white rather
           than the theme tokens. */}
       <div className="relative z-10 mx-auto w-full max-w-6xl px-6">
-        <div className="flex max-w-xl flex-col gap-7 pt-16 md:pt-0">
+        {/* Sitting a little below centre rather than on it: the greeting was
+            riding high against the top of the canvas. */}
+        <div className="flex max-w-xl flex-col gap-7 pt-16 md:pt-24">
           <BlurFade delay={0.1}>
             <span className="flex items-center gap-2 text-lg text-white/70 md:text-xl">
               <span

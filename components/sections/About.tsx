@@ -16,7 +16,7 @@ export function About() {
           <BlurFade inView className="md:col-span-2">
             {/* Capped and centred on a phone: at full width a 4:5 portrait is
               360x450, a whole screen of photograph before a word of text. */}
-            <div className="relative mx-auto max-w-56 md:max-w-none">
+            <div className="relative mx-auto max-w-56 md:max-w-72">
               {/* Offset frame behind the portrait, so it reads as placed rather
                 than as one more bordered box. */}
               <div className="absolute -bottom-4 -left-4 hidden size-full rounded-2xl border border-brand/25 md:block" />
@@ -32,7 +32,7 @@ export function About() {
           <div className="md:col-span-3">
             <BlurFade inView>
               <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-5xl">
-                About
+                Who I am and what I do
               </h2>
             </BlurFade>
 

@@ -12,20 +12,21 @@ export const personal = {
   taglines: [
     "Full-Stack Engineer",
     "AI Systems Builder",
-    "Node.js + React Developer",
     "Cloud & Backend Engineer",
   ],
   // Kept short on purpose: the stats row carries the numbers and the Skills
   // section right below carries the stack, so repeating either here only makes
   // the part that is actually about him harder to find.
-  about: `Software Engineer with 3+ years on distributed systems, real-time
-architectures, and cloud infrastructure — across agri-tech, fraud detection,
-and e-commerce.
+  about: `I'm a software engineer. For the last three years I've built the parts
+of a product people never see — the services, the pipelines, the infrastructure
+that has to stay up while everything else changes.
 
-Currently finishing my M.S. in Computer Science at Virginia Tech. I care about
-systems that scale and code the next person can read.
+That's meant fraud detection for a government client, climate tools for
+researchers, and e-commerce platforms with real users on them. Right now I'm
+finishing my M.S. in Computer Science at Virginia Tech.
 
-Open to full-time SDE roles starting May 2026.`,
+I like systems that scale and code the next person can read. Open to full-time
+SDE roles starting May 2026.`,
 };
 
 export const stats = [
