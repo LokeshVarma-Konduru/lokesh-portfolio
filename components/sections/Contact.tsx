@@ -11,6 +11,7 @@ import {
   SendHorizontal,
 } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -136,9 +137,7 @@ export function Contact() {
         <BlurFade inView delay={0.1}>
           <div className="flex flex-col gap-8">
             <div>
-              <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
-                Contact
-              </h2>
+              <SectionHeading>Contact</SectionHeading>
               <p className="mt-5 max-w-md text-lg text-muted-foreground">
                 {personal.seeking}
               </p>

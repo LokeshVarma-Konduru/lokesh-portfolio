@@ -20,6 +20,7 @@ import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useSpring } from "motion/react";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { TimelineRail } from "./TimelineRail";
 import { useMediaQuery } from "@/lib/use-media-query";
 import { cn } from "@/lib/utils";
@@ -98,9 +99,7 @@ export function Experience() {
   return (
     <section id="experience" className="mx-auto max-w-4xl px-6 py-16 md:py-24">
       <BlurFade inView>
-        <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
-          Experience
-        </h2>
+        <SectionHeading>Experience</SectionHeading>
       </BlurFade>
 
       <ol ref={listRef} className="relative mt-14">

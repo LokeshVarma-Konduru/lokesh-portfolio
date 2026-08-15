@@ -1,6 +1,7 @@
 "use client";
 
 import { BlurFade } from "@/components/ui/blur-fade";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { MovingBorder } from "@/components/ui/moving-border";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
 import { Safari } from "@/components/ui/safari";
@@ -94,9 +95,7 @@ export function Projects() {
     >
       <div className="mx-auto max-w-7xl px-6">
         <BlurFade inView>
-          <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
-            Projects
-          </h2>
+          <SectionHeading>Projects</SectionHeading>
         </BlurFade>
       </div>
 

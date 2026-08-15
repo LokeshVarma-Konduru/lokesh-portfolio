@@ -1,4 +1,5 @@
 import { BlurFade } from "@/components/ui/blur-fade";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { LinkedinIcon } from "@/components/icons";
 import { personal, stats } from "@/lib/data";
@@ -31,9 +32,7 @@ export function About() {
 
           <div className="md:col-span-3">
             <BlurFade inView>
-              <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-5xl">
-                About me
-              </h2>
+              <SectionHeading>About me</SectionHeading>
             </BlurFade>
 
             {/* The hero used to cycle these one at a time. Here they can all be

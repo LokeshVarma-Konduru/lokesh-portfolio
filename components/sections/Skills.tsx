@@ -8,6 +8,7 @@ import {
   Wrench,
 } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { Badge } from "@/components/ui/badge";
 import { Marquee } from "@/components/ui/marquee";
 import { logoFor, type TechLogo } from "@/lib/tech-logos";
@@ -143,9 +144,7 @@ export function Skills() {
     >
       <div className="mx-auto max-w-7xl px-6">
         <BlurFade inView>
-          <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
-            Skills
-          </h2>
+          <SectionHeading>Skills</SectionHeading>
         </BlurFade>
       </div>
 
