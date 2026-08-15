@@ -1,125 +1,124 @@
 "use client";
 
-import { useState } from "react";
+/**
+ * Experience as a timeline.
+ *
+ * The company rail this replaces hid the one thing anyone reads this section
+ * for: the dates. A period only appeared once you picked a tab, so the arc —
+ * 2023 to 2026, the overlap, no gaps — was invisible unless you clicked through
+ * every company. Here every role is on the page at once with its dates leading.
+ *
+ * The logos are not in the nodes. Virginia Tech's mark is 225x44 and MCCS's is
+ * 962x290; contained in a circle those become about eleven pixels of unreadable
+ * type surrounded by dead space. The node marks the position on the line, the
+ * logo sits in the entry header where it has the width to be legible, and each
+ * does the job it can actually do.
+ */
+
+import { useRef } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, useScroll, useSpring } from "motion/react";
 import { BlurFade } from "@/components/ui/blur-fade";
-import { cn } from "@/lib/utils";
 import { experience } from "@/lib/data";
 
+/** Enough to show the shape of a role without turning the page into a résumé. */
+const BULLETS_SHOWN = 3;
+
 export function Experience() {
-  const [selected, setSelected] = useState(0);
-  const active = experience[selected];
+  const listRef = useRef<HTMLOListElement>(null);
+
+  // The line fills as the section is read. Ends at 55% so the last entry is
+  // reached before the beam is, rather than the beam trailing behind the text.
+  const { scrollYProgress } = useScroll({
+    target: listRef,
+    offset: ["start 85%", "end 55%"],
+  });
+  const fill = useSpring(scrollYProgress, {
+    stiffness: 80,
+    damping: 20,
+    mass: 0.4,
+  });
 
   return (
-    <section id="experience" className="mx-auto max-w-6xl px-6 py-28 md:py-36">
+    <section id="experience" className="mx-auto max-w-4xl px-6 py-28 md:py-36">
       <BlurFade inView>
         <h2 className="text-4xl font-bold leading-[1.05] tracking-[-0.025em] text-foreground md:text-6xl">
           Experience
         </h2>
       </BlurFade>
 
-      <BlurFade inView delay={0.2}>
-        <div className="mt-14 grid gap-8 md:grid-cols-[minmax(0,17rem)_1fr] md:gap-12">
-          {/* Company rail. Horizontal and scrollable on narrow screens, a
-              vertical list from md up. */}
-          <div
-            role="tablist"
-            aria-label="Companies"
-            aria-orientation="vertical"
-            className="-mx-6 flex gap-2 overflow-x-auto px-6 pb-2 md:mx-0 md:flex-col md:overflow-visible md:px-0 md:pb-0"
-          >
-            {experience.map((exp, index) => {
-              const isActive = index === selected;
-              return (
-                <button
-                  key={exp.company}
-                  role="tab"
-                  type="button"
-                  aria-selected={isActive}
-                  onClick={() => setSelected(index)}
-                  className={cn(
-                    "relative flex shrink-0 items-center gap-3 rounded-xl border px-4 py-3 text-left transition-colors md:w-full",
-                    isActive
-                      ? "border-brand/40 bg-surface"
-                      : "border-transparent hover:border-border hover:bg-surface/60"
-                  )}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="experience-marker"
-                      className="absolute inset-y-2 -left-px hidden w-0.5 rounded-full bg-brand md:block"
-                    />
-                  )}
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-lg border border-border bg-white p-1.5">
-                    <Image
-                      src={exp.logo}
-                      alt=""
-                      width={exp.logoWidth}
-                      height={exp.logoHeight}
-                      sizes="80px"
-                      className="h-full w-auto object-contain"
-                    />
-                  </span>
-                  <span className="min-w-0">
-                    <span
-                      className={cn(
-                        "block truncate text-sm font-semibold",
-                        isActive ? "text-foreground" : "text-muted-foreground"
-                      )}
-                    >
-                      {exp.company}
-                    </span>
-                    <span className="block truncate text-xs text-muted-foreground">
-                      {exp.period}
-                    </span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+      <ol ref={listRef} className="relative mt-14">
+        {/* The rail, and the brand-coloured length of it that has been read. */}
+        <span
+          aria-hidden="true"
+          className="absolute bottom-2 left-[7px] top-2 w-px bg-border"
+        />
+        <motion.span
+          aria-hidden="true"
+          style={{ scaleY: fill, originY: 0 }}
+          className="absolute bottom-2 left-[7px] top-2 w-px bg-brand"
+        />
 
-          <AnimatePresence mode="wait">
-            <motion.article
-              key={active.company}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
-              className="min-h-80"
-            >
-              <div className="flex flex-wrap items-center gap-3">
-                <h3 className="text-2xl font-semibold tracking-[-0.02em] text-foreground md:text-3xl">
-                  {active.role}
-                </h3>
-                {active.note && (
-                  <span className="rounded-full border border-brand/30 px-3 py-0.5 text-xs font-medium text-muted-foreground">
-                    {active.note}
+        {experience.map((role, index) => (
+          <BlurFade key={role.company} inView delay={0.05 * index}>
+            <li className="relative pb-14 pl-9 last:pb-0 md:pl-14">
+              <span
+                aria-hidden="true"
+                className="absolute left-0 top-1.5 size-3.5 rounded-full bg-brand ring-4 ring-background"
+              />
+
+              <p className="font-heading text-sm font-semibold text-brand">
+                {role.period}
+              </p>
+
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                {/* White backing: the marks are dark-on-transparent, so they
+                    vanish against the dark theme without it. */}
+                <span className="flex h-9 shrink-0 items-center justify-center rounded-lg border border-border bg-white px-2">
+                  <Image
+                    src={role.logo}
+                    alt={role.company}
+                    width={role.logoWidth}
+                    height={role.logoHeight}
+                    sizes="160px"
+                    className="h-5 w-auto object-contain"
+                  />
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  {role.location}
+                </span>
+              </div>
+
+              <h3 className="mt-4 text-xl font-semibold tracking-[-0.02em] text-foreground md:text-2xl">
+                {role.role}
+              </h3>
+
+              <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-2">
+                <p className="text-sm font-medium text-foreground">
+                  {role.company}
+                </p>
+                {role.note && (
+                  <span className="rounded-full border border-brand/30 px-3 py-0.5 text-xs text-muted-foreground">
+                    {role.note}
                   </span>
                 )}
               </div>
 
-              <p className="mt-2 text-sm text-muted-foreground">
-                <span className="font-medium text-brand">{active.company}</span>
-                {" · "}
-                {active.period} · {active.location}
-              </p>
-
-              <ul className="mt-7 space-y-4">
-                {active.bullets.map((bullet) => (
+              <ul className="mt-5 space-y-3">
+                {role.bullets.slice(0, BULLETS_SHOWN).map((bullet) => (
                   <li
                     key={bullet.slice(0, 24)}
                     className="flex items-start gap-3 text-[15px] leading-relaxed text-muted-foreground"
                   >
-                    <span className="mt-2 size-1.5 shrink-0 rounded-full bg-brand" />
+                    <span className="mt-2 size-1 shrink-0 rounded-full bg-border" />
                     {bullet}
                   </li>
                 ))}
               </ul>
-            </motion.article>
-          </AnimatePresence>
-        </div>
-      </BlurFade>
+            </li>
+          </BlurFade>
+        ))}
+      </ol>
     </section>
   );
 }
