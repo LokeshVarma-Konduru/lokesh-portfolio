@@ -29,7 +29,11 @@ export function Hero() {
       <div className="absolute inset-0">
         <OrbitalHeroSection
           planets={compact ? INNER_PLANETS : SOLAR_SYSTEM}
-          starCount={compact ? 500 : 1400}
+          starCount={compact ? 350 : 1400}
+          // Half the frames on a phone. Lighthouse measured 6.1 seconds of
+          // blocking time on a throttled handset, all of it this canvas; the
+          // orbits move slowly enough that thirty is indistinguishable.
+          maxFps={compact ? 30 : 60}
           interactive={!compact}
           yearSeconds={18}
           focus={compact ? [0.5, 0.62] : [0.72, 0.5]}

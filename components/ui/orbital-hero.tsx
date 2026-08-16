@@ -128,6 +128,8 @@ export interface OrbitalHeroSectionProps
   scrimStrength?: number;
   /** Number of background stars. */
   starCount?: number;
+  /** Frame budget. Thirty is plenty for motion this slow, and half the work. */
+  maxFps?: number;
   /** Overall bloom strength, 0 to 2. */
   glow?: number;
   /** Add a faint closed ellipse behind each planet. Off by default. */
@@ -249,6 +251,7 @@ export function OrbitalHeroSection({
   scrim = "none",
   scrimStrength = 0.88,
   starCount = 1500,
+  maxFps = 60,
   glow = 1,
   showOrbits = false,
   showSunTrack = true,
@@ -265,7 +268,7 @@ export function OrbitalHeroSection({
 
   const props = useRef({
     planets, yearSeconds, trailYears, compress, maxTurns, planeSpread, eccentricity, alignToCourse, driftSpeed, apex,
-    viewRadius, tilt, spin, roll, lead, focus, scrim, scrimStrength, starCount, glow, showOrbits, showSunTrack,
+    viewRadius, tilt, spin, roll, lead, focus, scrim, scrimStrength, starCount, maxFps, glow, showOrbits, showSunTrack,
     interactive, paused, sunColor, background,
   });
   // Written in an effect rather than during render: the draw loop reads this ref
@@ -273,7 +276,7 @@ export function OrbitalHeroSection({
   useEffect(() => {
     props.current = {  
       planets, yearSeconds, trailYears, compress, maxTurns, planeSpread, eccentricity, alignToCourse, driftSpeed, apex,
-      viewRadius, tilt, spin, roll, lead, focus, scrim, scrimStrength, starCount, glow, showOrbits, showSunTrack,
+      viewRadius, tilt, spin, roll, lead, focus, scrim, scrimStrength, starCount, maxFps, glow, showOrbits, showSunTrack,
       interactive, paused, sunColor, background,
     };
   });
@@ -913,10 +916,22 @@ export function OrbitalHeroSection({
     }
 
     /* --- loop ------------------------------------------------------------- */
+    // A frame budget. Sixty a second is free on a desktop and ruinous on a
+    // throttled phone, where every frame becomes a long task and the blocking
+    // time is measured in seconds. Thirty looks the same for orbital motion
+    // this slow.
+    const minDelta = 1000 / Math.max(1, props.current.maxFps || 60);
+
     function tick(now: number) {
       if (!running) return;
+
+      // Stop scheduling entirely when out of view rather than waking every
+      // frame to do nothing; the observer restarts it on the way back.
+      if (!visible) { raf = 0; lastFrame = 0; return; }
+
       raf = requestAnimationFrame(tick);
-      if (!visible) { lastFrame = now; return; }
+
+      if (lastFrame && now - lastFrame < minDelta) return;
       const dt = lastFrame ? Math.min(0.05, (now - lastFrame) / 1000) : 0;
       lastFrame = now;
       if (!props.current.paused && !reduced) {
@@ -925,9 +940,33 @@ export function OrbitalHeroSection({
       render(years);
     }
 
+    function start() {
+      if (!running || reduced || raf) return;
+      lastFrame = 0;
+      raf = requestAnimationFrame(tick);
+    }
+
     resize();
     render(years);
-    if (!reduced) raf = requestAnimationFrame(tick);
+
+    // The first frame is painted immediately so the hero is never empty, but
+    // the loop waits for the browser to finish the work that matters. Starting
+    // it at mount put an animation on the main thread while the page was still
+    // hydrating.
+    let cancelStart = () => {};
+    if (!reduced) {
+      const w = window as Window & {
+        requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number;
+        cancelIdleCallback?: (id: number) => void;
+      };
+      if (w.requestIdleCallback && w.cancelIdleCallback) {
+        const id = w.requestIdleCallback(start, { timeout: 1500 });
+        cancelStart = () => w.cancelIdleCallback!(id);
+      } else {
+        const id = window.setTimeout(start, 600);
+        cancelStart = () => window.clearTimeout(id);
+      }
+    }
 
     const ro = new ResizeObserver(() => {
       resize();
@@ -936,18 +975,26 @@ export function OrbitalHeroSection({
     ro.observe(host);
 
     const io = new IntersectionObserver(
-      (entries) => { visible = entries[0]?.isIntersecting ?? true; },
+      (entries) => {
+        visible = entries[0]?.isIntersecting ?? true;
+        if (visible) start();
+      },
       { threshold: 0 }
     );
     io.observe(host);
 
-    const onVisibility = () => { visible = !document.hidden; lastFrame = 0; };
+    const onVisibility = () => {
+      visible = !document.hidden;
+      lastFrame = 0;
+      if (visible) start();
+    };
     document.addEventListener("visibilitychange", onVisibility);
     host.addEventListener("pointermove", onPointer);
     host.addEventListener("pointerleave", onLeave);
 
     return () => {
       running = false;
+      cancelStart();
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
