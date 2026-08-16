@@ -9,7 +9,6 @@ import {
 } from "lucide-react";
 import { BlurFade } from "@/components/ui/blur-fade";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { Badge } from "@/components/ui/badge";
 import { Marquee } from "@/components/ui/marquee";
 import { logoFor, type TechLogo } from "@/lib/tech-logos";
 import { skills } from "@/lib/data";
@@ -100,23 +99,20 @@ function TechLogo({
   );
 }
 
+/**
+ * One chip, whether or not the skill has a mark behind it.
+ *
+ * These used to be two different components: skills with a logo got a bordered
+ * tile and skills without got an outline Badge, at a different size, radius,
+ * padding and border colour. Sitting side by side in the same tile they read as
+ * two unrelated systems. The logo is now the only thing that varies.
+ */
 function SkillChip({ skill }: { skill: string }) {
   const logo = logoFor(skill);
 
-  if (!logo) {
-    return (
-      <Badge
-        variant="outline"
-        className="border-brand/30 text-muted-foreground"
-      >
-        {skill}
-      </Badge>
-    );
-  }
-
   return (
     <span className="inline-flex items-center gap-2 rounded-md border border-border bg-surface-hover px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-brand/40 hover:text-foreground">
-      <TechLogo logo={logo} className="size-4" />
+      {logo && <TechLogo logo={logo} className="size-4" />}
       {skill}
     </span>
   );

@@ -79,7 +79,11 @@ export function ProjectWheel({ compact = false }: { compact?: boolean }) {
     setScrolled(Math.min(count - 1, slice));
   });
 
-  const rotate = useSpring(0, { stiffness: 120, damping: 24, mass: 0.5 });
+  // Softer and heavier than it was. At stiffness 120 the ring snapped to each
+  // stop and stopped dead; a lower stiffness with more mass makes it lean into
+  // the turn and settle, which is what a wheel of this size would actually do.
+  // Damping stays just under critical so it eases in without wobbling.
+  const rotate = useSpring(0, { stiffness: 55, damping: 18, mass: 1.1 });
   const counterRotate = useTransform(rotate, (value) => -value);
 
   useEffect(() => {
