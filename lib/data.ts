@@ -280,7 +280,7 @@ export const experience = [
     ],
   },
   {
-    role: "Software Engineer (Contract)",
+    role: "Software Engineer",
     company: "Marine Corps Community Services (MCCS)",
     logo: "/logos/mccs.png",
     logoWidth: 962,
