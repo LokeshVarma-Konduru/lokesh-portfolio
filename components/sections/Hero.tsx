@@ -43,9 +43,11 @@ export function Hero() {
       {/* The hero is dark in both themes, so its copy is set in white rather
           than the theme tokens. */}
       <div className="relative z-10 mx-auto w-full max-w-6xl px-6">
-        {/* Sitting a little below centre rather than on it: the greeting was
-            riding high against the top of the canvas. */}
-        <div className="flex max-w-3xl flex-col gap-7 pt-16 md:pt-24">
+        {/* No top padding on a phone: the section already centres this, so the
+            padding was pushing an otherwise centred block downward and opening
+            a gap under the navbar. The desktop offset stays, where the copy sits
+            deliberately below centre against the canvas. */}
+        <div className="flex max-w-3xl flex-col gap-5 md:gap-7 md:pt-24">
           <BlurFade delay={0.1}>
             <span className="flex items-center gap-2 text-lg text-white/70 md:text-xl">
               <span
