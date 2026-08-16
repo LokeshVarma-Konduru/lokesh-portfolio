@@ -60,9 +60,9 @@ export const stats = [
 export const skills = {
   languages: [
     "Python",
+    "Java",
     "JavaScript",
     "TypeScript",
-    "Java",
     "SQL",
     "C",
     "C++",
@@ -77,7 +77,6 @@ export const skills = {
     "Tailwind CSS",
     "Socket.io",
     "Plotly Dash",
-    "Framer Motion",
   ],
   backend: [
     "Node.js",
@@ -131,7 +130,12 @@ export const skills = {
   tools: [
     "Jest",
     "PyTest",
+    "JUnit",
+    "Selenium",
+    "Postman",
+    "Swagger",
     "TDD",
+    "Maven/Gradle",
     "Git",
     "Agile/Scrum",
     "Jira",
@@ -154,16 +158,16 @@ export const projects = [
       "Full-stack bookstore platform with catalog, cart, and checkout workflows, plus a LangChain-powered recommendation assistant using FAISS semantic search for personalized book discovery.",
     featured: false,
     tech: [
-      "React",
-      "Spring Boot",
+      "Java/Spring Boot",
       "Spring Security",
       "MySQL",
-      "LangChain",
+      "Redis",
+      "React",
       "FAISS",
     ],
     metrics: [
       "Sub-200ms API response times",
-      "200+ book catalog with personalized recommendations",
+      "1,000+ book catalog with personalized recommendations",
       "JWT/OAuth2 with Spring Security",
       "Redis session caching",
     ],
@@ -273,10 +277,10 @@ export const experience = [
     ],
     bullets: [
       "Cut bug turnaround by 40% with a full-stack platform — React and TypeScript on Next.js SSR, PostgreSQL behind it, Jest across both unit and integration paths.",
-      "Took 65% off deployment time by containerising the services with Docker and Kubernetes on EC2, and moving releases onto GitHub Actions with Terraform describing the infrastructure.",
-      "Shipped 5+ geospatial analytics tools on Google Earth Engine APIs, with Firebase telemetry and Prometheus and Grafana watching them — 20% better issue resolution.",
+      "Took deployment from about thirty minutes to under ten by containerising the services with Docker and Kubernetes on EC2, with Terraform describing the infrastructure and rollback policies on every merge.",
+      "Shipped 5+ geospatial tools on Google Earth Engine — satellite imagery, NDVI, soil and climate analysis — used by 1,000+ researchers and growers across Virginia Tech Extension, with Prometheus and Grafana watching them.",
       "Made the geospatial pipeline 40% more efficient with an async Python and FastAPI backend, Redis in front of PostgreSQL.",
-      "Built an AI advisory assistant into the Node.js and Express APIs: LangChain, LangGraph and FAISS, RAG retrieval and MCP tool calling for recommendations in real time.",
+      "Built an AI agentic advisory assistant into the Java and Spring Boot REST APIs: LangChain, LangGraph and FAISS, RAG retrieval and MCP tool calling for real-time agroclimate recommendations.",
     ],
   },
   {
@@ -309,7 +313,7 @@ export const experience = [
     location: "India",
     bullets: [
       "Shipped 4 production platforms — events, bookings, hostel and food management — on React with TypeScript, Node.js and Express, MongoDB, behind JWT and OAuth2.",
-      "Built a real-time ordering platform on Socket.io and Kafka with Razorpay payments and Redis-backed sessions: 30% better booking efficiency, half the response latency.",
+      "Built a real-time ordering platform on Kafka event streaming with Easebuzz and Razorpay payments and Redis-backed sessions: 30% better booking efficiency, and response latency from about 400ms to under 200.",
       "Cut paperwork by 60% for 25,000+ users with an RFID hostel management system — indexed MongoDB queries and event-driven access control.",
       "Gave those 25,000+ users zero-downtime releases, running the microservices on EC2 behind an ALB and API Gateway with GitHub Actions and Jest in the pipeline.",
     ],

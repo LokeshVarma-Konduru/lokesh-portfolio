@@ -28,7 +28,6 @@ export const techLogos: Record<string, string> = {
   "Tailwind CSS": "tailwindcss",
   "Socket.io": "socketio",
   "Plotly Dash": "plotly",
-  "Framer Motion": "motion",
 
   // Backend
   "Node.js": "nodejs",
