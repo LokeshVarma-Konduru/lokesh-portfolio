@@ -132,9 +132,10 @@ export function RobotAvatar({
         cy="5.4"
         r="2.5"
         fill={BRAND}
-        // Without a starting value motion reads opacity as undefined on an SVG
-        // node and warns when the media query flips `animated` to true.
-        initial={{ opacity: 1 }}
+        // Both animated attributes need a starting value. Motion does not read
+        // them back off an SVG node, so without this it writes r="undefined"
+        // for a frame and the browser logs an error.
+        initial={{ opacity: 1, r: 2.5 }}
         animate={
           animated
             ? { opacity: active ? 1 : [0.55, 1, 0.55], r: active ? 3 : 2.5 }
