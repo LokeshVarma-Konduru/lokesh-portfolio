@@ -114,16 +114,9 @@ function Card({ project }: { project: Project }) {
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-center gap-3">
-          <span className="font-heading text-sm font-bold text-brand">
-            {project.id}
-          </span>
-          {project.note && (
-            <span className="truncate rounded-full border border-brand/30 px-2.5 py-0.5 text-[11px] text-muted-foreground">
-              {project.note}
-            </span>
-          )}
-        </div>
+        <span className="font-heading text-sm font-bold text-brand">
+          {project.id}
+        </span>
 
         <h3 className="mt-3 text-xl font-bold leading-tight tracking-[-0.02em] text-foreground">
           {project.title}

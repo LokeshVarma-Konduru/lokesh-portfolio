@@ -193,16 +193,9 @@ export function Experience() {
                   {role.company}
                 </p>
 
-                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2 text-[15px] text-muted-foreground">
-                  <span>
-                    {role.period} · {role.location}
-                  </span>
-                  {role.note && (
-                    <span className="rounded-full border border-border px-3 py-0.5 text-xs">
-                      {role.note}
-                    </span>
-                  )}
-                </div>
+                <p className="mt-2 text-[15px] text-muted-foreground">
+                  {role.period} · {role.location}
+                </p>
 
                 <ul className="mt-5 space-y-3">
                   {role.bullets.slice(0, BULLETS_SHOWN).map((bullet) => (

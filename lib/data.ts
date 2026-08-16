@@ -46,7 +46,7 @@ export const stats = [
   { value: 3, suffix: "+", label: "Years Experience" },
   { value: 4.0, suffix: "/4.0", label: "Virginia Tech GPA" },
   { value: 25000, suffix: "+", label: "Users Served" },
-  { value: 4, suffix: "", label: "Production Systems" },
+  { value: 15, suffix: "+", label: "Production Systems" },
 ];
 
 /**
@@ -207,7 +207,6 @@ export const projects = [
     period: "Sept 2024 – Dec 2025",
     description:
       "Production fraud detection system processing 10K+ transactions with GenAI investigation assistant using RAG pipelines, semantic chunking, and MCP tool calling.",
-    note: "3-semester capstone · Team of 5 · Real government client",
     featured: true,
     tech: ["React", "Node.js", "Kafka", "MongoDB", "LangChain", "Kubernetes"],
     metrics: [
@@ -288,7 +287,6 @@ export const experience = [
     logoHeight: 290,
     period: "Sept 2024 – Dec 2025",
     location: "Remote",
-    note: "3-semester capstone · Team of 5 · Real government client",
     links: [
       {
         label: "GitHub",

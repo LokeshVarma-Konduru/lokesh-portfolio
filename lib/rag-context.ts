@@ -24,9 +24,6 @@ const SEEKING = `Full-time SDE roles, available now — he finished his M.S. at 
 Tech in May 2026. Open to full-stack, backend, or AI-integrated engineering roles. NOT
 looking for ML Engineer or Data Scientist roles.
 
-The MCCS role was a three-semester university capstone with a real government client,
-built by a team of five with a professor mentoring.
-
 Some projects also appear in the work history — the fraud detection platform is the
 MCCS role, and the Agroclimate app came out of the Virginia Tech role. That is the
 same work described twice, not two separate efforts.`;

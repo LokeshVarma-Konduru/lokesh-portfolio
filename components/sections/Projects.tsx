@@ -31,16 +31,9 @@ function ProjectCardContent({
       </div>
 
       <div>
-        <div className="flex flex-wrap items-center gap-3">
-          <span className="font-heading text-sm font-bold text-brand">
-            {project.id}
-          </span>
-          {project.note && (
-            <span className="rounded-full border border-brand/30 px-3 py-0.5 text-xs font-medium text-muted-foreground">
-              {project.note}
-            </span>
-          )}
-        </div>
+        <span className="font-heading text-sm font-bold text-brand">
+          {project.id}
+        </span>
 
         <h3 className="mt-4 text-2xl font-bold leading-[1.1] tracking-[-0.025em] text-foreground md:text-3xl">
           {project.title}
