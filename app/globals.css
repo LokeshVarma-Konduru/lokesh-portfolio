@@ -15,6 +15,7 @@
   --color-text-primary: var(--text-primary);
   --color-text-muted: var(--text-muted);
   --color-brand: var(--brand);
+  --color-brand-solid: var(--brand-solid);
   --color-brand-hover: var(--brand-hover);
   --color-brand-glow: var(--brand-glow);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -102,8 +103,8 @@
   --card-foreground: #09090B;
   --popover: #FFFFFF;
   --popover-foreground: #09090B;
-  --primary: #3B82F6;
-  --primary-foreground: #FAFAFA;
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
   --secondary: #F4F4F5;
   --secondary-foreground: #09090B;
   --muted: #F4F4F5;
@@ -113,14 +114,16 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: #E4E4E7;
   --input: #E4E4E7;
-  --ring: #3B82F6;
+  --ring: #2563EB;
   --surface: #FFFFFF;
   --surface-hover: #F4F4F5;
   --text-primary: #09090B;
   --text-muted: #71717A;
-  --brand: #3B82F6;
-  --brand-hover: #2563EB;
-  --brand-glow: rgba(59, 130, 246, 0.10);
+  /* 4.95:1 on #FAFAFA. #3B82F6 measured 3.52:1 here and failed as link text. */
+  --brand: #2563EB;
+  --brand-solid: #2563EB;
+  --brand-hover: #1D4ED8;
+  --brand-glow: rgba(37, 99, 235, 0.10);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -144,12 +147,12 @@
   --card-foreground: #FAFAFA;
   --popover: #111111;
   --popover-foreground: #FAFAFA;
-  --primary: #3B82F6;
-  --primary-foreground: #FAFAFA;
+  --primary: #2563EB;
+  --primary-foreground: #FFFFFF;
   --secondary: #161616;
   --secondary-foreground: #FAFAFA;
   --muted: #161616;
-  --muted-foreground: #71717A;
+  --muted-foreground: #888891;
   --accent: #161616;
   --accent-foreground: #FAFAFA;
   --destructive: oklch(0.704 0.191 22.216);
@@ -159,9 +162,13 @@
   --surface: #111111;
   --surface-hover: #161616;
   --text-primary: #FAFAFA;
-  --text-muted: #71717A;
+  --text-muted: #888891;
+  /* Two blues, because one cannot do both jobs here: #3B82F6 reads as text on
+     #0A0A0A at 5.38:1, but white sitting on it is only 3.68:1. Buttons and
+     other white-on-colour surfaces take the solid. */
   --brand: #3B82F6;
-  --brand-hover: #2563EB;
+  --brand-solid: #2563EB;
+  --brand-hover: #60A5FA;
   --brand-glow: rgba(59, 130, 246, 0.15);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);

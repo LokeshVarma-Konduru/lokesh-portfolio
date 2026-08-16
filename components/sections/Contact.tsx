@@ -269,7 +269,7 @@ export function Contact() {
             />
 
             <ShimmerButton
-              background="var(--brand)"
+              background="var(--brand-solid)"
               borderRadius="0.625rem"
               className="text-sm font-medium"
               disabled={status === "sending"}

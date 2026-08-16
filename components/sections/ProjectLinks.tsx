@@ -52,7 +52,7 @@ export function ProjectLinks({
           rel="noopener noreferrer"
           className={
             primary
-              ? "group inline-flex items-center gap-2 rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-brand/25 transition-colors hover:bg-brand-hover"
+              ? "group inline-flex items-center gap-2 rounded-lg bg-brand-solid px-4 py-2 text-sm font-semibold text-white shadow-sm shadow-brand/25 transition-colors hover:brightness-110"
               : "group inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-brand hover:text-brand"
           }
         >

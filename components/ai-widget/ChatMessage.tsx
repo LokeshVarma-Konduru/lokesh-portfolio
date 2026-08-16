@@ -102,7 +102,7 @@ export function ChatMessage({
         className={cn(
           "space-y-2 rounded-2xl px-4 py-2 text-sm leading-relaxed",
           isUser
-            ? "max-w-[80%] whitespace-pre-wrap rounded-br-sm bg-brand text-white"
+            ? "max-w-[80%] whitespace-pre-wrap rounded-br-sm bg-brand-solid text-white"
             : // The reply gets the full column: it is the part worth reading,
               // and a list of projects wraps badly in a narrow bubble.
               "w-full rounded-bl-sm border border-border bg-surface-hover text-foreground",
