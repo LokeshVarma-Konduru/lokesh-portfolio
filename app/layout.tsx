@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Inter, Instrument_Serif } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { personal } from "@/lib/data";
 import "./globals.css";
@@ -95,6 +96,9 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        {/* Visitor counts, referrers and pages — no cookies, and it loads after
+            everything else, so it cannot cost the hero any of its paint time. */}
+        <Analytics />
       </body>
     </html>
   );
